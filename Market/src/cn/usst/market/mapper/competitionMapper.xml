@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 命名空间，作用就是对sql进行分类化管理，可以理解为sql隔离 -->
+<mapper namespace="cn.usst.market.mapper.competitionMapper">
+
+	<!-- 创建竞赛 -->
+	<insert id="createCompetition" parameterType="cn.usst.market.po.Competition">
+		insert into
+		competition(id,license,admin_id,teacher_id,number,team_num,name,quater,team_max_memb,address,date,validity)
+		values(#{id},#{license},#{admin_id},#{teacher_id},#{number},#{team_num},#{name},#{quater},#{team_max_memb},#{address},#{date},#{validity})
+	</insert>
+
+	<!-- 根据ID选择一条竞赛信息 -->
+	<select id="selectCompetitionById" parameterType="java.lang.Integer"
+		resultType="cn.usst.market.po.Competition">
+		select * from competition where id=#{id,jdbcType=INTEGER}
+	</select>
+
+	<!-- 更新竞赛信息 -->
+	<update id="updateCompetition">
+		update competition
+		set
+		id=#{com.id},number=#{com.number},team_num=#{com.team_num},name=#{com.name}
+		,address=#{com.address} where id=#{id}
+	</update>
+
+	<!-- 删除竞赛信息 -->
+	<delete id="deleteCompetitionById" parameterType="java.lang.Integer">
+		delete from
+		competition
+		where
+		id=#{id}
+	</delete>
+
+	<!-- 分页查询教师 -->
+	<select id="queryCompetitionByPage" parameterType="java.lang.Integer"
+		resultType="cn.usst.market.po.Competition">
+		select * from competition limit
+		#{0} , #{1}
+	</select>
+
+	<!-- 查询教师总记录数 -->
+	<select id="getCompetitionTotalCount" resultType="java.lang.Integer">
+		select count(*)
+		from
+		competition
+	</select>
+</mapper>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 命名空间，作用就是对sql进行分类化管理，可以理解为sql隔离 -->
+<mapper namespace="cn.usst.market.mapper.GoodsMapper">
+
+	<!-- 查询商品 -->
+	<select id="queryGoods" resultType="cn.usst.market.po.Goods">
+		select name,num from Goods
+	</select>
+</mapper>

@@ -1,0 +1,21 @@
+#footer {
+	width: 100%;
+	height: 74px;
+	margin-top: 0px;
+	background: #1e485d;
+	color: white;
+}
+
+.glyphicon, #footer-content {
+	line-height: 74px;
+	font-size: 20px;
+}
+
+#footer div {
+	width: 40%;
+	margin: 0 auto;
+}
+
+#footer div a {
+	text-decoration: none;
+}

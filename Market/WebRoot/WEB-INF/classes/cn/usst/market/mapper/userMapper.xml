@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 命名空间，作用就是对sql进行分类化管理，可以理解为sql隔离 -->
+<mapper namespace="cn.usst.market.mapper.userMapper">
+
+	<!-- 添加管理员 -->
+	<insert id="addAdmin" parameterType="cn.usst.market.po.Admin">
+		insert into
+		admin(id,username,email,password,phone)
+		values(#{id},#{username},#{email},#{password},#{phone})
+	</insert>
+
+	<!-- 根据ID选择一条管理员信息 -->
+	<select id="selectAdminById" parameterType="java.lang.Integer"
+		resultType="cn.usst.market.po.Admin">
+		select * from admin where id=#{id,jdbcType=INTEGER}
+	</select>
+
+	<!-- 分页查询管理员 -->
+	<select id="queryAdminByPage" parameterType="java.lang.Integer"
+		resultType="cn.usst.market.po.Admin">
+		select * from admin limit
+		#{0} , #{1}
+	</select>
+
+	<!-- 查询管理员总记录数 -->
+	<select id="getAdminTotalCount" resultType="java.lang.Integer">
+		select count(*) from
+		admin
+	</select>
+
+	<!-- 更新管理员 -->
+	<update id="updateAdmin">
+		update admin set
+		id=#{admin.id},username=#{admin.username},password=#{admin.password},email=#{admin.email},phone=#{admin.phone}
+		where id=#{idSession}
+	</update>
+
+	<!-- 删除管理员 -->
+	<delete id="deleteAdminById" parameterType="java.lang.Integer">
+		delete from admin
+		where
+		id=#{id}
+	</delete>
+
+	<!-- 添加分组 -->
+	<insert id="addGroup" parameterType="cn.usst.market.po.Group">
+		insert into
+		manage(id,admin_id,teacher_id,email,password)
+		values(#{id},#{admin_id},#{teacher_id},#{email},#{password})
+	</insert>
+
+	<!-- 添加教师 -->
+	<insert id="addTeacher" parameterType="cn.usst.market.po.Teacher">
+		insert into
+		teacher(id,name,email,password,org,position,phone,address,postcode,picture,country,city)
+		values(#{id},#{name},#{email},#{password},#{org},#{position},#{phone},#{address},#{postcode},#{picture},#{country},#{city})
+	</insert>
+
+	<!-- 根据ID选择一条教师信息 -->
+	<select id="selectTeacherById" parameterType="java.lang.Integer"
+		resultType="cn.usst.market.po.Teacher">
+		select * from teacher where id=#{id,jdbcType=INTEGER}
+	</select>
+
+	<!-- 分页查询教师 -->
+	<select id="queryTeacherByPage" parameterType="java.lang.Integer"
+		resultType="cn.usst.market.po.Teacher">
+		select * from teacher limit
+		#{0} , #{1}
+	</select>
+
+	<!-- 查询教师总记录数 -->
+	<select id="getTeacherTotalCount" resultType="java.lang.Integer">
+		select count(*)
+		from
+		teacher
+	</select>
+
+	<!-- 更新教师 -->
+	<update id="updateTeacher" parameterType="cn.usst.market.po.Teacher">
+		update teacher set
+		name=#{name},password=#{password},email=#{email}
+		,phone=#{phone} where
+		id=#{id}
+	</update>
+
+	<!-- 删除管理员 -->
+	<delete id="deleteTeacherById" parameterType="java.lang.Integer">
+		delete from teacher
+		where
+		id=#{id}
+	</delete>
+
+
+</mapper>

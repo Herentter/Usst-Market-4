@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 命名空间，作用就是对sql进行分类化管理，可以理解为sql隔离 -->
+<mapper namespace="cn.usst.market.mapper.productInfoMapper">
+
+	<select id="selectAllProductInfo" resultType="cn.usst.market.po.ProductInfo">
+		select * from
+		product_info
+	</select>
+
+	<!-- 更新信息 -->
+	<update id="updateProductInfo">
+		update product_info
+		set
+		id=#{proInfo.id},detail=#{proInfo.detail},title=#{proInfo.title},price=#{proInfo.price}
+		where id=#{id}
+	</update>
+
+	<!-- 删除信息 -->
+	<delete id="deleteProductInfoById" parameterType="java.lang.Integer">
+		delete from
+		product_info
+		where
+		id=#{id}
+	</delete>
+
+	<!-- 分页查询产品组件信息 -->
+	<select id="queryProductInfoByPage" parameterType="java.lang.Integer"
+		resultType="cn.usst.market.po.ProductInfo">
+		select * from product_info limit
+		#{0} , #{1}
+	</select>
+
+	<!-- 查询教师总记录数 -->
+	<select id="getProInfoTotalCount" resultType="java.lang.Integer">
+		select count(*)
+		from
+		product_info
+	</select>
+
+</mapper>
