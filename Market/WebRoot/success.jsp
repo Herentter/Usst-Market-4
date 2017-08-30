@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>SUCCESS</h1>
-<h1>${success}</h1>
+<h1>${errorInfo}</h1>
+<img alt="背景图" src="images/bgm1.jpg">
 </body>
 </html>

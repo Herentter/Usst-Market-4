@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.usst.market.mapper.TeacherPolicyDecisionMapper">
+	<!-- 查看团队成员职责 -->
+	<select id="findMemberDutyList" parameterType="Integer" resultType="cn.usst.market.po.MemberDutyCustom">
+		select member.`name`,b1.position mainDuty,b2.position minorDuty
+		from (select * from member where member.company_id=#{value }) as member
+		LEFT JOIN member_duty on member.id=member_duty.member_id
+		LEFT JOIN duty b1 on member_duty.main_duty_id=b1.id
+		LEFT JOIN duty b2 on member_duty.minor_duty_id=b2.id
+	</select>
+	
+	<!-- 目标与策略 -->
+	<select id="findCompanyGoalAndPolicy" parameterType="cn.usst.market.po.IdQuarter" resultType="cn.usst.market.po.CompanyStrategy">
+		select * from company_strategy
+		where company_strategy.company_id=#{id,jdbcType=INTEGER}
+		and company_strategy.`quarter`=#{quarter,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 查找已选择的策略 -->
+	<select id="findStrategyById" parameterType="Integer" resultType="cn.usst.market.po.StrategyInfo">
+		select * from strategy_info
+		where id=#{value}
+	</select>
+	
+	<!-- 团队规则 -->
+	<select id="findCompanyRule" parameterType="cn.usst.market.po.IdQuarter" resultType="cn.usst.market.po.CompanyRule">
+		select * from company_rule
+		where company_rule.company_id=#{id,jdbcType=INTEGER}
+		and company_rule.`quarter`=#{quarter,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 查找已选择的团队规则 -->
+	<select id="findRuleInfoById" parameterType="Integer" resultType="cn.usst.market.po.CompanyRuleInfo">
+		select * from company_rule_info
+		where id=#{value}
+	</select>
+	
+	<!-- 查找个人目标 -->
+	<select id="findPersonalGoalByMemberId" parameterType="Integer" resultType="cn.usst.market.po.PersonalGoal">
+		select * from personal_goal
+		where member_id=#{value}
+	</select>
+	
+	<!-- 查找个人目标的详细信息 -->
+	<select id="findPersonalGoalInfoById" parameterType="Integer" resultType="cn.usst.market.po.PersonalGoalInfo">
+		select * from personal_goal_info
+		where id=#{value}
+	</select>
+	
+	<!-- 市场营销，品牌设计 -->
+	<select id="findProductInfoById" parameterType="Integer" resultType="cn.usst.market.po.ProductInfo">
+		select * from product_info
+		where id=#{value}
+	</select>
+	
+	<!-- 找公司生产的产品 -->
+	<select id="findProductsByCompanyIdQuarter" parameterType="cn.usst.market.po.IdQuarter" resultType="cn.usst.market.po.CompanyProduct">
+		select * from company_product
+		where company_id=#{id,jdbcType=INTEGER}
+		and quarter=#{quarter,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 找公司开设实体市场 -->
+	<select id="findCompanyPhyMarketByIdQuarter" parameterType="cn.usst.market.po.IdQuarter" resultType="cn.usst.market.po.CompanyMarket">
+		select * from company_market
+		WHERE company_market.company_id=#{id,jdbcType=INTEGER}
+		and company_market.`quarter`=#{quarter,jdbcType=INTEGER}
+		and company_market.is_phy=1
+	</select>
+	
+	<!-- 找公司开设网络市场 -->
+	<select id="findCompanyNetMarketByIdQuarter" parameterType="cn.usst.market.po.IdQuarter" resultType="cn.usst.market.po.CompanyMarket">
+		select * from company_market
+		WHERE company_market.company_id=#{id,jdbcType=INTEGER}
+		and company_market.`quarter`=#{quarter,jdbcType=INTEGER}
+		and company_market.is_phy=0
+	</select>
+	
+	<!-- 根据ID找具体市场信息 -->
+	<select id="findMarketInfoById" parameterType="Integer" resultType="cn.usst.market.po.MarketInfo">
+		select * from market_info
+		where id=#{value}
+	</select>
+	
+	<!-- 生产制造，下季度将增加的固定产能 -->
+	<select id="findAddCapacityByIdQuarter" parameterType="cn.usst.market.po.IdQuarter" resultType="int">
+		select IFNULL((select capacity_info.number from capacity_info,company_capacity
+		where company_capacity.capacity_id = capacity_info.id
+		and company_capacity.company_id = #{id,jdbcType=INTEGER}
+		and company_capacity.`quarter`= #{quarter,jdbcType=INTEGER}),0)as add_capacity;
+	</select>
+	
+	<!-- 生产制造，前n季度产能之和 -->
+	<select id="findTotalCapacityByIdQuarter" parameterType="cn.usst.market.po.IdQuarter" resultType="int">
+		select IFNULL((select SUM(number) from capacity_info,company_capacity
+		where company_capacity.capacity_id=capacity_info.id
+		and company_capacity.company_id = #{id,jdbcType=INTEGER}
+		and company_capacity.`quarter` &lt;= #{quarter,jdbcType=INTEGER}),0)as total_capacity;
+	</select>
+	
+	
+</mapper>

@@ -1,59 +1,95 @@
 package cn.usst.market.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.usst.market.mapper.competitionMapper;
+import cn.usst.market.mapper.CompetitionMapper;
+import cn.usst.market.mapper.DemandInfoMapper;
+import cn.usst.market.mapper.TeacherReferenceMapper;
 import cn.usst.market.po.Competition;
+import cn.usst.market.po.DemandInfo;
+import cn.usst.market.po.TeacherQueryVo;
+import cn.usst.market.po.TeacherReference;
 import cn.usst.market.service.CompetitionService;
-
+import marketUtil.StringRandom;
 @Service("competitionService")
-public class competitionServiceImpl implements CompetitionService {
-
+public class CompetitionServiceImpl implements CompetitionService {
 	@Autowired
-	private competitionMapper competitionMapper;
+	private CompetitionMapper competitionMapper;
+	
+	@Autowired
+	private DemandInfoMapper demandInfoMapper;
+	
+	@Autowired
+	private TeacherReferenceMapper teacherReferenceMapper;
 
 	@Override
-	public String createCompetition(Competition competition) {
-		// TODO Auto-generated method stub
-		competitionMapper.createCompetition(competition);
-		Competition com = competitionMapper.selectCompetitionById(competition.getId());
-		if (com != null) {
-			return "success,恭喜你，竞赛初始信息创建成功！！！";
-		}
-		return "failed,很抱歉，竞赛创建失败！！！";
+	public int insert(Competition record) {
+		StringRandom sr=new StringRandom();
+		String license=sr.getStringRandom(12);
+		record.setLicense(license);
+		return competitionMapper.insert(record);
 	}
 
 	@Override
-	public Competition selectCompetitionById(int id) {
-		// TODO Auto-generated method stub
-		return competitionMapper.selectCompetitionById(id);
+	public List<Competition> findAllCompetition() throws Exception {
+		return competitionMapper.findAllCompetition();
 	}
 
 	@Override
-	public void updateCompetition(Competition com, int id) {
-		// TODO Auto-generated method stub
-		competitionMapper.updateCompetition(com, id);
+	public Competition findCompetitionById(Integer id) {
+		return competitionMapper.findCompetitionById(id);
+	}
+	
+	@Override
+	public List<Competition> findCompetitionByTeacherId(Integer id) throws Exception {
+		return competitionMapper.findCompetitionByTeacherId(id);
 	}
 
 	@Override
-	public void deleteCompetitionById(int id) {
-		// TODO Auto-generated method stub
-		competitionMapper.deleteCompetitionById(id);
+	public Competition findCompetitionByLicense(Competition record) {
+		
+		return competitionMapper.findCompetitonByLicense(record);
 	}
 
 	@Override
-	public int getTotalCount() {
-		// TODO Auto-generated method stub
-		return competitionMapper.getCompetitionTotalCount();
+	public List<DemandInfo> showDemandInfo() {
+		return demandInfoMapper.showDemandInfo();
 	}
 
 	@Override
-	public List<Competition> queryCompetitionByPage(int index, int pageCount) {
-		// TODO Auto-generated method stub
-		return competitionMapper.queryCompetitionByPage(index, pageCount);
+	public List<Competition> findCompetitionList(TeacherQueryVo teacherQueryVo) throws Exception {
+		
+		return competitionMapper.findCompetitionList(teacherQueryVo);
 	}
 
+	@Override
+	public List<TeacherReference> findTeacherReference() throws Exception {
+		// TODO Auto-generated method stub
+		return teacherReferenceMapper.findTeacherReference();
+	}
+
+
+	@Override
+	public long getCompetitionCount(TeacherQueryVo teacherQueryVo) {
+		
+		return competitionMapper.getCompetitionCount(teacherQueryVo);
+	}
+
+	@Override
+	public List<Competition> selectCompetitionByPage(TeacherQueryVo teacherQueryVo) {
+		// TODO Auto-generated method stub
+		return competitionMapper.selectCompetitionByPage(teacherQueryVo);
+	}
+
+	@Override
+	public Competition checkCompetitionExist(String name) {
+		// TODO Auto-generated method stub
+		return competitionMapper.checkCompetitionExist(name);
+	}
+
+	
 }

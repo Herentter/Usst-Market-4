@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <%
@@ -8,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>登录</title>
+<title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css" /> 
 <link rel="stylesheet" type="text/css" href="css/style2.css" />
 <link rel="stylesheet" type="text/css" href="css/animate-custom.css" />
@@ -44,6 +46,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		display:none;
 		margin-top:-20px;
 	}
+	#errorInfo{
+		color:red;
+
+	}
 	
 </style>
 </head>
@@ -60,8 +66,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
         <section>				
 	        <div id="container_demo" >
-	        	
 	            <a class="hiddenanchor" id="toregister"></a>
+	            <a class="hiddenanchor" id="toregister2"></a>
 	            <a class="hiddenanchor" id="tologin"></a>
 	            <div id="wrapper">
 	                <div id="login" class="animate form">
@@ -71,10 +77,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                        	<select name="role" class="selectpicker form-control">
 	                         		<option value="member">普通用户</option>
 	                         		<option value="teacher">教师用户</option>
-	                         		<option value="admin">管理员</option>
 	                        	</select>
 	                        </p>
-							<span><font style="color:red;font-size:20px">${error }</font></span>
 							<p> 
 							    <label for="username" class="uname" data-icon="u" ></label>
 							    <input id="username" name="email" required="required" type="text" placeholder="邮箱"/>
@@ -85,20 +89,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                        </p>
 	                        <p class="keeplogin"> 
 								<input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" /> 
-								<label for="loginkeeping">记住我</label>
+								<label for="loginkeeping">记住我</label><br>
+								<div id="errorInfo">${errorInfo}</div>
 							</p>
 							<p>
 								<input type="submit" id="loginbtn" class="btn btn-danger" value="确认">
 							</p>
 		                    <p class="change_link">
-								还不是会员 ?
-								<a href="#toregister" class="to_register"> 注册</a>
+								<a href="#toregister2"> 教师注册</a>
+								<a href="#toregister" class="to_register"> 学生注册</a>
 							</p>
 	                    </form>
 	                </div>
-	                
+	                <div id="register2" class="animate form">
+	                	<form action="teacherRegister.do" method="post"> 
+	                        <h3>教师注册</h3>
+	                        <p> 
+							    <label for="username" class="uname" data-icon="u" ></label>
+							    <input id="username" name="name" required="required" type="text" placeholder="姓名"/>
+							</p>
+							<p> 
+							    <label for="username" class="uname" data-icon="u" ></label>
+							    <input id="email" name="email" required="required" type="text" placeholder="邮箱"/>
+							</p>
+							
+							<p> 
+	                            <label for="password" class="youpasswd" data-icon="p"> </label>
+	                            <input id="password" name="password" required="required" type="password" placeholder="密码" /> 
+	                        </p>
+	                        <p> 
+	                            <label for="password" class="youpasswd" data-icon="p"> </label>
+	                            <input id="passwordagain" name="passwordagain" required="required" type="password" placeholder="确认密码" /> 
+	                        </p>
+	                        
+	                        <p>
+								<input type="submit" id="teacherbtn" class="btn btn-danger" value="确认">
+							</p>
+		                	<p class="change_link">
+								<a href="#tologin" class="to_register">去登录</a>
+							</p>
+						</form>
+		               
+	                </div>
 	                <div id="register" class="animate form">
-	                    <form  action="Register.do" method="post"> 
+	                    <form  action="memberRegister.do" method="post"> 
 	                        <div class="navbar navbar-default">
 								<div class="navbar-header">
 									<span class="navbar-brand">注册</span>
@@ -143,24 +177,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                            <label for="passwordsignup_confirm" class="youpasswd" data-icon="p"></label>
 		                            <input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required" type="password" placeholder="再次输入密码"/>
 		                        </p>
-		                        
 		                         <p>
 									<button class="button_left">返回</button>
 								</p>
-		                        
 		                     	<p>
 									<input type="submit" class="btn btn-danger" value="提交">
 								</p>
-								
 	                        </div>
-	                       
-	                    
 	                        <p class="change_link">  
 								<span>已经是会员</span>
 								<a href="#tologin" class="to_register"> 去登录</a>
 							</p>
 	                    </form>
 	                </div>
+	                
 	            </div>
 	        </div>  
    		</section>
@@ -192,7 +222,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$("#button_right").css("background","#ddd");
 		})
 		setInterval('check_button();', 500);
-		
 	})
 </script>
 </body>

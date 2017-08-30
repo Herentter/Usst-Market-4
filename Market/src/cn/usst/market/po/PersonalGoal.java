@@ -1,30 +1,26 @@
 package cn.usst.market.po;
 
 public class PersonalGoal {
-	private Integer id;
-	private String detail;
-	private String title;
-	public Integer getId() {
+	private int id;
+	private int memberId;
+	private String goalId;
+	public int getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
-	public String getDetail() {
-		return detail;
+	public int getMemberId() {
+		return memberId;
 	}
-	public void setDetail(String detail) {
-		this.detail = detail;
+	public void setMemberId(int memberId) {
+		this.memberId = memberId;
 	}
-	public String getTitle() {
-		return title;
+	public String getGoalId() {
+		return goalId;
 	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	@Override
-	public String toString() {
-		return "PersonalGoal [id=" + id + ", detail=" + detail + ", title=" + title + "]";
+	public void setGoalId(String goalId) {
+		this.goalId = goalId;
 	}
 	
 }

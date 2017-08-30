@@ -1,58 +1,142 @@
 package cn.usst.market.po;
 
-import java.util.List;
+import java.io.Serializable;
 
-public class Page<T> {
-	private int currentPage;// 当前页
-	private int pageCount ;// 每页显示的记录数
-	private int totalCount;// 总记录数
-	private int totalPage;// 总页数=总记录数/每页要显示的记录数
-	private List<T> page;// 页面要显示的数据	
+public class Page implements Serializable {
 
-	public int getCurrentPage() {
-		return currentPage;
-	}
-
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
-	}
-
-	public int getPageCount() {
-		return pageCount;
-	}
-
-	public void setPageCount(int pageCount) {
-		this.pageCount = pageCount;
-	}
-
-	public int getTotalCount() {
-		return totalCount;
-	}
-
-	public void setTotalCount(int totalCount) {
-		this.totalCount = totalCount;
-	}
-
-	public int getTotalPage() {
-		return totalPage;
-	}
-
-	public void setTotalPage(int totalPage) {
-		this.totalPage = totalPage;
-	}
-
-	public List<T> getPage() {
-		return page;
-	}
-
-	public void setPage(List<T> page) {
-		this.page = page;
-	}
-
-	@Override
-	public String toString() {
-		return "Page [currentPage=" + currentPage + ", pageCount=" + pageCount + ", totalCount=" + totalCount
-				+ ", totalPage=" + totalPage + ", page=" + page + "]";
-	}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private int pageNow = 1; // ��ǰҳ��  
+	  
+    private int pageSize = 6; // ÿҳ��ʾ��¼������  
+  
+    private int totalCount; // �ܵļ�¼����  
+  
+    private int totalPageCount; // �ܵ�ҳ��  
+  
+    @SuppressWarnings("unused")  
+    private int startPos; // ��ʼλ�ã���0��ʼ  
+  
+    @SuppressWarnings("unused")  
+    private boolean hasFirst;// �Ƿ�����ҳ  
+  
+    @SuppressWarnings("unused")  
+    private boolean hasPre;// �Ƿ���ǰһҳ  
+  
+    @SuppressWarnings("unused")  
+    private boolean hasNext;// �Ƿ�����һҳ  
+  
+    @SuppressWarnings("unused")  
+    private boolean hasLast;// �Ƿ������һҳ  
+      
+    /** 
+     * ͨ�����캯�� ����  �ܼ�¼��  ��  ��ǰҳ 
+     * @param totalCount 
+     * @param pageNow 
+     */  
+    public Page(int totalCount, int pageNow) {  
+        this.totalCount = totalCount;  
+        this.pageNow = pageNow;  
+    }  
+      
+    /** 
+     * ȡ����ҳ������ҳ��=�ܼ�¼��/��ҳ�� 
+     * @return 
+     */  
+    public int getTotalPageCount() {  
+        totalPageCount = getTotalCount() / getPageSize();  
+        return (totalCount % pageSize == 0) ? totalPageCount  
+                : totalPageCount + 1;  
+    }  
+  
+    public void setTotalPageCount(int totalPageCount) {  
+        this.totalPageCount = totalPageCount;  
+    }  
+  
+    public int getPageNow() {  
+        return pageNow;  
+    }  
+  
+    public void setPageNow(int pageNow) {  
+        this.pageNow = pageNow;  
+    }  
+  
+    public int getPageSize() {  
+        return pageSize;  
+    }  
+  
+    public void setPageSize(int pageSize) {  
+        this.pageSize = pageSize;  
+    }  
+  
+    public int getTotalCount() {  
+        return totalCount;  
+    }  
+  
+    public void setTotalCount(int totalCount) {  
+        this.totalCount = totalCount;  
+    }  
+    /** 
+     * ȡ��ѡ���¼�ĳ�ʼλ�� 
+     * @return 
+     */  
+    public int getStartPos() {  
+        return (pageNow - 1) * pageSize;  
+    }  
+  
+    public void setStartPos(int startPos) {  
+        this.startPos = startPos;  
+    }  
+  
+    /** 
+     * �Ƿ��ǵ�һҳ 
+     * @return 
+     */  
+    public boolean isHasFirst() {  
+        return (pageNow == 1) ? false : true;  
+    }  
+  
+    public void setHasFirst(boolean hasFirst) {  
+        this.hasFirst = hasFirst;  
+    }  
+    /** 
+     * �Ƿ�����ҳ 
+     * @return 
+     */  
+    public boolean isHasPre() {  
+        // �������ҳ����ǰһҳ����Ϊ����ҳ�Ͳ��ǵ�һҳ  
+        return isHasFirst() ? true : false;  
+    }  
+  
+    public void setHasPre(boolean hasPre) {  
+        this.hasPre = hasPre;  
+    }  
+    /** 
+     * �Ƿ�����һҳ 
+     * @return 
+     */  
+    public boolean isHasNext() {  
+        // �����βҳ������һҳ����Ϊ��βҳ�����������һҳ  
+        return isHasLast() ? true : false;  
+    }  
+  
+    public void setHasNext(boolean hasNext) {  
+        this.hasNext = hasNext;  
+    }  
+    /** 
+     * �Ƿ���βҳ 
+     * @return 
+     */  
+    public boolean isHasLast() {  
+        // ����������һҳ����βҳ  
+        return (pageNow == getTotalCount()) ? false : true;  
+    }  
+  
+    public void setHasLast(boolean hasLast) {  
+        this.hasLast = hasLast;  
+    }  
 
 }

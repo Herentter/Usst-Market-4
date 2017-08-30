@@ -1,69 +1,170 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
 <!DOCTYPE html>
 <html>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<base href="<%=basePath %>">
 <head>
-<title>目标与策略</title>
-<meta charset="utf-8" />
-<link rel="stylesheet" href="css/bootstrap.css">
-<style type="text/css">
-#container {
-	width: 100%;
-	height: 620px;
-}
-
-.page-header h2 {
-	font-size: 30px;
-}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css/strategy.css">
+<style>
+	body{
+		width:99%;
+	}
 </style>
+<script type="text/javascript" src="js/jquery-2.2.4.js"></script>
+<script type="text/javascript">
+function init(){
+	//用隐藏域记录选中项id
+	var strategy=$("#myHidden").val();
+	//转换成字符串
+	var strategyArr= strategy.split(",");
+	//匹配id,进行check
+	var id="";
+	for(var i=0;i<strategyArr.length-1;i++){
+		id=strategyArr[i];
+		var obj=document.getElementsByName("ability");
+		for(var j=0;j<obj.length;j++){
+			if(obj[j].value==id){
+				obj[j].checked="true";
+			}
+			
+		}  
+		
+		
+	}
+	
+	
+	
+}
+
+
+</script>
 </head>
-<body>
-	<div id="container">
-		<div class="row">
-			<section>
-				<div class="col-lg-8 col-lg-offset-2">
-					<div class="page-header">
-						<h2>目 标 与 策 略</h2>
-					</div>
+<body onLoad="init()">
 
-					<form id="strategy" method="post" class="form-horizontal"
-						action="strategy.do">
-
-						<div class="form-group">
-							<label class="col-sm-2 control-label">编号</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" id="strategy_id"
-									name="strategy_id" placeholder="请填写编号">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-sm-2 control-label">策略详情</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" id="strategy_detail"
-									name="strategy_detail" placeholder="请填写策略详情">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-sm-2 control-label">策略类型</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" id="strategy_title"
-									name="strategy_title" placeholder="请填写策略类型">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<div class="col-sm-8 col-sm-offset-2">
-								<button type="submit" class="btn btn-primary" name="signup"
-									value="Sign up">提交</button>
-								<button type="reset" class="btn btn-primary">重置表单</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</section>
-		</div>
+	<div id="nav44">
+		<div class="panel panel-info">
+            <div class="panel-heading">
+                <span>目标与策略</span>
+            </div>
+            <div class="panel-body">
+                <form  id="form1" class="form-horizontal" role="form" method="post" action="updateCompanyStrategy.do" >
+                    <div class="form-group">
+                        <label class="col-md-2 col-xs-2 control-label">主要产品类型：</label>
+                        <div class="dropdown col-md-3 col-xs-3">
+                            <select id="mainProduct"  name="mainPro" class="selectpicker show-tick form-control">
+                                <option <c:if test="${companyStrategy.mainPro==null}">  selected="true" </c:if>>--请选择--</option>
+                                <option <c:if test="${companyStrategy.mainPro=='极致型'}">  selected="true" </c:if>>极致型</option>
+                                <option <c:if test="${companyStrategy.mainPro=='商务型'}">  selected="true" </c:if>>商务型</option>
+                                <option <c:if test="${companyStrategy.mainPro=='实用型'}">  selected="true" </c:if>>实用型</option>
+                            </select>
+                        </div> 
+                        
+                        <label class="col-md-2 col-xs-2 control-label">次要产品类型：</label>
+                        <div class="dropdown col-md-3 col-xs-2">
+                            <select id="minorProduct"  name="minorPro" class="selectpicker show-tick form-control">
+                                <option <c:if test="${companyStrategy.minorPro==null}">  selected="true" </c:if>>--请选择--</option>
+                                <option <c:if test="${companyStrategy.minorPro=='极致型'}">  selected="true" </c:if>>极致型</option>
+                                <option <c:if test="${companyStrategy.minorPro=='商务型'}">  selected="true" </c:if>>商务型</option>
+                                <option <c:if test="${companyStrategy.minorPro=='实用型'}">  selected="true" </c:if>>实用型</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5 col-xs-5"></div>  
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="col-md-2 col-xs-2 control-label">服务理念：</label>
+                        <div class="col-md-5 col-xs-5">
+                            <input type="text" class="form-control" placeholder="Service Concept" name="service" value="${companyStrategy.service}">
+                        </div>
+                        
+                    </div>
+                  	
+                    <input id="myHidden" type="hidden" name="myHidden" value="${companyStrategy.strategyId }"/>
+                    
+                    <c:forEach items="${result }" var="entry">
+                    	<div class="form-group btn-grounp">
+                        <label for="password" class="col-md-2 col-xs-2 control-label">${entry.key}：</label>
+                        <div class="col-md-4 col-xs-4">
+                        
+                   		<c:forEach items="${entry.value}" var="item">
+                            <div>     
+                                <input type="checkbox" name="ability" value="${item.id }" ><label>${item.detail}</label>
+                            </div>
+                  		</c:forEach>
+                            
+                        </div> 
+                    </div>
+                    </c:forEach>
+                    
+                   
+                    <div id="btndiv">
+                        <button type="button" class="btn btn-default" onclick="sign()">提交</button><br>
+                    </div>
+                    <br><br>
+                </form>
+            </div>
+        	<div class="panel-footer"></div>    
+    	</div>
 	</div>
 </body>
+
+
+<script type="text/javascript">
+	function sign() {
+		
+		/* var obj1=document.getElementById("mainProduct");
+		var index=obj1.selectedIndex ;   
+		var mainProduct=obj1.options[index].text; */
+		
+		var mainProduct=$("#mainProduct").val();
+		
+		/* var obj2=document.getElementById("minorProduct");
+		var index=obj2.selectedIndex ;   
+		var minorProduct=obj2.options[index].text; */
+		
+		var minorProduct=$("#minorProduct").val();
+		
+		if(mainProduct=="--请选择--"){
+			alert("请选择主要产品类型！");
+			history.go(0);
+			return;
+			
+		}
+		else if(minorProduct=="--请选择--"){
+			alert("请选择次要产品类型！");
+			history.go(0);
+			return;
+		}
+		else if(mainProduct==minorProduct){
+			alert("主要产品类型和次要产品类型不能一致！");
+			history.go(0);
+			return;
+		}
+		
+		alert("提交成功！");
+		
+		document.getElementById("form1").submit();  
+		
+		
+		
+		
+
+		
+		
+        
+	}
+</script> 
+
+
+
+
 </html>

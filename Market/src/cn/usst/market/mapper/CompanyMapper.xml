@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.usst.market.mapper.CompanyMapper">
+
+  <insert id="insert" parameterType="cn.usst.market.po.Company">
+    insert into company (id, serial_number, name, 
+      license, competition_id, people_number
+      )
+    values (#{id,jdbcType=INTEGER}, #{serialNumber,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{license,jdbcType=VARCHAR}, #{competitionId,jdbcType=INTEGER}, #{peopleNumber,jdbcType=INTEGER}
+      )
+  </insert>
+  
+  <select id="findCompanyByCondition" parameterType="cn.usst.market.po.Company" resultType="cn.usst.market.po.Company">
+  	select * from company where serial_number=#{serialNumber} and license=#{license}
+  </select>
+  
+  <select id="findCompanyById" parameterType="cn.usst.market.po.Company" resultType="cn.usst.market.po.Company">
+  	select * from company where id=#{id}
+  </select>
+  
+  
+  
+  <update id="updateCompanyName" parameterType="cn.usst.market.po.Company">
+    update company
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="showCompanyByCompetitionId" parameterType="Integer" resultType="cn.usst.market.po.Company">
+  	select * from company where competition_id=#{id}
+  </select>
+  
+
+  
+  <select id="countStrategyTitle" resultType="java.lang.String">
+  	select distinct title from strategy_info
+  </select>
+ 
+  <select id="showStrategyInfoByTitle" parameterType="java.lang.String" resultType="cn.usst.market.po.StrategyInfo">
+  	select * from strategy_info where title=#{title}
+  </select>
+  
+  <select id="countProductInfoTitle" resultType="java.lang.String">
+  	select distinct title from product_info
+  </select>
+ 
+  <select id="showProductInfoByTitle" parameterType="java.lang.String" resultType="cn.usst.market.po.ProductInfo">
+  	select * from product_info where title=#{title}
+  </select>
+  
+  <select id="countCompanyRuleTitle" resultType="java.lang.String">
+  	select distinct title from company_rule_info
+  </select>
+ 
+  <select id="showCompanyRuleInfoBytitle" parameterType="java.lang.String" resultType="cn.usst.market.po.CompanyRuleInfo">
+  	select * from company_rule_info where title=#{title}
+  </select>
+  
+  <select id="countPersonalGoalTitle" resultType="java.lang.String">
+  	select distinct title from personal_goal_info
+  </select>
+ 
+  <select id="showPersonalGoalInfoBytitle" parameterType="java.lang.String" resultType="cn.usst.market.po.PersonalGoalInfo">
+  	select * from personal_goal_info where title=#{title}
+  </select>
+  
+  <select id="showAllPosition" resultType="cn.usst.market.po.Duty">
+  	select * from duty
+  </select>
+  
+  <select id="showMarketInfo" resultType="cn.usst.market.po.MarketInfo">
+  	select * from market_info
+  </select>
+  
+  <select id="showCapacityInfo" resultType="cn.usst.market.po.CapacityInfo">
+  	select * from capacity_info
+  </select>
+  
+  <!--/Guan -->
+  
+  <resultMap type="cn.usst.market.po.TeacherQueryVo" id="companyResultMap">
+		<id column="id"/>
+		<result column="memberCount" property="memberCount"/>
+		<association property="company" javaType="cn.usst.market.po.Company">
+			<result column="id" property="id"/>
+			<result column="serial_number" property="serialNumber"/>
+			<result column="name" property="name"/>
+			<result column="license" property="license"/>
+			<result column="competition_id" property="competitionId"/>
+			<result column="people_number" property="peopleNumber"/>
+		</association>
+		<association property="competition" javaType="cn.usst.market.po.Competition">
+			<result column="competition_id" property="id"/>
+			<result column="competition_name" property="name"/>
+			<result column="competition_license" property="license"/>
+		</association>
+	</resultMap>
+	
+   <sql id="query_company_where">
+   		<if test="teacher!=null">
+   			<if test="teacher.id!=null and teacher.id!=''">
+   				and companytable.teacher_id=${teacher.id}
+   			</if>
+   		</if>
+   		<if test="competition!=null">
+   			<if test="competition.name!=null and competition.name!=''">
+   				and companytable.competition_name LIKE '%${competition.name}%'
+   			</if>
+   			<if test="competition.license!=null and competition.license!=''">
+   				and companytable.competition_license LIKE '%${competition.license}%'
+   			</if>		
+   		</if>
+   		<if test="company!=null">
+   			<if test="company.name!=null and company.name!=''">
+   				and companytable.name LIKE '%${company.name}%'
+   			</if>
+   		</if>	
+   </sql>
+
+  	<select id="findCompanyList" parameterType="cn.usst.market.po.TeacherQueryVo"
+  		 resultMap="companyResultMap">
+  		select * from (select  company.*, COUNT(company_id) as memberCount,competition.`name` as competition_name,competition.license as competition_license,competition.teacher_id
+		from company LEFT JOIN member
+		on member.company_id=company.id 
+		INNER JOIN competition
+		on company.competition_id=competition.id 
+		INNER JOIN teacher
+		on competition.teacher_id=#{teacher.id}
+		group BY company.id) AS companytable
+  		<where>
+  			<include refid="query_company_where"></include>
+  		</where>
+  	</select>
+  	
+  	
+  	<select id="selectCompanyByPage" parameterType="cn.usst.market.po.TeacherQueryVo"
+  		 resultMap="companyResultMap">
+  		select * from (select  company.*, COUNT(company_id) as memberCount,competition.`name` as competition_name,competition.license as competition_license,competition.teacher_id
+		from company LEFT JOIN member
+		on member.company_id=company.id 
+		INNER JOIN competition
+		on company.competition_id=competition.id 
+		INNER JOIN teacher
+		on competition.teacher_id=#{teacher.id}
+		group BY company.id) AS companytable
+  		<where>
+  			<include refid="query_company_where"></include>
+  		</where>
+  		limit #{startPos},#{pageSize}
+  	</select>
+  	
+  	<select id="getCompanyCount" parameterType="cn.usst.market.po.TeacherQueryVo" resultType="long" >
+  		select count(*) from company ,competition
+  		where company.competition_id=competition.id
+  			and competition.teacher_id=#{teacher.id}
+  		<if test="company!=null">
+   			<if test="company.name!=null and company.name!=''">
+   				and company.name LIKE '%${company.name}%'
+   			</if>
+   		</if>	 
+  	</select>
+  	
+  	
+  	<!-- 以上部分是查询公司操作 -->
+  	
+  	<!-- <select id="findCompanyById" parameterType="java.lang.Integer"
+  		resultType="cn.usst.market.po.Company">
+  		select company.* from company where id=#{value}
+  	</select> -->
+  	
+  	<select id="findCompanyListByCompetitionId" parameterType="java.lang.Integer"
+  		resultType="cn.usst.market.po.Company">
+  		select company.* from company where competition_id=#{value}
+  	</select>
+  	
+  	<update id="updateByPrimaryKey" parameterType="cn.usst.market.po.Company">
+	    update company
+	    set name = #{name,jdbcType=VARCHAR}
+	    where id = #{id,jdbcType=INTEGER}
+  	</update>
+  	
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from company
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+    <select id="findAllCompetition" resultType="cn.usst.market.po.Competition">
+  	select * from competition
+  </select>
+  
+  <!-- 分页 -->
+  
+  
+  <!--  -->
+  
+  	<select id="selectCompanyById" resultType="cn.usst.market.po.Company">
+		select * from company where id=#{id}
+	
+	</select>
+
+
+
+	<select id="checkCompanyNameExist"  resultType="cn.usst.market.po.Company">
+  		select * from company where name=#{name}
+  	</select>
+
+
+	<update id="updateCompanyNameById" >
+	    update company
+	    set name=#{1}
+	    where id = #{0}
+ 	 </update>
+ 	 
+ 	 
+ 	 <update id="updateCompanyStrategy" parameterType="cn.usst.market.po.CompanyStrategy">
+	    update company_strategy
+	    set main_pro = #{mainPro,jdbcType=VARCHAR},minor_pro = #{minorPro,jdbcType=VARCHAR},strategy_id = #{strategyId,jdbcType=VARCHAR},
+	    service = #{service,jdbcType=VARCHAR}
+	    where company_id = #{companyId,jdbcType=INTEGER} and quarter = #{quarter,jdbcType=INTEGER}
+  	</update>
+
+  <insert id="insertCompanyStrategy" parameterType="cn.usst.market.po.CompanyStrategy" >
+   insert into company_strategy (id, company_id, main_pro, 
+      minor_pro, strategy_id,service,quarter
+      )
+    values (#{id,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, #{mainPro,jdbcType=VARCHAR}, 
+      #{minorPro,jdbcType=VARCHAR}, #{strategyId,jdbcType=VARCHAR}, #{service,jdbcType=VARCHAR}, #{quarter,jdbcType=INTEGER}
+      ) 
+   
+   
+   </insert>
+
+	<select id="selectCompanyStrategy" resultType="cn.usst.market.po.CompanyStrategy">
+  		select * from company_strategy where company_id=#{0} and quarter=#{1}
+  	</select>
+  
+  
+  <delete id="deleteProductById" >
+		delete from
+		company_product where id=#{id}
+	</delete>
+
+
+	<select id="selectProductByCompanyId" resultType="cn.usst.market.po.CompanyProduct">
+			select * from
+			company_product where company_id=#{companyId}
+	</select>
+
+
+	<select id="selectProductByProductId" resultType="cn.usst.market.po.CompanyProduct">
+		select * from company_product where id=#{id}
+	</select>
+	
+	<update id="insertCompanyProduct" parameterType="cn.usst.market.po.CompanyProduct">
+	    insert into company_product(company_id,name,type,bibei,yunying,lanya,pingmu,chukong,cpu,jishen,paizhao,texing,dianchi,qita,cost,quarter)
+	    values(#{companyId,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{bibei,jdbcType=INTEGER},
+	    #{yunying,jdbcType=INTEGER},#{lanya,jdbcType=INTEGER},#{pingmu,jdbcType=INTEGER},#{chukong,jdbcType=INTEGER},
+	    #{cpu,jdbcType=INTEGER},#{jishen,jdbcType=INTEGER},#{paizhao,jdbcType=INTEGER},#{texing,jdbcType=INTEGER},
+	    #{dianchi,jdbcType=INTEGER},#{qita,jdbcType=INTEGER},#{cost,jdbcType=INTEGER},#{quarter,jdbcType=INTEGER})
+	   
+	    
+  	</update>
+  	
+  	<select id="showProductDetailByTitle" parameterType="java.lang.String" resultType="cn.usst.market.po.ProductInfo">
+  		select * from product_info where title=#{title,jdbcType=VARCHAR}
+  
+  	</select>
+  	
+  
+  
+</mapper>

@@ -1,30 +1,33 @@
 package cn.usst.market.po;
 
 public class CompanyRule {
-	private Integer id;
-	private String detail;
-	private String title;
-	public Integer getId() {
+	private int id;
+	private int companyId;
+	private String ruleId;
+	private int quarter;
+	public int getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
-	public String getDetail() {
-		return detail;
+	public int getCompanyId() {
+		return companyId;
 	}
-	public void setDetail(String detail) {
-		this.detail = detail;
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
 	}
-	public String getTitle() {
-		return title;
+	public String getRuleId() {
+		return ruleId;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setRuleId(String ruleId) {
+		this.ruleId = ruleId;
 	}
-	@Override
-	public String toString() {
-		return "CompanyRule [id=" + id + ", detail=" + detail + ", title=" + title + "]";
+	public int getQuarter() {
+		return quarter;
+	}
+	public void setQuarter(int quarter) {
+		this.quarter = quarter;
 	}
 	
 }

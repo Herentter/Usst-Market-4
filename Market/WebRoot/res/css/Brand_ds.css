@@ -1,12 +1,5 @@
 ﻿
 
-#decisionTitle {
-    height:40px;
-    width:100%;
-    padding-top:5px;
-    overflow:hidden;
-  
-}
 
 #decisionFoot{
     height:60px;
@@ -139,8 +132,7 @@ div>span{
         overflow:hidden;
         margin-left:35px;
         text-align:center;
-        margin-top:20px;
-        
+        margin-top:20px; 
     }
 
     .btn{
@@ -167,4 +159,11 @@ div>span{
     .phone{
         width:100%;
     }
+/******************* productContent  ************************/
+
+
+
+
+
+
    

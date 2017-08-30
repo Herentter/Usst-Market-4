@@ -38,7 +38,7 @@ a.hiddenanchor{
 	right: 0px;
 	/* min-height: 540px;	 */
 	/* margin: 0px auto; */	
-	margin-top:65px;
+	margin-top:35px;
 	margin-left:740px;
 	width: 430px;
 	position: relative;	
@@ -305,11 +305,12 @@ p.change_link{
 }
 /** Styling both forms **/
 #register, 
+#register2,
 #login{
 	position: absolute;
 	top: 0px;
 	width: 90%;	
-	padding: 18px 6% 60px 6%;
+	padding: 15px 6% 60px 6%;
 	margin: 0 0 35px 0;
 	background:white;
 	border: 1px solid rgba(147, 184, 189,0.8);
@@ -325,10 +326,15 @@ p.change_link{
 	z-index: 21;
 	opacity: 0;
 }
+#register2{	
+	z-index: 20;
+	opacity: 0;
+}
 #login{
 	z-index: 22;
 }
 #toregister:target ~ #wrapper #register,
+#toregister2:target ~ #wrapper #register2,
 #tologin:target ~ #wrapper #login{
 	z-index: 22;
 	-webkit-animation-name: fadeInLeft;
@@ -343,7 +349,11 @@ p.change_link{
 	animation-delay: .1s;
 }
 #toregister:target ~ #wrapper #login,
-#tologin:target ~ #wrapper #register{
+#toregister2:target ~ #wrapper #login,
+#tologin:target ~ #wrapper #register,
+#tologin:target ~ #wrapper #register2,
+#toregister:target ~ #wrapper #register2,
+#toregister2:target ~ #wrapper #register{
 	-webkit-animation-name: fadeOutLeftBig;
 	-moz-animation-name: fadeOutLeftBig;
 	-ms-animation-name: fadeOutLeftBig;

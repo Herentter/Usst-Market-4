@@ -2,24 +2,35 @@ package cn.usst.market.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import cn.usst.market.po.Competition;
+import cn.usst.market.po.DemandInfo;
+import cn.usst.market.po.TeacherQueryVo;
+import cn.usst.market.po.TeacherReference;
 
 public interface CompetitionService {
-	/**
-	 * 创建竞赛
-	 * 
-	 * @param competition
-	 * @return
-	 */
-	public String createCompetition(Competition competition);
-
-	public Competition selectCompetitionById(int id);
-
-	public void updateCompetition(Competition com, int id);
-
-	public void deleteCompetitionById(int id);
-
-	public int getTotalCount();
-
-	public List<Competition> queryCompetitionByPage(int index, int pageCount);
+	
+	int insert(Competition record);
+	
+	List<Competition> findAllCompetition()throws Exception;
+	
+	List<Competition> findCompetitionByTeacherId(Integer id)throws Exception;
+	
+	Competition findCompetitionById(Integer id);
+	
+	Competition findCompetitionByLicense(Competition record);
+	
+	Competition checkCompetitionExist(String name);
+	
+	public List<DemandInfo> showDemandInfo();
+	
+	public List<Competition> findCompetitionList(TeacherQueryVo teacherQueryVo)throws Exception;
+	
+	public List<TeacherReference> findTeacherReference() throws Exception;
+	
+	
+	public List<Competition> selectCompetitionByPage(TeacherQueryVo teacherQueryVo);
+    
+    public long getCompetitionCount(TeacherQueryVo teacherQueryVo);
 }

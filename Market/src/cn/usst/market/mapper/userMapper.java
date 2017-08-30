@@ -1,39 +1,17 @@
 package cn.usst.market.mapper;
 
-import java.util.List;
+import cn.usst.market.po.User;
 
-import org.apache.ibatis.annotations.Param;
+public interface UserMapper {
+	public User findUserById(Integer id)throws Exception;
+	
+	public User doMemberLogin(User user)throws Exception;
+	
+	public User doTeacherLogin(User user)throws Exception;
+	
+	public User doAdminLogin(User user)throws Exception;
 
-import cn.usst.market.po.Admin;
-import cn.usst.market.po.Group;
-import cn.usst.market.po.Teacher;
+	public User findUserByName(String userName)throws Exception;
 
-public interface userMapper {
-
-	public void addAdmin(Admin admin);
-
-	public void addTeacher(Teacher teacher);
-
-	public Admin selectAdminById(int id);
-
-	public Teacher selectTeacherById(int id);
-
-	public int getAdminTotalCount();
-
-	public List<Admin> queryAdminByPage(int index, int pageCount);
-
-	public void updateAdmin(@Param("admin") Admin admin, @Param("idSession") int idSession);
-
-	public void deleteAdminById(int id);
-
-	public void addGroup(Group group);
-
-	public List<Teacher> queryTeacherByPage(int index, int pageCount);
-
-	public int getTeacherTotalCount();
-
-	public void updateTeacher(Teacher teacher);
-
-	public void deleteTeacherById(int id);
-
+	public void doRegister(User user)throws Exception;
 }
