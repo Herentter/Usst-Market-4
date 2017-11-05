@@ -33,4 +33,14 @@ public interface CompetitionService {
 	public List<Competition> selectCompetitionByPage(TeacherQueryVo teacherQueryVo);
     
     public long getCompetitionCount(TeacherQueryVo teacherQueryVo);
+    
+    
+    public void updateCompetitionInfo(Competition record);
+    
+    public Competition findCompetitionByCompanyId(Integer companyId);
+
+	int getCurrentQuarterByCompanyId(int companyId);
+
+    
+    
 }

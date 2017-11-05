@@ -2,14 +2,22 @@
 
 import java.util.List;
 
+import cn.usst.market.po.BalanceScore;
+import cn.usst.market.po.BalanceScoreAvgData;
+import cn.usst.market.po.BalanceScoreMaxData;
+import cn.usst.market.po.BalanceScoreMinData;
+import cn.usst.market.po.BalanceScoreVo;
 import cn.usst.market.po.Company;
+import cn.usst.market.po.CompanyCapacity;
 import cn.usst.market.po.CompanyMarket;
 import cn.usst.market.po.CompanyProduct;
 import cn.usst.market.po.CompanyRule;
 import cn.usst.market.po.CompanyRuleInfo;
+import cn.usst.market.po.CompanyStock;
 import cn.usst.market.po.CompanyStrategy;
 import cn.usst.market.po.Competition;
 import cn.usst.market.po.CompetitionQuarterTime;
+import cn.usst.market.po.FixedDeposit;
 import cn.usst.market.po.HelpDocument;
 import cn.usst.market.po.IdQuarter;
 import cn.usst.market.po.MarketInfo;
@@ -48,10 +56,6 @@ public interface TeacherService {
 	public TeacherTextbook selectTeacherTextbookById(Integer id);
 
 	public void deleteStudentTextbookByTeacherTextbookId(Integer id);
-
-	//帮助文档
-	public int getTitleLevelOneCount();
-	public List<HelpDocument> selectAllHelpDocument();
 	
 	
 	//教员工具箱2017.7.1
@@ -100,9 +104,23 @@ public interface TeacherService {
 
 	public MarketInfo findMarketInfoById(Integer id);
 
-	public int findAddCapacityByIdQuarter(IdQuarter idQuarter);
+	//public int findAddCapacityByIdQuarter(IdQuarter idQuarter);
 
-	public int findTotalCapacityByIdQuarter(IdQuarter idQuarter);
+	//public int findTotalCapacityByIdQuarter(IdQuarter idQuarter);
+
+	public CompanyCapacity findCompanyCapacityByIdQuarter(IdQuarter idQuarter);
+
+	public List<CompanyStock> findCompanyStockByIdQuarter(IdQuarter idQuarter);
+
+	public FixedDeposit findCompanyFixedDepositByIdQuarter(IdQuarter idQuarter);
 	
+	
+	//20170711--帮助文档
+	public int getTitleLevelOneCount();
+	public List<HelpDocument> selectAllHelpDocument();
+	public HelpDocument selectHelpDocument(HelpDocument helpDocument);
+	
+	
+
 
 }

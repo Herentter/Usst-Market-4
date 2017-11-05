@@ -5,8 +5,6 @@ public class IncomeStatement {
 
     private Integer companyId;
 
-	private Integer serialNumber;
-
     private Integer quarter;
 
     private Float yingyeIncome;
@@ -24,6 +22,8 @@ public class IncomeStatement {
     private Float salerCost;
 
     private Float salescenterCost;
+
+    private Float salescenterWebCost;
 
     private Float baogao;
 
@@ -58,19 +58,11 @@ public class IncomeStatement {
     }
 
     public Integer getCompanyId() {
-		return companyId;
-	}
-
-	public void setCompanyId(Integer companyId) {
-		this.companyId = companyId;
-	}
-
-    public Integer getSerialNumber() {
-        return serialNumber;
+        return companyId;
     }
 
-    public void setSerialNumber(Integer serialNumber) {
-        this.serialNumber = serialNumber;
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 
     public Integer getQuarter() {
@@ -143,6 +135,14 @@ public class IncomeStatement {
 
     public void setSalescenterCost(Float salescenterCost) {
         this.salescenterCost = salescenterCost;
+    }
+
+    public Float getSalescenterWebCost() {
+        return salescenterWebCost;
+    }
+
+    public void setSalescenterWebCost(Float salescenterWebCost) {
+        this.salescenterWebCost = salescenterWebCost;
     }
 
     public Float getBaogao() {
@@ -239,5 +239,22 @@ public class IncomeStatement {
 
     public void setTaxCost(Float taxCost) {
         this.taxCost = taxCost;
+    }
+    
+    public Float getYingYeTotalIncome(){
+    	return yingyeIncome+lixiIncome;
+    }
+    
+    public Float getYingYeTotalCost(){
+    	return yingyeCost+fankuan+yanfa+guanggao+salerCost+salescenterCost+
+    			salescenterWebCost+baogao+huoyun+kucun+excessCapacity+zhejiu+netmarketCost;
+    }
+    
+    public Float getTotalLiRun(){
+    	return getYingYeTotalIncome()-getYingYeTotalCost()+techIncome+qitaIncome-techCost-qitaCost;
+    }
+    
+    public Float getJingLiRun(){
+    	return getTotalLiRun()-taxCost;
     }
 }

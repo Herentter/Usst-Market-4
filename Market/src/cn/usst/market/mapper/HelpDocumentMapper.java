@@ -7,4 +7,5 @@ import cn.usst.market.po.HelpDocument;
 public interface HelpDocumentMapper {
 	public int getTitleLevelOneCount();
 	public List<HelpDocument> selectAllHelpDocument();
+	public HelpDocument selectHelpDocument(HelpDocument helpDocument);
 }

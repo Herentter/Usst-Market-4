@@ -153,9 +153,19 @@ ul {
 			</div>
 
 			<div class="col-md-9">
-				<iframe id="myiframe"
-					src="jsp/teacherHelpDocument/AMarketIntroduction.jsp?titleOne=请选择左边菜单栏&titleTwo=&content=暂无"
-					name="main" frameBorder=0 width=850 marginheight="0" scrolling="no"></iframe>
+				<div id="nav44">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<span id="title"></span>
+						</div>
+			
+						<div class="panel-body">
+							<div id = "documentContent" style="height:600px; overflow-y:auto"></div>
+						</div>
+			
+						<div class="panel-footer"></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

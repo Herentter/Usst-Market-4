@@ -5,8 +5,6 @@ public class CashFlow {
 
     private Integer companyId;
 
-	private Integer serialNumber;
-
     private Integer quarter;
 
     private Float xiaoshouGet;
@@ -28,6 +26,8 @@ public class CashFlow {
     private Float salerPay;
 
     private Float salescenterPay;
+
+    private Float salescenterWebPay;
 
     private Float diaoyanPay;
 
@@ -59,7 +59,7 @@ public class CashFlow {
 
     private Float cunkuanRegularPay;
 
-	private Float yuE;
+    private Float yuE;
 
     public Integer getId() {
         return id;
@@ -70,19 +70,11 @@ public class CashFlow {
     }
 
     public Integer getCompanyId() {
-		return companyId;
-	}
-
-	public void setCompanyId(Integer companyId) {
-		this.companyId = companyId;
-	}
-
-    public Integer getSerialNumber() {
-        return serialNumber;
+        return companyId;
     }
 
-    public void setSerialNumber(Integer serialNumber) {
-        this.serialNumber = serialNumber;
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 
     public Integer getQuarter() {
@@ -171,6 +163,14 @@ public class CashFlow {
 
     public void setSalescenterPay(Float salescenterPay) {
         this.salescenterPay = salescenterPay;
+    }
+
+    public Float getSalescenterWebPay() {
+        return salescenterWebPay;
+    }
+
+    public void setSalescenterWebPay(Float salescenterWebPay) {
+        this.salescenterWebPay = salescenterWebPay;
     }
 
     public Float getDiaoyanPay() {
@@ -285,6 +285,8 @@ public class CashFlow {
         this.daikuanEmergyPay = daikuanEmergyPay;
     }
 
+
+
     public Float getCunkuanRegularPay() {
 		return cunkuanRegularPay;
 	}
@@ -293,11 +295,30 @@ public class CashFlow {
 		this.cunkuanRegularPay = cunkuanRegularPay;
 	}
 
-    public Float getYuE() {
+	public Float getYuE() {
         return yuE;
     }
 
     public void setYuE(Float yuE) {
         this.yuE = yuE;
     }
+    
+    public Float getXianJinGet() {
+        return xiaoshouGet+lixiGet+jishuGet+qitaGet;
+    }
+    
+    public Float getXianJinPay() {
+        return fankuanPay+shengchanPay+yanfaPay+guanggaoPay+salerPay+salescenterPay
+        		+salescenterWebPay+diaoyanPay+huoyunPay+kucunPay+netmarketPay+taxPay+
+        		lixiPay+jishuPay+qitaPay;
+    }
+    
+    public Float getChouZiGet() {
+        return daikuanNormalGet+daikuanEmergyGet+cunkuanRegularGet;
+    }
+    
+    public Float getChouZiPay() {
+        return daikuanNormalPay+daikuanEmergyPay+cunkuanRegularPay;
+    }
+    
 }

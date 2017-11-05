@@ -12,6 +12,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="css/teacher_index1.css">
 <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+<style type="text/css">
+	#myCarousel{
+		margin-left:100px;
+		margin-top:30px;
+	}
+</style>
 </head>
 <body>
     <div id="head">
@@ -43,7 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <li><a href="#">关于我们</a></li>
         </ul>
         <!-- 滚动图片 -->
-        <div class="carousel slide" id="myCarousel" data-interval="4000" data-ride="carousel" style="width: 1263px;height:270px;overflow:hiden;margin-top:0px;margin-left: 0px">
+        <div class="carousel slide" id="myCarousel" data-interval="4000" data-ride="carousel" style="width: 1263px;height:270px;overflow:hiden;margin-top:0px;margin-left: 65px">
 			<ol class="carousel-indicators">
 	           <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
 	           <li data-target="#myCarousel" data-slide-to="1"></li>
@@ -85,6 +91,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div>说明文字三</div>
         </div> -->
         <div>${errorInfo }</div>
+        
+        <div><a href="checkCompetition.do?competitionId=18">审核竞赛</a></div>
         <div id="main" class="competiton_body">
             <div id="main_title">
                 <h3>竞赛列表</h3>
@@ -94,7 +102,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <li>序列号</li>
                 <li>当前季度</li>
                 <li>队伍数量</li>
-                <li>已提交团队</li>
+                <li>团队最大人数</li>
                 <li>截止时间</li>
                 <li>状态</li>
             </ul>

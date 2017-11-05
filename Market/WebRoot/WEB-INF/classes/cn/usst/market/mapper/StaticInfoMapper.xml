@@ -13,5 +13,14 @@
 	 <select id="showPriceInfo" resultType="cn.usst.market.po.PriceInfo">
   		select * from price_info
   	</select>
+  	
+  	<select id="showMediaInfo" resultType="cn.usst.market.po.MediaInfo">
+  		select * from media_info
+  	</select>
+  	
+  	<select id="showAdvertiseInfo" resultType="cn.usst.market.po.AdvertiseInfo">
+  		select * from advertise_info
+  	</select>
+  	
 
 </mapper>

@@ -3,6 +3,16 @@ package cn.usst.market.po;
 public class MemberDutyCustom {
 	private String name;
 	
+	private String img;
+	
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
 	private String mainDuty;
 	
 	private String minorDuty;

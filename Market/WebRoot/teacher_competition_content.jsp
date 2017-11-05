@@ -67,7 +67,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </li>
 				<li>
                     <div>
-                        <a href="" onclick="show();"><span><i class="fa fa-search"></i></span>&nbsp;&nbsp;成绩查询及评估</a>
+                        <a href="" onclick="openGradeEvaluation();"><span><i class="fa fa-search"></i></span>&nbsp;&nbsp;成绩查询及评估</a>
                     </div>
                 </li>
 				<li>
@@ -111,7 +111,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <ul id="competition_title">
             	<li>#</li>
                 <li>公司</li>
-                <li>当前季度</li>
+               
                 <li>平衡计分卡</li>
                 <li>提交时间</li>
                 <li>本季度已使用时间</li>
@@ -120,19 +120,85 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <li>提交决策</li>
             </ul>
             
-            <c:forEach items="${companyList }" var="item">
+            <%-- <c:forEach items="${companyList }" var="item">
             	<input type="hidden" value="${item.id}"/>
             	<ul class="competition_nav">
             		<li>${item.serialNumber}</li>
             		<li><a href="#">${item.name}</a></li>
-            		<li><a href="#">-</a></li>
-            		<li><a href="#" onclick="balanceScore(${item.id})">3.088</a></li>
+            		<li><a href="#">${competition.currentQuarter }</a></li>
+            		<li><a href="#" onclick="balanceScore(${item.id})">--</a></li>
             		<li><a href="#">-</a></li>
             		<li><a href="#">-</a></li>
             		<li><a href="#" onclick="openOperate(${item.id})">操作</a></li>
-            		<li><a href="#">-</a></li>
+            		<li data-toggle="modal" data-target="#${item.serialNumber }" data-keyboard=true data-backdrop="static">查看</li>
             		<li><a href="#">-</a></li>
             	</ul>
+            	<div class="modal fade" id="${item.serialNumber }">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times</button>
+								<h4>${item.name }</h4>
+							</div>
+							<div class="modal-body">
+								<div>${item.license}</div>
+							</div>
+							<div class="modal-footer">
+								<!-- <button class="btn btn-default">确定</button>
+								<button class="btn btn-default" data-dismiss="modal">取消</button> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</c:forEach> --%>
+			<c:forEach items="${companyResult }" var="item">
+				
+            	<input type="hidden" value="${item.company.id}"/>
+            	<ul class="competition_nav">
+            		<li>${item.company.serialNumber}</li>
+            		<li><a href="#">${item.company.name}</a></li>
+            		<li><a href="#" onclick="balanceScore(${item.company.id})">-</a></li>
+            		<li><a href="#">-</a></li>
+            		<li><a href="#">-</a></li>
+            		<li><a href="#" onclick="openOperate(${item.company.id})">操作</a></li>
+            		<li data-toggle="modal" data-target="#${item.company.serialNumber }" data-keyboard=true data-backdrop="static">查看</li>
+            		<li><a class="">提交</a></li>
+            	</ul>
+            	<div class="modal fade" id="${item.company.serialNumber }">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times</button>
+								<h4>${item.company.name }</h4>
+							</div>
+							<div class="modal-body">
+								<table class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<td>成员姓名</td>
+											<td>邮箱</td>
+										
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach items="${item.memberList}" var="memberItem">
+											<tr>
+												<td>${memberItem.name}</td>
+												<td>${memberItem.email}</td>
+											</tr>
+								
+										</c:forEach>
+									</tbody>
+								</table>
+								
+							</div>
+							<div class="modal-footer">
+								<!-- <button class="btn btn-default">确定</button>
+								<button class="btn btn-default" data-dismiss="modal">取消</button> -->
+							</div>
+						</div>
+					</div>
+				</div>
 			</c:forEach>
             
            <!--  <ul class="competition_nav">
@@ -164,6 +230,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <br>
         <br>
         <br>
+        
+        
     </div>
     <script type="text/javascript" src="js/jquery-2.2.4.js"></script>
     <script type="text/javascript" src="js/bootstrap.js"></script>
@@ -181,31 +249,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
         });
         function openChat(){
-        	window.open('chatAndmail.jsp', 'newwindow', 'height=550, width=1120, top=20, left=80, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=yes, status=no')
+        	window.open('chatAndmail.jsp?id=${competition.id}', 'newwindow', 'height=550, width=1120, top=20, left=80, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=yes, status=no')
         }
         
         function policyDecision(){
-        	window.open("jumpPolicyDecision.do?id=${competition.id}", 'newwindow', 'height=550, width=1120, top=20, left=80, toolbar=no, menubar=no, scrollbars=yes, resizable=no, location=yes, status=no')
+        	window.open("jumpPolicyDecision.do?id=${competition.id}", 'newwindow', 'height=570, width=1210, top=30, left=100, toolbar=no, menubar=no, scrollbars=yes, resizable=no, location=yes, status=no')
         }
         
         function competitionResult(){
-        	window.open("jumpCompetitionResult.do?id=${competition.id}", 'newwindow', 'height=550, width=1120, top=20, left=80, toolbar=no, menubar=no, scrollbars=yes, resizable=no, location=yes, status=no')
+        	window.open("jumpCompetitionResult.do?id=${competition.id}", 'newwindow', 'height=570, width=1210, top=30, left=100, toolbar=no, menubar=no, scrollbars=yes, resizable=no, location=yes, status=no')
         }
         
         function openHelpDocument(){
-        	window.open('jsp/teacherHelpDocument/HelpDocument.jsp', 'newwindow', 'height=550, width=1120, top=20, left=80, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=yes, status=no')
+        	window.open('jsp/teacherHelpDocument/HelpDocument.jsp', 'newwindow', 'height=570, width=1210, top=30, left=100, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=yes, status=no')
         }
         
         function openOperate(Id){
-        	window.open('studentOperate.jsp?companyId='+Id, 'newwindow', 'height=550, width=1120, top=20, left=80, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=yes, status=no')
+        	window.open('studentOperate.jsp?companyId='+Id, 'newwindow', 'height=570, width=1210, top=30, left=100, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=yes, status=no')
         }
         
         function teacherTool(){
-			window.open("jumpTeacherTool.do?id=${competition.id}" , 'newwindow', 'height=550, width=1140, top=20, left=80, toolbar=no, menubar=no, scrollbars=yes, resizable=no, location=yes, status=no');	
+			window.open("jumpTeacherTool.do?id=${competition.id}" , 'newwindow', 'height=570, width=1210, top=30, left=100, toolbar=no, menubar=no, scrollbars=yes, resizable=no, location=yes, status=no');	
 		}
         function teacherTextbook(){
             //window.open('jsp/teacherTool/teacherTool.jsp', 'newwindow', 'height=550, width=1120, top=20, left=80, toolbar=no, menubar=no, scrollbars=yes, resizable=no, location=yes, status=no')
-        	window.open("jumpTeacherTextbook.do?id=${competition.id}", 'newwindow', 'height=550, width=1140, top=20, left=80, toolbar=no, menubar=no, scrollbars=yes, resizable=no, location=yes, status=no');
+        	window.open("jumpTeacherTextbook.do?id=${competition.id}", 'newwindow', 'height=570, width=1210, top=30, left=100, toolbar=no, menubar=no, scrollbars=yes, resizable=no, location=yes, status=no');
         }
         function balanceScore(Id){
             //window.open('loadBalanceScore.do?companyId='+Id, 'newwindow', 'height=550, width=850, top=60, left=240, toolbar=no, menubar=no, scrollbars=yes, resizable=no, location=yes, status=no')
@@ -214,6 +282,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function teachingEvaluation(){
 			window.open("jsp/teachingEvaluation/teachingEvaluation.jsp" , 'newwindow', 'height=550, width=1140, top=20, left=80, toolbar=no, menubar=no, scrollbars=yes, resizable=no, location=yes, status=no');	
 		}
+        function openGradeEvaluation(){
+            window.open('gradeEvaluation.jsp?id=${competition.id}', 'newwindow', 'height=570, width=1210, top=60, left=120, toolbar=no, menubar=no, scrollbars=yes, resizable=no, location=yes, status=no')
+        }
+        
     </script>
-</body>>
+</body>
 </html>

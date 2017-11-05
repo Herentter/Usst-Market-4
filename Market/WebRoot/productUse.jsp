@@ -12,42 +12,134 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
     <style type="text/css">
         body{
             width: 99%;
-            margin:4px;
+            margin:5px;
         }
         .panel{
             margin: 0px;
         }
+        #notice1{
+        	min-height:420px;
+        }
+        
+        .course_content{
+        	border:1px solid #0ff;
+        	margin-top:10px;
+        	padding:20px;
+        	min-height:220px;
+        	font-size:14px;
+        	letter-spacing:1px;
+        }
+        .left{
+        	/* border:1px solid blue; */
+        	width:450px;
+        	padding:20px;
+        	float:left;
+        	background:#eee;
+        	margin:10px 0 0 2px;
+        	min-height:220px;
+        }
+        .left_title span i{
+        	color:#009;
+        	font-size:18px;
+        	margin-right:6px;
+        }
+        
+        
+        .right{
+        	/* border:1px solid blue; */
+        	width:400px;
+        	padding:20px;
+        	float:left;
+        	background:#abcdef;
+        	margin:10px 0 0 100px;
+        	min-height:120px;
+        }
+        
+        .right_title span i{
+        	color:red;
+        	font-size:22px;
+        	margin-right:6px;
+        }
+        .text0{
+        	margin-left:30px;
+        	margin-top:10px;
+        }
+        .text1{
+		text-indent:30px;
+		margin-top:10px;
+	}
+	.left_content li{
+		margin-top:5px;
+	}
+	.tab-content{
+		margin-top:10px;
+	}
     </style>
 </head>
 <body>
     <div class="panel panel-info">
         <div class="panel-heading">产品用途</div>
         <div class="panel-body">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>实用型</th>
-                        <th>极致型</th>
-                        <th>商务型</th>
-                    </tr>
-                </thead>
-                    <tbody id="data_body">
-                       <c:forEach items="${productUseList }" var="item">
-                    	<tr>
-                    		
-                    	 	<td>${item.detail }</td>
-                    		<td>${item.practical }</td>
-                    		<td>${item.perfect }</td>
-                    		<td>${item.business }</td> 
-                    	</tr>
-                    </c:forEach>
-                    </tbody>
-            </table>
-            <div id="main" style="width: 600px;height:400px;"></div>
+        	<ul class="nav nav-tabs">
+                <li><a href="#notice1" data-toggle="tab"> 课程介绍</a></li>
+                <li class="active"><a href="#notice2" data-toggle="tab">决策界面</a></li>
+            </ul>
+            
+            <div class="tab-content">
+                <div class="tab-pane fade in " id="notice1">
+                	<div class="course_content">
+                		<div class="text0"><label>考虑每个部分中客户的使用模式</label></div>
+
+						<div class="text1">
+							了解一个部分的应用程序对于选择满足该部分的组件和软件是至关重要的。 
+						</div>	
+                   	</div>
+                   	<div class="left">
+                   		<div class="left_title">
+                   			<span><i class="fa fa-tasks"></i></span><label>你的任务</label>
+                   		</div>
+                   		<div class="left_content">
+							在工作区中，您将找到一些关于客户打算如何使用手机的信息。每个段都表示对应用程序最重要的应用程序。 
+                   		</div>
+                   	</div>
+                   	<div class="right">
+                   		<div class="right_title">
+                   			<span><i class="fa fa-lightbulb-o"></i></span><label>决策小提示</label>
+                   		</div>
+                   		<div class="right_content">
+							注意任何值超过110的应用程序。价值低于100的应用程序可能会对客户吸引力产生负面影响
+                   		</div>
+                   	</div>
+                </div>
+                <div class="tab-pane fade in active" id="notice2">
+                	<table class="table table-bordered">
+		                <thead>
+		                    <tr>
+		                        <th></th>
+		                        <th>实用型</th>
+		                        <th>极致型</th>
+		                        <th>商务型</th>
+		                    </tr>
+		                </thead>
+		                    <tbody>
+		                      <c:forEach items="${productUseList}" var="hyy">
+		                    	<tr>
+		                    	<td>${hyy.detail }</td>
+		                    		<td>${hyy.practical }</td>
+		                    		<td>${hyy.perfect }</td>
+		                    		<td>${hyy.business }</td>
+		                    
+		                    	</tr>
+		                    </c:forEach>
+		                    </tbody>
+		            </table>
+		            <div id="main" style="width: 600px;height:400px;"></div>
+                </div>
+            </div>
         </div>
         <div class="panel-footer panel-info"></div>
     </div>
@@ -87,25 +179,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     },
     yAxis: {
         type: 'category',
-        data: ['日历','备忘录','浏览器','天气','视频/语音','收音机','文件管理','手机管家']
+        data: []
     },
     series: [
         {
             name: '实用型',
             type: 'bar',
-            data: [126, 123, 123, 117, 115, 109,103,102],
+            data: [],
             color:['#61a0a8']
         },
         {
             name: '极致型',
             type: 'bar',
-            data: [127, 125, 119, 128, 123, 100,124,130],
+            data: [],
             color:['#d48265']
         },
         {
             name: '商务型',
             type: 'bar',
-            data: [121, 125, 117, 123, 126, 107,129,125],
+            data: [],
             color:['#91c7ae']
         },
         //['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3']
@@ -113,7 +205,63 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     ]
         };
 
+        myChart.showLoading(); 
+        var xa=[];
+        var sz1=[];
+        var sz2=[];
+        var sz3=[];
+        
+        $.ajax({
+			type:'post',
+			url:"showUsageInfojson.do",
+			success: function(data){
+				
+			    
+				$.each(data , function(index,obj){
+					
+                    
+					xa.push(obj.detail);
+					sz1.push(obj.practical);
+					sz2.push(obj.perfect);
+					sz3.push(obj.business);
+					
+				
+					
+		  		});
+			
+				 myChart.hideLoading();    //隐藏加载动画
+                 myChart.setOption({        //加载数据图表
+                	 yAxis: {
+                	        type: 'category',
+                	        data: xa
+                	    },
+                	    series: [
+                	        {
+                	            name: '实用型',
+                	            type: 'bar',
+                	            data: sz1
+                	        },
+                	        {
+                	            name: '极致型',
+                	            type: 'bar',
+                	            data: sz2
+                	        },
+                	        {
+                	            name: '商务型',
+                	            type: 'bar',
+                	            data: sz3
+                	        }
+
+                	        
+                	    ]
+                 });
+                 
+		  	
+			}
+		});
+
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
     </script>
+    <script type="text/javascript" src="js/classIntroduction.js"></script>
 </html>

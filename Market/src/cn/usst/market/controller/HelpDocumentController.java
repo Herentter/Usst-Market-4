@@ -24,4 +24,13 @@ public class HelpDocumentController {
 		helpDocList.get(0).setSize(titleOneCount);
 		return helpDocList;
 	}
+	
+	@RequestMapping("/selectSingleItem.do")
+	public @ResponseBody HelpDocument selectHelpDocument(String titleOne, String titleTwo){
+		HelpDocument helpDocument = new HelpDocument();
+		helpDocument.setTitleLevelOne(titleOne);
+		helpDocument.setTitleLevelTwo(titleTwo);
+		helpDocument = teacherService.selectHelpDocument(helpDocument);
+		return helpDocument;
+	}
 }

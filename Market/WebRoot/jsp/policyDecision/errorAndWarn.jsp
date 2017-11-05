@@ -19,7 +19,15 @@
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/jquery.pagination.js"></script>
 <script type="text/javascript">
+$(function(){
+	$("a").click(function(){
+		var quarter=$("#currentQuarter").val();
+		var companyId=$(this).prev("input").val();
+		window.parent.main.location.href="policyDecision/companyErrorAndWarn.do?companyId="+companyId+"&currentQuarter="+quarter;
 
+	});
+	
+});
 </script>
 
 </head>
@@ -32,6 +40,7 @@
 
 			<div class="panel-body">
 				<div>
+					<input type="hidden" id="currentQuarter" value="${currentQuarter }"/>
 					<h3>错误及警告</h3>
 					<table>
 						<tr>
@@ -41,9 +50,10 @@
 							<th>注意事项</th>
 						</tr>
 						<c:forEach items="${companyList }" var="item">
-							<tr>
-								<td>${item.name }</td>
-							</tr>
+							<li>
+								<input type="hidden" value="${item.id }"/>
+								<a href="javascript:void(0)">${item.name }</a>
+							</li>
 						</c:forEach>
 					</table>
 				</div>

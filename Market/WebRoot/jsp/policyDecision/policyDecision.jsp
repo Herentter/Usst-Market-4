@@ -152,6 +152,10 @@ ul {
 						<ul class="submenu">
 							<li><a href="javascript:void(0)" onclick="keyDecision()"
 								target="main">&nbsp;关键决策</a></li>
+							<!-- <div id="quarter2">
+							<li><a href="javascript:void(0)" onclick="commercialGuide()"
+								target="main">&nbsp;商业指导帮助</a></li></li>
+							</div> -->
 							<li><a href="javascript:void(0)" onclick="errorAndWarn()"
 								target="main">&nbsp;错误及警告</a></li>
 							<li><a href="javascript:void(0)" onclick="decisionSummary()"
@@ -186,7 +190,7 @@ ul {
     			$(".xianshi,.yincang").hide();       		
         		$(this).next("div").show();
     		});
-    		
+    		$(".submenu").show();
     	});
 
 
@@ -237,12 +241,17 @@ ul {
        				$("#quarter").text(q);
        				keyDecision();
        			}
+       			if(q>1){
+            		$("#quarter2").show();
+            	}
        			
        		});
        		$("#quarterSubtract").click(function(){
        			var q=parseInt($("#quarter").text());
-
             	q--;
+       			if(q==1){
+       				$("#quarter2").hide();
+       			}
        			if(q<1){
        				q=1;
        				$("#quarter").text(q);
@@ -258,6 +267,13 @@ ul {
         	var quarter=$("#quarter").text();
         	//alert(quarter);
         	window.parent.main.location.href="policyDecision/keyDecision.do?competitionId="+competitionId+"&currentQuarter="+quarter;
+        }
+        
+        function commercialGuide(){
+        	var competitionId=$("#competitionId").val();
+        	var quarter=$("#quarter").text();
+        	//alert(quarter);
+        	window.parent.main.location.href="policyDecision/commercialGuide.do?competitionId="+competitionId+"&currentQuarter="+quarter;
         }
         
         function errorAndWarn(){

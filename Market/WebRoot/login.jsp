@@ -138,8 +138,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<span class="navbar-brand">注册</span>
 								</div>
 								<ul class="nav navbar-nav">
-									<li><button class="btn button_left" id="button_left">导航1</button></li>
-									<li><button class="btn button_right" id="button_right">导航2</button></li>
+									<li><button class="btn button_left" id="button_left">团队信息</button></li>
+									<li><button class="btn button_right" id="button_right">个人信息</button></li>
 								</ul>
 							</div>
 	                        <div id="step1">

@@ -5,8 +5,6 @@ public class BalanceSheet {
 
     private Integer companyId;
 
-	private Integer serialNumber;
-
     private Integer quarter;
 
     private Float huobi;
@@ -38,19 +36,11 @@ public class BalanceSheet {
     }
 
     public Integer getCompanyId() {
-		return companyId;
-	}
-
-	public void setCompanyId(Integer companyId) {
-		this.companyId = companyId;
-	}
-
-    public Integer getSerialNumber() {
-        return serialNumber;
+        return companyId;
     }
 
-    public void setSerialNumber(Integer serialNumber) {
-        this.serialNumber = serialNumber;
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 
     public Integer getQuarter() {
@@ -139,5 +129,29 @@ public class BalanceSheet {
 
     public void setLiucun(Float liucun) {
         this.liucun = liucun;
+    }
+    
+    public Float getLiuDongZiChan(){
+    	return huobi+cunkuan+cunhuo;
+    }
+    
+    public Float getTotalZiChan(){
+    	return huobi+cunkuan+cunhuo+zichan;
+    }
+    
+    public Float getLiuDongFuzhai(){
+    	return daikuanEmergency+lixiPay;
+    }
+    
+    public Float getTotalFuZhai(){
+    	return getLiuDongFuzhai()+daikuanNormal;
+    }
+    
+    public Float getOwner(){
+    	return guben+liucun;
+    }
+    
+    public Float getOwnerAndFuZhai(){
+    	return getTotalFuZhai()+getOwner();
     }
 }

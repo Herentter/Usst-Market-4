@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.usst.market.mapper.MarketingMapper">
+	<select id="selectByCompetitionId" resultType="cn.usst.market.po.BrandOfRival">
+		select
+		company.name as companyName,company_product.name as brandName
+		,company.id as companyId,company_product.detail
+		from company LEFT JOIN
+		company_product on
+		company.id=company_product.company_id
+		where
+		company.competition_id=#{id}
+	</select>
+
+	<select id="selectProductDetail" resultType="java.lang.String">
+		select detail from
+		product_info
+		where id=#{detailId}
+	</select>
+
+	<select id="selectProductDetail1" resultType="cn.usst.market.po.BrandOfRival">
+		select company.name
+		as companyName,company_product.name as brandName
+		,company.id as
+		companyId,company_product.detail
+		from company LEFT JOIN company_product
+		on
+		company.id=company_product.company_id
+		where
+		company.competition_id=#{comId} and company.name=#{comName}
+	</select>
+
+	<select id="selectAdByCompanyIdAndQuarter" resultType="cn.usst.market.po.CompanyAd">
+		select
+		ca.company_id as companyId,ca.product_id as productId,ca.product_name
+		as productName,
+		ca.advertise_name as adName,ca.advertise_id as adId
+		from company_advertise ca
+		where company_id=#{comId} and
+		quarter=#{quarter}
+	</select>
+
+	<select id="selectAdByProductIdAndAdName" resultType="cn.usst.market.po.AdPojo">
+		select
+		id,quarter,company_id as companyId,product_id as
+		productId,product_name as productName
+		,advertise_name as
+		advertiseName,advertise_id as advertiseId
+		from company_advertise
+		where
+		product_id=#{proId} and advertise_name=#{adName}
+	</select>
+
+	<select id="selectAdDetailById" resultType="java.lang.String">
+		select detail from
+		advertise_info
+		where id=#{id}
+	</select>
+
+	<select id="selectBrandProfitByCompanyId" parameterType="java.lang.Integer"
+		resultType="cn.usst.market.po.Profit">
+		select company_id as companyId,product_id as
+		productId,costofselling,sale
+		from product_market_share where
+		company_id=#{0} and quarter=#{1}
+	</select>
+
+	<select id="selectMarketShareByCompetitionId" parameterType="java.lang.Integer"
+		resultType="cn.usst.market.po.MarketShare">
+		select company_id as companyId,product_id as
+		productId,product_type as
+		productType,need
+		from product_market_share
+		where competition_id=#{competitionId}
+	</select>
+
+	<select id="selectCompanyName" resultType="java.lang.String">
+		select name from
+		company
+		where id=#{companyId}
+	</select>
+
+	<select id="selectProductName" resultType="java.lang.String">
+		select name from
+		company_product
+		where id=#{productId}
+	</select>
+
+	<select id="selectProductName1" resultType="java.lang.String">
+		select name from
+		company_product
+		where company_id=#{0} and id=#{1}
+	</select>
+
+	<select id="selectProductPrice" resultType="cn.usst.market.po.ProductPrice">
+		select
+		pp.id,pp.company_id as companyId,pp.product_id as productId,pp.quarter
+		from
+		product_price pp left join company c on c.id=pp.company_id
+		where
+		c.competition_id=#{competitionId}
+	</select>
+
+	<select id="selectProductPrice1" resultType="java.lang.String">
+		select price from
+		product_price
+		where product_id=#{0} and quarter=#{1}
+	</select>
+
+	<select id="selectCostOfProduction" resultType="cn.usst.market.po.CostOfProduction">
+		select name as
+		companyName,hundred,twohundredfifty,fivehundred,thousand,fivethousand
+		from company_product
+		where company_id=#{companyId}
+	</select>
+
+	<select id="selectAdDetailByCompetitionId" parameterType="java.lang.Integer"
+		resultType="cn.usst.market.po.AdDetail">
+		select ca.company_id as companyId,ca.product_id as
+		productId,ca.product_name
+		as productName,ca.advertise_id as advertiseId
+		from company_advertise
+		ca
+		LEFT JOIN company c on c.id=ca.company_id
+		where c.competition_id=#{competitionId}
+	</select>
+
+	<select id="selectMediaInfo" resultType="cn.usst.market.po.MediaInfo">
+		select * from media_info
+	</select>
+
+	<select id="selectMainMedia" resultType="cn.usst.market.po.MainMedia">
+		select
+		mi.detail,cm.product_id as productId,cm.num
+		from media_info mi
+		LEFT JOIN company_media cm on mi.id=cm.media_id
+		where
+		cm.company_id=#{companyId}
+	</select>
+
+	<select id="selectAllAdInfo" resultType="cn.usst.market.po.CheckResult">
+		select product_name as
+		productName,advertise_name as advertiseName from
+		company_advertise
+		where company_id=#{0} and quarter=#{1}
+	</select>
+
+	<select id="selectPriceAndSale" resultType="cn.usst.market.po.PriceSale">
+		select company_id as
+		companyId,product_id as productId,price,youji
+		from product_price
+		where
+		company_id=#{0} and quarter=#{1}
+	</select>
+
+	<select id="selectNumOfMediaAd" resultType="cn.usst.market.po.MediaAdNum">
+		select media_id as
+		mediaId,num
+		from company_media
+		where product_id=#{0} and quarter=#{1}
+	</select>
+
+	<select id="selectMediaCostByMediaId" resultType="java.lang.Integer">
+		select cost
+		from media_info
+		where id=#{mediaId}
+	</select>
+
+	<select id="selectPostOffice" resultType="java.lang.String">
+		select youji
+		from
+		product_price
+		where product_id=#{0} and quarter=#{1}
+	</select>
+
+	<select id="selectCompetitionIdByCompanyId" resultType="java.lang.Integer">
+		select
+		competition_id
+		from company
+		where id=#{companyId}
+	</select>
+</mapper>

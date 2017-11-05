@@ -27,8 +27,12 @@
 
 			<div class="panel-body">
 				<input type="hidden" id="competitionId" value="${competition.id }"/>
+				<input type="hidden" id="currentQuarter" value="${competition.currentQuarter }"/>
 				<input type="hidden" id="quarter" value="${quarter }"/>
-				<div>
+				<div id="noReleaseResult" style="display:none">
+					<label>当前季度还没有发布竞赛结果，请先去发布结果中发布竞赛结果！</label>
+				</div>
+				<div id="yesReleaseResult" style="display:none">
 					<table class="table table-bordered" style="display: none">
 						<tr>
 							<td>财务会计</td>
@@ -75,7 +79,6 @@
 						<li><a href="javascript:void(0)" onclick="cashChart()">现金</a></li>
 						<li><a>营运现金流</a></li>
 						<li><a>净股本</a></li>
-						<li><a>总负债</a></li>
 						<li><a>留存收益</a></li>
 						<li><a>每股收益</a></li>
 						<li><a>每股收益增长率</a></li>
@@ -85,7 +88,7 @@
 						<li><a>销货成本</a></li>
 						<li><a>网络营销费用</a></li>
 						<li><a href="javascript:void(0)" onclick="netIncomeChart()">净收入</a></li>
-						<li><a>毛利</a></li>
+						<!-- <li><a>毛利</a></li>
 						<li><a>营运成本</a></li>
 						<li><a>研发投资</a></li>
 						<li><a>库存周转率</a></li>
@@ -95,8 +98,10 @@
 						<li><a>毛利率</a></li>
 						<li><a>净利率</a></li>
 						<li><a>资产回报率</a></li>
-						<li><a>股本回报率</a></li>
+						<li><a>股本回报率</a></li> -->
 					</ul>
+					
+					
 					<label>其他</label>
 					<ul>
 						<li><a>总决策时间</a></li>
@@ -112,6 +117,18 @@
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/jquery.pagination.js"></script>
 <script type="text/javascript">
+$(function(){
+	var quarter=$("#quarter").val();
+	var comCurrentQuarter=$("#currentQuarter").val();
+	if(quarter<comCurrentQuarter){
+		$("#noReleaseResult").hide();
+		$("#yesReleaseResult").show();
+	}else if(quarter==comCurrentQuarter){
+		$("#yesReleaseResult").hide();
+		$("#noReleaseResult").show();
+	}
+});
+
 //资产负债表总量
 function balanceSheetChart(){
 	var competitionId=$("#competitionId").val();

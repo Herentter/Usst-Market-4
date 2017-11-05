@@ -24,8 +24,13 @@
 			</div>
 
 			<div class="panel-body">
+				<input type="hidden" id="competitionId" value="${competition.id }"/>
+				<input type="hidden" id="currentQuarter" value="${competition.currentQuarter }"/>
 				<input type="hidden" id="quarter" value="${quarter }"/>
-				<div>
+				<div id="noReleaseResult" style="display:none">
+					<label>当前季度还没有发布竞赛结果，请先去发布结果中发布竞赛结果！</label>
+				</div>
+				<div id="yesReleaseResult" style="display:none">
 					<table class="table table-bordered" id="tab">
 						<thead>
 							<tr id="companyName">
@@ -56,9 +61,11 @@
 							</tr>
 						</tbody>
 					</table>
+					
+					<!-- 下面div用于画图 -->
+					<div id="main" style="width: 800px;height:400px;"></div>
 				</div>
-				<!-- 下面div用于画图 -->
-				<div id="main" style="width: 600px;height:400px;"></div>
+				
 			</div>
 
 			<div class="panel-footer"></div>
@@ -70,6 +77,18 @@
 	<script type="text/javascript" src="js/jquery.pagination.js"></script>
 	<script type="text/javascript" src="js/echarts.min.js"></script>
 	<script type="text/javascript">
+	$(function(){
+		var quarter=$("#quarter").val();
+		var comCurrentQuarter=$("#currentQuarter").val();
+		if(quarter<comCurrentQuarter){
+			$("#noReleaseResult").hide();
+			$("#yesReleaseResult").show();
+		}else if(quarter==comCurrentQuarter){
+			$("#yesReleaseResult").hide();
+			$("#noReleaseResult").show();
+		}
+	});
+		
 		//季度
 		var quarter ="季度"+document.getElementById("quarter").value;
 		//定义公司数量,列数
@@ -102,7 +121,11 @@
 	    var option = {
 	       	title: {
 		        text: '净收入',
-		        subtext: '按季度统计'
+		        subtext: '按季度统计',
+		        x:'center'
+		        /* x:'center',
+		        y:'top',
+		        textAlign:'center' */
 		    },
 		    tooltip: {
 		        trigger: 'axis',
@@ -111,12 +134,15 @@
 		        }
 		    },
 		    legend: {
-		    	data: companyName
+		    	data: companyName,
+		    	orient : 'vertical',
+		    	x:650,
+		    	y:'center'
 		        //data: ['公司1','公司2','公司3','公司4','公司5']
 		    },
 		    grid: {
 		        left: '3%',
-		        right: '4%',
+		        right: '25%',
 		        bottom: '3%',
 		        containLabel: true
 		    },

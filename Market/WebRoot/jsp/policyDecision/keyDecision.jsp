@@ -16,7 +16,7 @@
 <link rel="stylesheet" type="text/css" href="css/strategy.css">
 <style type="text/css">
 td:hover { 
-	background-color:#eeeeee;
+	background-color:#D9EDF7;
 	
 }
 </style>
@@ -63,7 +63,7 @@ td:hover {
 							<tr id="newBrand">
 								<td>新品牌</td>
 								<c:forEach items="${keyDecisionList }" var="item">
-									<td>
+									<td onclick="newProduct(this)" style="cursor:pointer;">
 										<c:forEach items="${item.companyProductList }" var="item2">
 											${item2.name }<br/>
 										</c:forEach>
@@ -76,7 +76,7 @@ td:hover {
 							<tr id="entitySalesCenter">
 								<td>实体销售中心</td>
 								<c:forEach items="${keyDecisionList }" var="item">
-									<td>
+									<td onclick="entitySailCenter(this)" style="cursor:pointer;">
 										<c:forEach items="${item.phyMarketList }" var="item2">
 											${item2.city }<br/>
 										</c:forEach>
@@ -86,7 +86,7 @@ td:hover {
 							<tr id="netSalesCenter">
 								<td>网络销售中心</td>
 								<c:forEach items="${keyDecisionList }" var="item">
-									<td>
+									<td onclick="webSailCenter(this)" style="cursor:pointer;">
 										<c:forEach items="${item.netMarketList }" var="item2">
 											${item2.city }<br/>
 										</c:forEach>
@@ -100,7 +100,7 @@ td:hover {
 							<tr id="teamPeopleNumber">
 								<td>管理团队人数</td>
 								<c:forEach items="${keyDecisionList }" var="item">
-									<td>${item.memberCount }</td>
+									<td onclick="companyNumber(this)" style="cursor:pointer;">${item.memberCount }</td>
 								</c:forEach>
 							</tr>
 							<tr>
@@ -109,16 +109,30 @@ td:hover {
 							<tr id="fixedCapacity">
 								<td>当前季度固定产能</td>
 								<c:forEach items="${keyDecisionList }" var="item">
-									<td>${item.fixedCapacity }</td>
+									<td>${item.companyCapacity.capacityNow }</td>
 								</c:forEach>
 							</tr>
 							<tr id="addCapacity">
 								<td>下季度将增加的产能</td>
 								<c:forEach items="${keyDecisionList }" var="item">
-									<td>${item.addCapacity }</td>
+									<td>${item.companyCapacity.capacityAdd }</td>
 								</c:forEach>
 							</tr>
-							
+							<tr>
+								<td><strong>财务</strong></td>
+							</tr>
+							<tr id="stock">
+								<td>股票发行</td>
+								<c:forEach items="${keyDecisionList }" var="item">
+									<td>${item.companyStockSum }</td>
+								</c:forEach>
+							</tr>
+							<tr id="stock">
+								<td>季度存款</td>
+								<c:forEach items="${keyDecisionList }" var="item">
+									<td>${item.fixedDeposit }</td>
+								</c:forEach>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -140,6 +154,39 @@ td:hover {
 		var url="policyDecision/strategyInfo.do?currentQuarter="+currentQuarter+"&companyId="+companyId;
 		window.location.href=url;
 	}
+	
+	function newProduct(node){
+		var id=$(node).parents("tr").find("td").index($(node));
+		var companyId=$("#companyId").children('td').eq(id).text();
+		var currentQuarter=$("#currentQuarter").val();
+		var url="policyDecision/newProduct.do?currentQuarter="+currentQuarter+"&companyId="+companyId;
+		window.location.href=url;
+	}
+	
+	function entitySailCenter(node){
+		var id=$(node).parents("tr").find("td").index($(node));
+		var companyId=$("#companyId").children('td').eq(id).text();
+		var currentQuarter=$("#currentQuarter").val();
+		var url="policyDecision/entitySailCenter.do?currentQuarter="+currentQuarter+"&companyId="+companyId;
+		window.location.href=url;
+	}
+	
+	function webSailCenter(node){
+		var id=$(node).parents("tr").find("td").index($(node));
+		var companyId=$("#companyId").children('td').eq(id).text();
+		var currentQuarter=$("#currentQuarter").val();
+		var url="policyDecision/webSailCenter.do?currentQuarter="+currentQuarter+"&companyId="+companyId;
+		window.location.href=url;
+	}
+	
+	function companyNumber(node){
+		var id=$(node).parents("tr").find("td").index($(node));
+		var companyId=$("#companyId").children('td').eq(id).text();
+		var currentQuarter=$("#currentQuarter").val();
+		var url="policyDecision/companyNumberInfo.do?currentQuarter="+currentQuarter+"&companyId="+companyId;
+		window.location.href=url;
+	}
+	
 </script>
 </body>
 </html>

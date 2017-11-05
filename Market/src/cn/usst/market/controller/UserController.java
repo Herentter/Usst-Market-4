@@ -11,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.usst.market.annotation.MethodLog;
 import cn.usst.market.po.Company;
+import cn.usst.market.po.CompanyDuty;
 import cn.usst.market.po.Competition;
 import cn.usst.market.po.Member;
 import cn.usst.market.po.Page;
@@ -78,7 +80,7 @@ public class UserController {
 		}
 		return modelAndView;
 	}
-	
+	@MethodLog(description="学生登录操作")
 	@RequestMapping("/Login.do")
 	public ModelAndView doLogin(HttpServletRequest request) throws Exception{
 		String role=request.getParameter("role");
@@ -91,11 +93,25 @@ public class UserController {
 			record.setEmail(email);
 			record.setPassword(password);
 			flag=memberService.doMemberLogin(record);
+			request.getSession().setAttribute("student", flag);
 			if(flag!=null){
 				int companyId=flag.getCompanyId();
-				request.getSession().setAttribute("companyId", companyId);;
+				
+				//根据公司id 查询竞赛当前季度
+				int currentQuarter=competitionService.getCurrentQuarterByCompanyId(companyId);
+	
+				
+				Competition competition=competitionService.findCompetitionByCompanyId(companyId);
+				
+				request.getSession().setAttribute("competitionId", competition.getId());
+				
+				request.getSession().setAttribute("companyId", companyId);
+				request.getSession().setAttribute("currentQuarter", currentQuarter);
+				
+				modelAndView.addObject("competition",competition);
 				modelAndView.addObject("member", flag);
-				modelAndView.setViewName("index3.0");
+				modelAndView.addObject("quarter",currentQuarter);
+				modelAndView.setViewName("index1");
 				return modelAndView;
 			}else{
 				modelAndView.addObject("errorInfo", "邮箱或密码错误！");
@@ -131,6 +147,7 @@ public class UserController {
 		
 		
 	}
+	@MethodLog(description="学生注册操作")
 	@RequestMapping("/memberRegister.do")
 	public ModelAndView doRegister(HttpServletRequest request,Member record) throws Exception{
 		int teamOrder=Integer.valueOf(request.getParameter("team_order"));
@@ -177,6 +194,13 @@ public class UserController {
 				flag=memberService.findMeberByEmail(record);
 				if(flag==null){
 					memberService.insert(record);
+					CompanyDuty cd=new CompanyDuty();
+					cd.setCompanyId(companyId);
+					cd.setImg("img");
+					cd.setMemberId(record.getId());
+					cd.setMainId(1);
+					cd.setMinorId(1);
+					companyService.insertCompanyDuty(cd);
 					info="注册成功！";
 					modelAndView.addObject("errorInfo", info);
 				}

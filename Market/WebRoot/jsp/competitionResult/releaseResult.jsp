@@ -19,7 +19,27 @@
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/jquery.pagination.js"></script>
 <script type="text/javascript">
-
+	$(function(){
+		var quarter=$("#quarter").val();
+		var currentQuarter=$("#currentQuarter").val();
+		var maxQuarter=$("#maxQuarter").val();
+		if(currentQuarter<=maxQuarter){
+			if(quarter<currentQuarter){
+				$("#resultButton").val("已经可以查看本季度竞赛结果！").attr("disabled", true);
+			}else{
+				$("#resultButton").val("发布当前季度竞赛结果！");
+			}
+		}else{
+			$("#resultButton").val("已经是本次竞赛最后一个季度！").attr("disabled", true);
+		}
+		
+	});
+	
+	function releaseResult(){
+		var competitionId=$("#competitionId").val();
+		var quarter=$("#quarter").val();
+		window.parent.main.location.href="competitionResult/releaseResult.do?competitionId="+competitionId+"&currentQuarter="+quarter;
+	}
 </script>
 
 </head>
@@ -32,9 +52,14 @@
 
 			<div class="panel-body">
 				<input type="hidden" id="competitionId" value="${competition.id }"/>
+				<input type="hidden" id="currentQuarter" value="${competition.currentQuarter }"/>
+				<input type="hidden" id="maxQuarter" value="${competition.quarter }"/>
 				<input type="hidden" id="quarter" value="${quarter }"/>
 				<div>
-				已经发布竞赛结果，可以查看本季度结果！
+					<label>点击发布竞赛结果后，可以查看本季度竞赛结果，并进入下一季度。</label><br/>
+					<label>${message }</label><br/>
+					<input type="button" id="resultButton" class="btn btn-default" value="" onclick="releaseResult()"/><br/>
+					<!-- 注意：发布竞赛结果前，先判断各个公司是否已经提交，如果没有，则提示错误信息，否则提交。 -->
 				</div>
 			</div>
 

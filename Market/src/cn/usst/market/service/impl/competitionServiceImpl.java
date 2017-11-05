@@ -28,9 +28,9 @@ public class CompetitionServiceImpl implements CompetitionService {
 
 	@Override
 	public int insert(Competition record) {
-		StringRandom sr=new StringRandom();
+		/*StringRandom sr=new StringRandom();
 		String license=sr.getStringRandom(12);
-		record.setLicense(license);
+		record.setLicense(license);*/
 		return competitionMapper.insert(record);
 	}
 
@@ -90,6 +90,22 @@ public class CompetitionServiceImpl implements CompetitionService {
 		// TODO Auto-generated method stub
 		return competitionMapper.checkCompetitionExist(name);
 	}
+
+	@Override
+	public void updateCompetitionInfo(Competition record) {
+		competitionMapper.updateCompetitionInfo(record);
+	}
+	
+	@Override
+	public Competition findCompetitionByCompanyId(Integer companyId){
+		return competitionMapper.findCompetitionByCompanyId(companyId);
+	}
+
+	@Override
+	public int getCurrentQuarterByCompanyId(int companyId) {
+		return competitionMapper.getCurrentQuarterByCompanyId(companyId);
+	}
+
 
 	
 }

@@ -2,15 +2,44 @@ package cn.usst.market.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
+import cn.usst.market.po.AdvertiseInfo;
+import cn.usst.market.po.AllSalesSalaryVo;
+import cn.usst.market.po.AllWorkersSalaryVo;
+import cn.usst.market.po.AverageSalary;
+import cn.usst.market.po.BalanceSheet;
 import cn.usst.market.po.CapacityInfo;
+import cn.usst.market.po.CashFlow;
 import cn.usst.market.po.Company;
+import cn.usst.market.po.CompanyAdvertise;
+import cn.usst.market.po.CompanyCapacity;
+import cn.usst.market.po.CompanyDuty;
+import cn.usst.market.po.CompanyInvestment;
+import cn.usst.market.po.CompanyMarket;
+import cn.usst.market.po.CompanyMedia;
+import cn.usst.market.po.CompanyPersonGoal;
 import cn.usst.market.po.CompanyProduct;
+import cn.usst.market.po.CompanyRule;
+import cn.usst.market.po.CompanyStock;
 import cn.usst.market.po.CompanyStrategy;
+import cn.usst.market.po.DemandForecast;
 import cn.usst.market.po.Duty;
+import cn.usst.market.po.FixedDeposit;
+import cn.usst.market.po.HirePeople;
+import cn.usst.market.po.HirePeopleOnline;
+import cn.usst.market.po.HirePeopleOnlineVo;
+import cn.usst.market.po.HirePeopleVo;
+import cn.usst.market.po.IncomeStatement;
 import cn.usst.market.po.MarketInfo;
+import cn.usst.market.po.OperationCapacity;
 import cn.usst.market.po.ProductInfo;
+import cn.usst.market.po.ProductMarketShare;
+import cn.usst.market.po.ProductPrice;
+import cn.usst.market.po.SalesSalary;
 import cn.usst.market.po.StrategyInfo;
 import cn.usst.market.po.TeacherQueryVo;
+import cn.usst.market.po.WorkersSalary;
 
 
 public interface CompanyMapper {
@@ -22,8 +51,6 @@ public interface CompanyMapper {
     Company findCompanyByCondition(Company record);
     
     Company findCompanyById(Company record);
-    
-
     
     void updateCompanyName(Company record);
     
@@ -48,8 +75,6 @@ public interface CompanyMapper {
     List<Duty> showAllPosition();
     
     List<MarketInfo> showMarketInfo();
-    
-    List<CapacityInfo> showCapacityInfo();
     
     //Guan
     
@@ -81,15 +106,317 @@ public interface CompanyMapper {
        
     void updateCompanyStrategy(CompanyStrategy companyStrategy)throws Exception;
     
-    void insertCompanyProduct(CompanyProduct companyProduct);
-    
-    public List<CompanyProduct> selectProductByCompanyId(Integer companyId);
+  
 
     public void deleteProductById(Integer id);
 
-    public CompanyProduct selectProductByProductId(Integer id);
+   
     
     public List<ProductInfo> showProductDetailByTitle(String title);
+    
+    CompanyDuty selectMemberByMemberId(Integer id);
+    
+    void insertMemberDuty(CompanyDuty companyDuty);
+    
+    void updateMemberDuty(CompanyDuty companyDuty);
+    
+    CompanyDuty selectMemberDutyByMemberId(Integer id);
+    
+    List<Integer> selectMemberIdByCompanyId(Integer id);
+    
+    List<CompanyDuty> selectMemberDutyByCompanyId(Integer id);
+    
+    CompanyRule selectCompanyRule(Integer company_id,Integer quarter);
+    
+    void insertCompanyRule(CompanyRule companyRule);
+    
+    void updateCompanyRule(CompanyRule companyRule);
+    
+    CompanyPersonGoal selectCompanyPersonGoal(Integer company_id,Integer quarter);
+    
+    void insertCompanyPersonGoal(CompanyPersonGoal companyPersonGoal);
+    
+    void updateCompanyPersonGoal(CompanyPersonGoal companyPersonGoal);
+    
+    void insertmarketinfo(CompanyMarket mInfo);
+    
+    List<CompanyMarket> showCompanymarket(CompanyMarket companyMarket);
+    
+    CompanyMarket selectCompanyPhysicalMarket(Integer company_id,Integer quarter);
+    
+    void insertCompanyMarket(CompanyMarket companyMarket);
+    
+    void updateCompanyMarket(CompanyMarket companyMarket);
+    
+    
+    
+
+
+	CashFlow selectCashFlowByCompanyId(int companyId,int quarter);
+
+	void insertCashFlow(@Param("companyId")int companyId,@Param("quarter") int quarter,@Param("yanfaPay") float yanfaPay);
+	
+	void updateCashFlowYanFa(float yanfa_pay,int company_id,int quarter);
+	
+	void updateCashFlowGongChang(float invest,int company_id,int quarter);
+
+	int selectSalesCenterOpen(int market_id);
+	
+	int selectSalesCenterWebOpen(int market_id);
+	
+	void updateCashFlowMarket(float salescenter_pay,int company_id,int quarter);
+	
+	void updateCashFlowWebMarket(float salescenter_web_pay,int company_id,int quarter);
+	
+	
+	IncomeStatement selectIncomeStatementByCompanyId(int companyId,int quarter);
+	
+	void updateIncomeStatementYanFa(float yanfa_pay,int company_id,int quarter);
+	
+	void updateIncomeStatementMarket(float salescenter_pay,int company_id,int quarter);
+	
+	void updateIncomeStatementWebMarket(float salescenter_web_pay,int company_id,int quarter);
+	
+	
+	void insertCompanyProduct(CompanyProduct companyProduct);
+    
+    public List<CompanyProduct> selectProductByCompanyId(Integer companyId);
+    
+    public CompanyProduct selectProductByProductId(Integer id);
+    
+    List<ProductInfo> showAllDetail();
+    
+    void updateCompanyProduct(CompanyProduct companyProduct);
+
+    public void deleteCompanyProduct(Integer product_id);
+    
+    
+    public int selectTotalCount(int companyId, int i);
+
+	public CapacityInfo selectCapacityInfo(int number);
+
+	void insertCompanyCapacity(@Param("capacityNow")int capacityNow,@Param("number")int number, @Param("companyId")int companyId,@Param("quarter") int quarter);
+
+	
+	public List<CapacityInfo> showCapacityInfo();
+
+	public List<CompanyCapacity> showCapacityInfo1(int companyId, int quarter);
+	
+	void updateCompanyCapacity(int capacity_now,int capacity_add, int companyId, int quarter);
+	
+	
+	void updateBalanceSheetZiChan(float invest,int company_id,int quarter);
+	
+	void updateBalanceSheetHuoBi(float huobi,int company_id,int quarter);
+	
+	int selectGuBen(int compant_id,int quarter);
+	
+	public List<BalanceSheet> showBalanceSheet(int company_id,int quarter);
+	
+	public List<CashFlow> showCashFlow(int company_id,int quarter);
+	 
+	public List<IncomeStatement> showIncomeStatement(int company_id,int quarter);
+	
+	 public List<CompanyStock> showCompanyStock(int company_id,int quarter);
+	 
+	 
+	List<FixedDeposit> showFixedDeposit();
+
+	void insertFixedDeposite(int companyIdInt, float tiQuFloat, float cunRuFloat, int quarter, float cunkunLast);
+
+	List<FixedDeposit> selectFixedDeposite(int companyIdInt, int quarter);
+
+	void updateFixedDeposite(int companyIdInt, float tiQuFloat, float cunRuFloat, int quarter);
+
+
+    //创建财务表中的信息
+    
+    void insertCashFlowFirst(CashFlow cashFlow);
+    
+    void insertIncomeStatementFirst(IncomeStatement incomeStatement);
+    
+    void insertBalanceSheetFirst(BalanceSheet balanceSheet);
+    
+    AverageSalary showAverageSalaryOfSale();
+	AverageSalary showAverageSalaryOfWork();
+
+	void insertCompanyStock(CompanyStock cs);
+
+	void insertCompanyDuty(CompanyDuty cd);
+	
+	
+	/*第二季度*/
+	
+	// 工厂工人薪酬
+	
+	public List<AllWorkersSalaryVo> findWSalaryofAllCompanysbyCompanyID(int companyId,int quarter);
+	
+	List<WorkersSalary> selectCompanyWorkersSalary(int company_id, int quarter);
+
+	void insertCompanyWorkersSalary(WorkersSalary workersSalary);
+
+	void updateCompanyWorkersSalary(WorkersSalary workersSalary);
+	
+	// 销售人员薪酬
+	
+	public List<AllSalesSalaryVo> findSalaryofAllCompanysbyCompanyID(int companyId,int quarter);
+
+	List<SalesSalary> selectCompanySalesSalary(int company_id, int quarter);
+	
+	SalesSalary findCompanySalesSalary(int company_id,int quarter);
+
+	void insertCompanySalesSalary(SalesSalary salesSalary);
+
+	void updateCompanySalesSalary(SalesSalary salesSalary);
+	
+	
+	public void insertHirePeople(HirePeople hirePeople);
+	
+	
+	
+	
+	// 需求量预测
+
+	List<DemandForecast> showDemandForecast();
+
+	void insertDemandForecast(int companyIdInt, int quarter, int demandAveragePhyt, int demandAverageWebt);
+
+	List<DemandForecast> selectDemandForecast(int companyIdInt, int quarter);
+
+	void updateDemandForecast(int companyIdInt, int quarter, int demandAveragePhyt, int demandAverageWebt);
+
+	
+
+	void insertDemandForecast2(CompanyProduct companyProduct);
+
+	List<CompanyProduct> selectDemandForecast2(int companyIdInt, int quarter);
+
+	void updateDemandForecast2(CompanyProduct companyProduct);
+		
+	//固定成本
+	public List<CompanyProduct> selectProductByCompanyIdAndQuarter(Integer companyId,Integer quarter);
+	
+	
+	void insertProductPrice(ProductPrice productPrice);
+	 
+	void updateProductPrice(int productId,int quarter,int price,int youji);
+
+	List<ProductPrice> selectProductPrice(int company_id,int quarter);
+	 
+	List<ProductPrice> showTotalProductPrice(int company_id,int quarter);
+	 
+	List<CompanyProduct> showTotalCompanyProduct(int company_id,int quarter);
+	
+	
+	//主流媒体投放
+	List<CompanyMedia> selectTotalCompanyMedia(int company_id,int quarter);
+	 
+	List<CompanyMedia> selectCompanyMedia(int company_id,int quarter,int mediaId,int productId);
+	 
+	void insertCompanyMedia(CompanyMedia companyMedia);
+	 
+	void updateCompanyMedia(CompanyMedia companyMedia);
+	
+	//设计广告语
+	List<CompanyAdvertise> selectCompanyAdvertiseByProductId(int company_id,int quarter,int productId);
+	 
+	void insertCompanyAdvertise(CompanyAdvertise companyAdvertise);
+	 
+	void updateCompanyAdvertise(CompanyAdvertise companyAdvertise);
+	
+	//	检查广告语
+	
+	 List<CompanyAdvertise> selectCompanyAdvertise(int company_id,int quarter);	
+	 
+	 List<AdvertiseInfo> selectAdvertsieById(int advertiseId);
+
+	
+	//市场调研报告
+	 String selectCompanyReport(int company_id,int quarter);
+	 
+	 void insertCompanyReport(int company_id,int quarter,int buyReport);
+	 
+	 void updateCompanyReport(int company_id,int quarter,int buyReport);
+	 
+	//运行产能
+	
+	
+	List<OperationCapacity> showOperationCapacity();
+
+	void insertOperationCapacity(int companyIdInt, int quarter, int operateCapacityInt, int workerProductivityInt);
+
+	List<OperationCapacity> selectOperationCapacity(int companyIdInt, int quarter);
+
+	void updateOperationCapacity(int companyIdInt, int quarter, int operateCapacityInt, int workerProductivityInt);
+	
+	
+	FixedDeposit selectCunkuanLast(int company_id,int quarter);
+	
+	void insertCunkuanLast(float cunkuanLast,int company_id,int quarter);
+	
+	// 库存控制
+	void insertInventoryControl(CompanyProduct companyProduct);
+
+	List<CompanyProduct> selectInventoryControl(int companyIdInt, int quarter);
+
+	void updateInventoryControl(CompanyProduct companyProduct);
+
+	//雇佣销售人员
+
+	public HirePeopleVo selectHirePeople(int companyId, int marketInt, int quarter);
+	
+	public HirePeopleOnlineVo selectHirePeopleOnline(int companyId, int marketInt, int quarter);
+
+	//更新销售人员
+	public void updateHirePeopleById(HirePeople hirePeople);
+	
+	public void updateHirePeopleOnlineById(HirePeopleOnline hirePeopleOnline);
+	
+	
+	public CompanyCapacity selectCompanyCapacity(int companyId, int quarter);
+	
+	//雇佣网络销售人员  第一季度勾选网络销售中心时  插入到 hire_people_online
+
+	public void insertHirePeopleOnline(HirePeopleOnline hirePeopleOnline);
+	
+	public HirePeople checkHirePeople(HirePeople hirePeople);
+	
+	public HirePeopleOnline checkHirePeopleOnline(HirePeopleOnline hirePeopleOnline);
+	
+	public void deleteHirePeopleOnline(HirePeopleOnline hirePeopleOnline);
+	
+	public void deleteHirePeople(HirePeople hirePeople);
+	
+	
+	
+	
+	
+	//2017-11-5  第三季度
+	
+	//上季度结果
+	public List<ProductMarketShare> selectProductMarketShare(Integer id);
+
+	List<CompanyInvestment> selectCompanyInvestment(@Param("companyId")int companyId, @Param("quarter") int quarter);
+		
+			
+	
+	
+
+
+	
+		 
+		
+    
+    
+	
+
+
+
+
+
+
+
+
 
 
     

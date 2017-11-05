@@ -32,6 +32,12 @@ public interface CompetitionMapper {
     public List<Competition> selectCompetitionByPage(TeacherQueryVo teacherQueryVo);
     
     public long getCompetitionCount(TeacherQueryVo teacherQueryVo);
+
+	void updateCompetitionInfo(Competition record);
+	
+	public Competition findCompetitionByCompanyId(Integer companyId);
+	
+	int getCurrentQuarterByCompanyId(Integer companyId);
     
     
 

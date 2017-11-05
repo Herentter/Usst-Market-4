@@ -26,12 +26,13 @@ public class LogController {
 	public @ResponseBody Pager findMemberOperate(HttpServletRequest request){
 		String pageNow=request.getParameter("pageNowOperate");
 		String companyId = request.getParameter("companyId");
+		int currentQuarter = (int) request.getSession().getAttribute("currentQuarter");
 		Page page = null;
 		List<LogVo> logVoList = new ArrayList<LogVo>();
 		Company company = new Company();
 		company.setId(Integer.parseInt(companyId));
 		Log log = new Log();
-		log.setQuarter(1);
+		log.setQuarter(currentQuarter);
 		LogVo logVo = new LogVo();
 		logVo.setCompany(company);
 		logVo.setLog(log);

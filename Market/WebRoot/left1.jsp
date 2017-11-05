@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-        /* html{
+        html{
             height: 100%;
         }
         body{
@@ -18,14 +18,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             margin:0px;
             height: 500px;
             font-family: "Microsoft YaHei"
-        } */
+        } 
         a{color: white;}
         .nav {width: 200px; padding: 40px 28px 25px 0;height:100%;background: 
             #1e485d;color: white;box-sizing: border-box;--moz-box-sizing: border-box;}  
         ul.nav {padding: 0; margin: 0; font-size: 1em; line-height: 0.5em; list-style: none;}  
         ul.nav li {margin-top: 10px;}  
 
-        ul.nav li a {line-height: 10px; font-size: 16px; padding: 10px 5px; color: #ddd;text-indent: 20px; display: block; 
+        ul.nav li a {line-height: 10px; font-size: 16px; padding: 10px 5px; color: #fff;text-indent: 20px; display: block; 
         text-decoration: none;} 
         ul.nav>li:nth-of-type(1){margin-top:0px;}
         ul.nav li a:hover {background-color:#675C7C;    color:white;} 
@@ -48,12 +48,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </style>
 </head>
 <body>
-
-
-
-
-
-
 <ul class="nav"> 
    <li>
         <a href="#none">欢迎界面<i></i></a>
@@ -66,7 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <a href="#none">开始竞赛<i></i></a>
         <ul>
             <li><a href="UpdateCompanyName.do" target="main">创建公司</a></li>
-            <li><a href="strategyInfo.do" target="main">目标策略</a></li>
+            <li><a href="strategyInfo.do?quarter=1" target="main">目标策略</a></li>
         </ul>
    </li>
    <li>
@@ -82,19 +76,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    <li>
         <a href="#none">人力资源<i></i></a>
         <ul>
-            <li><a href="showAllMemberByComapnyId.do" target="main">职位分配</a></li>
-            <li><a href="companyRuleInfo.do" target="main">团队规则</a></li>
-            <li><a href="personalGoalInfo.do" target="main">个人目标</a></li>
-            <li><a href="staffWage.jsp" target="main">员工薪酬</a></li>
-           <!--  <li><a href="salemanWage.jsp" target="main">业内销售人员薪酬</a></li>
-            <li><a href="workerWage.jsp" target="main">业内工厂工人薪酬</a></li> -->
+            <li><a href="showAllMemberByComapnyId.do?quarter=1" target="main">职位分配</a></li>
+            <li><a href="companyRuleInfo.do?quarter=1" target="main">团队规则</a></li>
+            <li><a href="personalGoalInfo.do?quarter=1" target="main">团队目标</a></li>
+            <li><a href="showAverageSalary.do" target="main">员工薪酬</a></li>
+           
         </ul>
    </li>
     <li>
         <a href="#none">销售渠道<i></i></a>
         <ul>
-            <li><a href="showMarketInfo.do" target="main">实体销售中心</a></li>
-            <li><a href="showMarketWebInfo.do" target="main">网络销售中心</a></li>
+            <li><a href="showMarketInfo.do?quarter=1" target="main">实体销售中心</a></li>
+            <li><a href="showMarketWebInfo.do?quarter=1" target="main">网络销售中心</a></li>
             
         </ul>
     </li>
@@ -102,33 +95,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <li>
         <a href="#none">生产制造<i></i></a>
         <ul>
-            <li><a href="CompanyProduct.do" target="main">品牌管理</a></li>
-            <li><a href="showCapacityInfo.do" target="main">固定产能</a></li>
+            <li><a href="CompanyProduct.do?quarter=1" target="main">品牌管理</a></li>
+            <li><a href="showCapacityInfo.do?quarter=1" target="main">固定产能</a></li>
         </ul>
     </li>
 
-    <li>
-        <a href="#none">财务报表<i></i></a>
-        <ul>
-            <li><a href="cashFlow.jsp" target="main">现金流表</a></li>
-            <li><a href="incomeStatement.jsp" target="main">利润表</a></li>
-            <li><a href="assertSheet.jsp" target="main">资产负债表</a></li>
-        </ul>
-    </li>
+    
 
     <li>
         <a href="#none">财务<i></i></a>
         <ul>
-            <li><a href="shareHold.jsp" target="main">内部持股</a></li>
-            <li><a href="fixedDeposit.jsp" target="main">定期存款</a></li>
+            <li><a href="showShareHold.do?quarter=1" target="main">内部持股</a></li>
+            <li><a href="showFixedDeposite.do?quarter=1" target="main">定期存款</a></li>
+        </ul>
+    </li>
+    
+     <li>
+        <a href="#none">财务报表<i></i></a>
+        <ul>
+            <li><a href="showCashFlow.do?quarter1=1" target="main">现金流表</a></li>
+            <li><a href="showIncomeStatement.do?quarter=1" target="main">利润表</a></li>
+            <li><a href="showBalanceSheet.do?quarter=1" target="main">资产负债表</a></li>
         </ul>
     </li>
 
     <li>
          <a href="#none">决策汇总<i></i></a>
         <ul>
-            <li><a href="11.jsp">导航选项</a></li>
-            <li><a href="11.jsp">导航选项</a></li>
+        	<li><a href="policyDecision/companyDecisionSummary.do?companyId=<%=request.getParameter("companyId") %> &currentQuarter=1" target="main">决策汇总</a></li>
+        	
+            <li><a href="finalCheck.do?quarter=1" target="main">最终检查</a></li>
+
         </ul>
     </li>
    <!-- <li><a href="#">文章</a></a> 

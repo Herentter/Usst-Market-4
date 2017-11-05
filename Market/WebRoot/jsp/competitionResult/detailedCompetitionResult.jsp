@@ -23,13 +23,17 @@
 				<span>结果汇总</span>
 			</div>
 
-			<div class="panel-body">
+			<div class="panel-body" >
 				<input type="hidden" id="competitionId" value="${competition.id }"/>
+				<input type="hidden" id="currentQuarter" value="${competition.currentQuarter }"/>
 				<input type="hidden" id="quarter" value="${quarter }"/>
-				<div>
+				<div id="noReleaseResult" style="display:none">
+					<label>当前季度还没有发布竞赛结果，请先去发布结果中发布竞赛结果！</label>
+				</div>
+				<div id="yesReleaseResult" style="display:none">
 					<label>平衡计分卡报告</label>
 					<ul>
-						<li><a href="javascript:void(0)" onclick="">决策时间</a></li>
+						<li><a href="javascript:void(0)" onclick="companyPolicyDecisionTime()">决策时间</a></li>
 						<li><a href="javascript:void(0)" onclick="">平衡计分卡</a></li>
 						<li><a href="javascript:void(0)" onclick="">累计平衡计分卡</a></li>
 					</ul>
@@ -58,6 +62,24 @@
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/jquery.pagination.js"></script>
 <script type="text/javascript">
+$(function(){
+	var quarter=$("#quarter").val();
+	var comCurrentQuarter=$("#currentQuarter").val();
+	if(quarter<comCurrentQuarter){
+		$("#noReleaseResult").hide();
+		$("#yesReleaseResult").show();
+	}else if(quarter==comCurrentQuarter){
+		$("#yesReleaseResult").hide();
+		$("#noReleaseResult").show();
+	}
+});
+
+function everyCompanyPolicyDecisionTime(){
+	var competitionId=$("#competitionId").val();
+	var quarter=$("#quarter").val();
+	window.parent.main.location.href="competitionResult/everyCompanyPolicyDecisionTime.do?competitionId="+competitionId+"&currentQuarter="+quarter;
+}
+
 function balanceSheet(){
 	var competitionId=$("#competitionId").val();
 	var quarter=$("#quarter").val();

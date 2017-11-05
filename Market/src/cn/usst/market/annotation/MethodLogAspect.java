@@ -1,6 +1,7 @@
 package cn.usst.market.annotation;
 
 import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -17,8 +18,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import cn.usst.market.po.LearnTime;
 import cn.usst.market.po.Log;
-import cn.usst.market.po.Teacher;
+import cn.usst.market.po.Member;
+import cn.usst.market.service.BalanceScoreService;
 import cn.usst.market.service.LogService;
 
 @Component
@@ -27,6 +30,9 @@ public class MethodLogAspect {
 	
 	@Autowired
 	private LogService logService;
+	
+	@Autowired
+	private BalanceScoreService balanceScoreService;
 	/** 
      * 日志记录 
      */  
@@ -48,34 +54,65 @@ public class MethodLogAspect {
     public void doMethodLog(JoinPoint joinPoint){
     	LOGGER.info("日志记录");
     	HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-    	Teacher tea = (Teacher) request.getSession().getAttribute("teacher");
+    	Member stu = (Member) request.getSession().getAttribute("student");
     	try {
     		Log log = new Log();
     		Date date = new Date();
+    		int quarter = (int) request.getSession().getAttribute("currentQuarter");
     		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     		log.setOperateDate(sdf.format(date));
-    		log.setContent(tea.getName()+":"+getServiceMthodDescription(joinPoint));
-    		log.setMemberId(tea.getId());
-    		log.setQuarter(1);
+    		log.setContent(stu.getName()+":"+getServiceMthodDescription(joinPoint));
+    		log.setMemberId(stu.getId());
+    		log.setQuarter(quarter);
     		log.setSubmitTag(1);
-    		List<Log> oldLogs = logService.selectLog(log);
-    		int size = oldLogs.size();
-    		if(size>0){
-    			long newMinutes = date.getTime();
-	    		Date oldDate = sdf.parse(oldLogs.get(size-1).getOperateDate());
-	    		long oldMinutes = oldDate.getTime();
-	    		if(newMinutes-oldMinutes > 60000){
-	    			logService.insertLog(log);
-	    		}
-    		}else{
-    			logService.insertLog(log);
+    		if(getDescription(log.getContent()).equals("课程介绍")){
+    			processLearnTime(stu, log, date, sdf);
     		}
-			System.out.println(tea.getId()+":"+getServiceMthodDescription(joinPoint));
+    		insertLog(stu, log, date, sdf);
+    		
+			System.out.println(stu.getId()+":"+getServiceMthodDescription(joinPoint));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
+
+	private void processLearnTime(Member stu, Log log, Date date, SimpleDateFormat sdf) throws ParseException {
+		// TODO Auto-generated method stub
+		List<Log> oldLogs = logService.selectLog(new Log(stu.getName() + ":课程介绍", log.getMemberId(), log.getQuarter()));
+		int size = oldLogs.size();
+		if(size > 0){
+			long newMinutes = date.getTime();
+			Date oldDate = sdf.parse(oldLogs.get(size-1).getOperateDate());
+			long oldMinutes = oldDate.getTime();
+			if(60000 < newMinutes-oldMinutes && newMinutes-oldMinutes < 3600000){
+				double time = (newMinutes-oldMinutes)/60000;
+				updateLearnTime(log, time);
+			}
+		}else{
+			if(getDescription(log.getContent()).equals("课程介绍")){
+				insertLearnTime(log);
+			}
+		}
+		
+	}
+
+	public void insertLog(Member stu, Log log, Date date, SimpleDateFormat sdf)
+			throws ParseException {
+		List<Log> oldLogs = logService.selectLog(log);
+		int size = oldLogs.size();
+		if(size>0){
+			long newMinutes = date.getTime();
+			Date oldDate = sdf.parse(oldLogs.get(size-1).getOperateDate());
+			long oldMinutes = oldDate.getTime();
+			if(newMinutes-oldMinutes > 60000){
+				logService.insertLog(log);
+			}
+		}else{
+			logService.insertLog(log);
+		}
+		processLearnTime(stu, log, date, sdf);
+	}
     
     /**
      * 获取方法注解中方法的描述信息
@@ -107,5 +144,31 @@ public class MethodLogAspect {
     	}else{
     		return 0;
     	}
+    }
+    
+    
+    
+    public void updateLearnTime(Log log, double time){
+    	
+    	LearnTime lt = new LearnTime();
+    	lt.setMemberId(log.getMemberId());
+    	lt.setQuarter(log.getQuarter());
+		LearnTime learnTime = balanceScoreService.getLearnTimeByMemberId(lt);
+		double time2 = learnTime.getTime();
+		learnTime.setTime(time + time2);
+		balanceScoreService.updateLearnTime(learnTime);
+    }
+    
+    public void insertLearnTime(Log log){
+    	LearnTime learnTime = new LearnTime();
+    	learnTime.setMemberId(log.getMemberId());
+    	learnTime.setQuarter(log.getQuarter());
+    	learnTime.setTime(0);
+    	balanceScoreService.insertLearnTime(learnTime);
+    }
+    
+    public String getDescription(String content){
+    	String[] str = content.split(":");
+    	return str[1];
     }
 }

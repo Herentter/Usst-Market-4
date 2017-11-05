@@ -43,6 +43,13 @@ public class Log {
 	public void setSubmitTag(Integer submitTag) {
 		this.submitTag = submitTag;
 	}
+	public Log(String content, Integer memberId, Integer quarter) {
+		this.content = content;
+		this.memberId = memberId;
+		this.quarter = quarter;
+	}
 	
-	
+	public Log(){
+		
+	}
 }

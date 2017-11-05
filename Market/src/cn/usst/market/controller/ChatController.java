@@ -35,23 +35,24 @@ public class ChatController {
 	private CompanyService companyService;
 	
 	@RequestMapping("/chatMessage.do")
-	@MethodLog(description="发送消息操作")
-	public @ResponseBody Chat insertMessage(HttpServletRequest request,Chat chat){
+	public @ResponseBody Chat insertMessage(HttpServletRequest request,Chat chat, String competitionId){
+		int id = Integer.parseInt(competitionId);
 		Teacher tea = (Teacher) request.getSession().getAttribute("teacher");
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		chat.setSendDate(sdf.format(date));
 		chat.setSender(tea.getName());
-		chat.setCompetitionId(1);
+		chat.setCompetitionId(id);
 		chatService.insertMessage(chat);
 		System.out.println();
 		return chat;
 	}
 	
 	@RequestMapping("/findCompany.do")
-	public @ResponseBody List<Company> findCompanyName(){
+	public @ResponseBody List<Company> findCompanyName(String competitionId){
+		int id = Integer.parseInt(competitionId);
 		List<Company> companyList = new ArrayList<Company>();
-		companyList = companyService.showCompanyByCompetitionId(1);
+		companyList = companyService.showCompanyByCompetitionId(id);
 		return companyList;
 	}
 	
@@ -63,16 +64,16 @@ public class ChatController {
 	}*/
 	
 	@RequestMapping("/chatRecord.do")
-	@MethodLog(description="查询聊天记录操作")
-	public @ResponseBody Pager selectChatByPage(HttpServletRequest request){
+	public @ResponseBody Pager selectChatByPage(HttpServletRequest request, String competitionId){
+		int id = Integer.parseInt(competitionId);
 		String pageNow=request.getParameter("pageNowChat");
 		Page page = null;
 		List<Chat> chatList = new ArrayList<Chat>();
 		Chat chat = new Chat();
-		chat.setCompetitionId(1);
+		chat.setCompetitionId(id);
 		ChatVo chatVo = new ChatVo();
 		chatVo.setChat(chat);
-		int count = chatService.getChatCount(1);
+		int count = chatService.getChatCount(id);
 		
 		if(pageNow != null&&!pageNow.equals("")){
 			page = new Page(count, Integer.parseInt(pageNow));

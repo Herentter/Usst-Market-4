@@ -80,6 +80,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</table>
 						<input type="hidden" id="pageNowChat" >
 						<input type="hidden" id="totalPageChat" >
+						<input type="hidden" id="competitionId" value=<%=request.getParameter("id") %> />
 						<div id="pageChat" style="text-align:center"></div>
 					</div>
 					

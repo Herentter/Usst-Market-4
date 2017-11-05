@@ -20,6 +20,15 @@
 <script type="text/javascript" src="js/jquery.pagination.js"></script>
 <script type="text/javascript">
 
+$(function(){
+	$("a").click(function(){
+		var quarter=$("#currentQuarter").val();
+		var companyId=$(this).prev("input").val();
+		window.parent.main.location.href="policyDecision/companyDecisionSummary.do?companyId="+companyId+"&currentQuarter="+quarter;
+
+	});
+	
+});
 </script>
 
 </head>
@@ -31,10 +40,14 @@
 			</div>
 
 			<div class="panel-body">
+				<input type="hidden" id="currentQuarter" value="${currentQuarter }"/>
 				<label>点击公司名称来查看其决策汇总的完整版本</label>
 				<ul>
 					<c:forEach items="${companyList }" var="item">
-						<li><a href="policyDecision/companyDecisionSummary.do?companyId=${item.id }&currentQuarter=${competition.currentQuarter}">${item.name }</a></li>
+						<li>
+							<input type="hidden" value="${item.id }"/>
+							<a href="javascript:void(0)">${item.name }</a>
+						</li>
 					</c:forEach>
 				</ul>
 				

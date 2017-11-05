@@ -6,8 +6,14 @@ public class ProductInfo {
     private String detail;
 
     private String title;
-    
+
     private Integer price;
+
+    private Byte practical;
+
+    private Byte perfect;
+
+    private Byte business;
 
     public Integer getId() {
         return id;
@@ -33,18 +39,35 @@ public class ProductInfo {
         this.title = title == null ? null : title.trim();
     }
 
-	@Override
-	public String toString() {
-		return this.detail;
-	}
-	
-	public Integer getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
     public void setPrice(Integer price) {
         this.price = price;
     }
-    
-    
+
+    public Byte getPractical() {
+        return practical;
+    }
+
+    public void setPractical(Byte practical) {
+        this.practical = practical;
+    }
+
+    public Byte getPerfect() {
+        return perfect;
+    }
+
+    public void setPerfect(Byte perfect) {
+        this.perfect = perfect;
+    }
+
+    public Byte getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Byte business) {
+        this.business = business;
+    }
 }

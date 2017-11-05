@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.usst.market.mapper.StaticInfoMapper;
+import cn.usst.market.po.AdvertiseInfo;
 import cn.usst.market.po.MarketInfo;
+import cn.usst.market.po.MediaInfo;
 import cn.usst.market.po.PriceInfo;
 import cn.usst.market.po.UsageInfo;
 import cn.usst.market.service.StaticInfoService;
@@ -32,6 +34,18 @@ public class StaticInfoServiceImpl implements StaticInfoService {
 	public List<MarketInfo> showMarketInfo() {
 		// TODO Auto-generated method stub
 		return staticInfoMapper.showMarketInfo();
+	}
+
+	@Override
+	public List<MediaInfo> showMediaInfo() {
+		// TODO Auto-generated method stub
+		return staticInfoMapper.showMediaInfo();
+	}
+
+	@Override
+	public List<AdvertiseInfo> showAdvertiseInfo() {
+		// TODO Auto-generated method stub
+		return staticInfoMapper.showAdvertiseInfo();
 	}
 	
 }

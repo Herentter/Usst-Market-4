@@ -158,10 +158,13 @@ ul {
 							<li><a href="javascript:void(0)" onclick="usefulChart()"
 								target="main">&nbsp;有用图表</a></li>
 							<div id="quarterTwo">
-							<li><a href="policyDecision/decisionSummary.do?competitionId=${competition.id }&currentQuarter=${competition.currentQuarter}"
+							<!-- 
+							<li><a href="javascript:void(0)"
 								target="main">&nbsp;商业指导帮助</a></li>
-							<li><a href="policyDecision/decisionSummary.do?competitionId=${competition.id }&currentQuarter=${competition.currentQuarter}"
-								target="main">&nbsp;虚假广告</a></li>
+							<li><a href="javascript:void(0)"
+								target="main">&nbsp;虚假广告</a></li> 
+								虚假广告暂时不用。
+							-->
 							</div>
 							<li><a href="javascript:void(0)" onclick="releaseResult()"
 								target="main">&nbsp;发布结果</a></li>
@@ -195,6 +198,7 @@ ul {
     			$(".xianshi,.yincang").hide();       		
         		$(this).next("div").show();
     		});
+    		$(".submenu").show();
     		
     	});
 
@@ -239,8 +243,8 @@ ul {
         	
        		$("#quarterAdd").click(function(){
        			var q=parseInt($("#quarter").text());
-            	//var cq=$("#currentQuarter").val();这个之后要放开
-            	var cq=5;
+            	var cq=$("#currentQuarter").val();//这个之后要放开
+            	//var cq=5;
             	q++;
        			if(q>parseInt(cq)){
        				q=parseInt(cq);
@@ -292,7 +296,7 @@ ul {
         function releaseResult(){
         	var competitionId=$("#competitionId").val();
         	var quarter=$("#quarter").text();
-        	window.parent.main.location.href="competitionResult/releaseResult.do?competitionId="+competitionId+"&currentQuarter="+quarter;
+        	window.parent.main.location.href="competitionResult/goReleaseResult.do?competitionId="+competitionId+"&currentQuarter="+quarter;
         }
     </script>
 </body>

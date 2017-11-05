@@ -36,10 +36,10 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td id="assetTd"><strong>流动资产+长期资产</strong></td>
+							<td id="assetTd"><strong>流动资产</strong></td>
 						</tr>
 						<tr>
-							<td>现金</td>
+							<td>现金货币</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
 								<td>${item.balanceSheet.huobi }</td>
 							</c:forEach>
@@ -63,25 +63,58 @@
 								<td>${item.balanceSheet.cunhuo }</td>
 							</c:forEach>
 						</tr>
-						<!-- <tr>
-							<td>长期资产</td>
-						</tr> -->
+						<tr bgcolor="#D9EDF7">
+							<td><strong>流动资产合计</strong></td>
+							<c:forEach items="${liquidAssetsSumList }" var="item">
+								<td><strong>${item }</strong></td>
+							</c:forEach>
+						</tr>
 						<tr>
-							<td>净固定资产</td>
+							<td id="unLiquidAssetsTd"><strong>非流动资产</strong></td>
+						</tr>
+						<tr>
+							<td>固定资产</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
 								<td>${item.balanceSheet.zichan }</td>
 							</c:forEach>
 						</tr>
-						
+						<tr bgcolor="#D9EDF7">
+							<td><strong>非流动资产合计</strong></td>
+							<c:forEach items="${unLiquidAssetsSumList }" var="item">
+								<td><strong>${item }</strong></td>
+							</c:forEach>
+						</tr>
 						<tr id="assetSum" bgcolor="#D9EDF7">
-							<td><strong>合计</strong></td>
+							<td><strong>资产合计</strong></td>
 							<c:forEach items="${assetSumList }" var="item">
 								<td><strong>${item }</strong></td>
 							</c:forEach>
 						</tr>
 						
 						<tr>
-							<td id="debtShareTd"><strong>负债+股本金</strong></td>
+							<td id="liquidDebtTd"><strong>流动负债</strong></td>
+						</tr>
+						
+						<tr>
+							<td>紧急贷款</td>
+							<c:forEach items="${companyFinanceVoList }" var="item">
+								<td>${item.balanceSheet.daikuanEmergency }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>应付利息</td>
+							<c:forEach items="${companyFinanceVoList }" var="item">
+								<td>${item.balanceSheet.lixiPay }</td>
+							</c:forEach>
+						</tr>
+						<tr bgcolor="#D9EDF7">
+							<td><strong>流动负债合计</strong></td>
+							<c:forEach items="${liquidDebtSumList }" var="item">
+								<td><strong>${item }</strong></td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td id="unLiquidDebtTd"><strong>非流动负债</strong></td>
 						</tr>
 						<tr>
 							<td>常规银行贷款</td>
@@ -89,11 +122,20 @@
 								<td>${item.balanceSheet.daikuanNormal }</td>
 							</c:forEach>
 						</tr>
-						<tr>
-							<td>紧急贷款</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.balanceSheet.daikuanEmergency }</td>
+						<tr bgcolor="#D9EDF7">
+							<td><strong>非流动负债合计</strong></td>
+							<c:forEach items="${unLiquidDebtSumList }" var="item">
+								<td><strong>${item }</strong></td>
 							</c:forEach>
+						</tr>
+						<tr bgcolor="#D9EDF7">
+							<td><strong>负债合计</strong></td>
+							<c:forEach items="${debtSumList }" var="item">
+								<td><strong>${item }</strong></td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td id="ownerEquityTd"><strong>所有者权益</strong></td>
 						</tr>
 						<tr>
 							<td>普通股</td>
@@ -108,7 +150,13 @@
 							</c:forEach>
 						</tr>
 						<tr bgcolor="#D9EDF7">
-							<td><strong>合计</strong></td>
+							<td><strong>所有者权益合计</strong></td>
+							<c:forEach items="${ownerEquitySumList }" var="item">
+								<td><strong>${item }</strong></td>
+							</c:forEach>
+						</tr>
+						<tr bgcolor="#D9EDF7">
+							<td><strong>资产负债总计</strong></td>
 							<c:forEach items="${debtShareSumList }" var="item">
 								<td><strong>${item }</strong></td>
 							</c:forEach>
@@ -129,6 +177,10 @@
 		var col=$("table").find("tr").children("th").length;
 		$("#assetTd").attr("colspan",col);
 		$("#debtShareTd").attr("colspan",col);
+		$("#unLiquidAssetsTd").attr("colspan",col);
+		$("#liquidDebtTd").attr("colspan",col);
+		$("#unLiquidDebtTd").attr("colspan",col);
+		$("#ownerEquityTd").attr("colspan",col);
 		/* for(var i=2;i<=col;i++){
 			var sum=0;
 			var node=$("#asset tr td:nth-child(i)");

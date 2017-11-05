@@ -12,7 +12,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <style type="text/css">
         body{
-            margin:4px;
+            margin:5px;
             width: 99%;
         }
         .panel{
@@ -21,7 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
         #content{
             /*width: 900px;*/
-            height: 460px;
+            height: 500px;
             background: url(images/bgmiphone2.jpg) no-repeat;
             background-position: 0px -120px;
             background-size: cover;
@@ -35,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
    
     <div class="panel panel-info">
-        <div class="panel-heading">欢迎界面</div>
+        <div class="panel-heading"><label>欢迎界面</label></div>
         <div class="panel-body">
              <div id="content">
             </div>

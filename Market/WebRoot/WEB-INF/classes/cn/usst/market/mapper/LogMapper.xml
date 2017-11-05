@@ -27,7 +27,7 @@
   </insert>
   
   <select id="selectLog" parameterType="Log" resultType="Log">
-  	select * from log where content = #{content} and member_id = #{memberId}
+  	select * from log where content = #{content} and member_id = #{memberId} and quarter = #{quarter}
   </select>
   
   <select id="getCount" parameterType="LogVo" resultType="java.lang.Integer">

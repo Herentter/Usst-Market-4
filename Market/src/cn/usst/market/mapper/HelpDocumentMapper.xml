@@ -8,4 +8,8 @@
   <select id="selectAllHelpDocument" resultType="HelpDocument">
   	SELECT * from help_document
   </select>
+  
+  <select id="selectHelpDocument" resultType="HelpDocument" parameterType="HelpDocument">
+  	SELECT * FROM help_document WHERE titleLevelOne = #{titleLevelOne} AND titleLevelTwo = #{titleLevelTwo}
+  </select>
 </mapper>

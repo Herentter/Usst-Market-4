@@ -37,8 +37,8 @@
 					<tbody>
 						<tr bgcolor="#D9EDF7">
 							<td><strong>季初现金余额</strong></td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td><strong>${item.cashFlow.yuE }</strong></td>
+							<c:forEach items="${yuEPreList }" var="item">
+								<td><strong>${item }</strong></td>
 							</c:forEach>
 						</tr>
 						<tr>
@@ -69,6 +69,12 @@
 								<td>${item.cashFlow.qitaGet }</td>
 							</c:forEach>
 						</tr>
+						<tr bgcolor="#D9EDF7">
+							<td><strong>=经营收入小计</strong></td>
+							<c:forEach items="${incomeSumList }" var="item">
+								<td><strong>${item }</strong></td>
+							</c:forEach>
+						</tr>
 						<tr>
 							<td>-邮寄返款</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
@@ -76,19 +82,19 @@
 							</c:forEach>
 						</tr>
 						<tr>
-							<td>-生产</td>
+							<td>-生产支出</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
 								<td>${item.cashFlow.shengchanPay }</td>
 							</c:forEach>
 						</tr>
 						<tr>
-							<td>-研发</td>
+							<td>-研发支付</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
 								<td>${item.cashFlow.yanfaPay }</td>
 							</c:forEach>
 						</tr>
 						<tr>
-							<td>-广告</td>
+							<td>-广告支付</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
 								<td>${item.cashFlow.guanggaoPay }</td>
 							</c:forEach>
@@ -106,23 +112,23 @@
 							</c:forEach>
 						</tr>
 						<tr>
-							<td>-市场调研</td>
+							<td>-市场调研支付</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
 								<td>${item.cashFlow.diaoyanPay }</td>
 							</c:forEach>
 						</tr>
 						<tr>
-							<td>-货运</td>
+							<td>-货运支付</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
 								<td>${item.cashFlow.huoyunPay }</td>
 							</c:forEach>
 						</tr>
-						<tr>
+						<%-- <tr>
 							<td>-库存持有成本</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
 								<td>${item.cashFlow.kucunPay }</td>
 							</c:forEach>
-						</tr>
+						</tr> --%>
 						<tr>
 							<td>-网络销售费用</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
@@ -153,7 +159,12 @@
 								<td>${item.cashFlow.qitaPay }</td>
 							</c:forEach>
 						</tr>
-						
+						<tr bgcolor="#D9EDF7">
+							<td><strong>=经营支出小计</strong></td>
+							<c:forEach items="${paySumList }" var="item">
+								<td><strong>${item }</strong></td>
+							</c:forEach>
+						</tr>
 						<tr bgcolor="#D9EDF7">
 							<td><strong>=净营业现金</strong></td>
 							<c:forEach items="${operatingCashSumList }" var="item">
@@ -197,7 +208,12 @@
 								<td>${item.cashFlow.cunkuanRegularGet }</td>
 							</c:forEach>
 						</tr>
-						
+						<tr bgcolor="#D9EDF7">
+							<td><strong>=筹资活动收入小计</strong></td>
+							<c:forEach items="${financingSumList }" var="item">
+								<td><strong>${item }</strong></td>
+							</c:forEach>
+						</tr>
 						<tr>
 							<td>-偿还常规银行贷款</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
@@ -217,7 +233,12 @@
 								<td>${item.cashFlow.cunkuanRegularPay }</td>
 							</c:forEach>
 						</tr>
-						
+						<tr bgcolor="#D9EDF7">
+							<td><strong>=投资活动小计</strong></td>
+							<c:forEach items="${investmentSumList }" var="item">
+								<td><strong>${item }</strong></td>
+							</c:forEach>
+						</tr>
 						<tr bgcolor="#D9EDF7">
 							<td><strong>=所有财务活动</strong></td>
 							<c:forEach items="${financeActiveSumList }" var="item">

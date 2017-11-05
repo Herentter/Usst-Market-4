@@ -39,7 +39,7 @@
 							<td id="assetTd"><strong>毛利</strong></td>
 						</tr>
 						<tr>
-							<td>+销售收入</td>
+							<td>+营业收入</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
 								<td>${item.incomeStatement.yingyeIncome }</td>
 							</c:forEach>
@@ -52,7 +52,7 @@
 						</tr>
 						
 						<tr>
-							<td>-销货成本</td>
+							<td>-营业成本</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
 								<td>${item.incomeStatement.yingyeCost }</td>
 							</c:forEach>
@@ -64,16 +64,16 @@
 							</c:forEach>
 						</tr>
 						<tr>
-							<td id=""><strong>支出</strong></td>
+							<td id="payId"><strong>支出</strong></td>
 						</tr>
 						<tr>
-							<td>-研发</td>
+							<td>-研发投入</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
 								<td>${item.incomeStatement.yanfa }</td>
 							</c:forEach>
 						</tr>
 						<tr>
-							<td>-广告</td>
+							<td>-广告投入</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
 								<td>${item.incomeStatement.guanggao }</td>
 							</c:forEach>
@@ -205,6 +205,7 @@
 	$(function(){
 		var col=$("table").find("tr").children("th").length;
 		$("#assetTd").attr("colspan",col);
+		$("#payId").attr("colspan",col);
 		$("#debtShareTd").attr("colspan",col);
 		/* for(var i=2;i<=col;i++){
 			var sum=0;

@@ -5,20 +5,29 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.usst.market.mapper.BalanceScoreMapper;
 import cn.usst.market.mapper.HelpDocumentMapper;
 import cn.usst.market.mapper.StudentTextbookMapper;
 import cn.usst.market.mapper.TeacherMapper;
 import cn.usst.market.mapper.TeacherPolicyDecisionMapper;
 import cn.usst.market.mapper.TeacherTextbookMapper;
 import cn.usst.market.mapper.TeacherToolMapper;
+import cn.usst.market.po.BalanceScore;
+import cn.usst.market.po.BalanceScoreAvgData;
+import cn.usst.market.po.BalanceScoreMaxData;
+import cn.usst.market.po.BalanceScoreMinData;
+import cn.usst.market.po.BalanceScoreVo;
 import cn.usst.market.po.Company;
+import cn.usst.market.po.CompanyCapacity;
 import cn.usst.market.po.CompanyMarket;
 import cn.usst.market.po.CompanyProduct;
 import cn.usst.market.po.CompanyRule;
 import cn.usst.market.po.CompanyRuleInfo;
+import cn.usst.market.po.CompanyStock;
 import cn.usst.market.po.CompanyStrategy;
 import cn.usst.market.po.Competition;
 import cn.usst.market.po.CompetitionQuarterTime;
+import cn.usst.market.po.FixedDeposit;
 import cn.usst.market.po.HelpDocument;
 import cn.usst.market.po.IdQuarter;
 import cn.usst.market.po.MarketInfo;
@@ -53,6 +62,9 @@ public class TeacherServiceImpl implements TeacherService {
 	
 	@Autowired
 	private HelpDocumentMapper helpDocumentMapper;
+
+	@Autowired
+	private BalanceScoreMapper balanceScoreMapper;
 
 	@Override
 	public Teacher doTeacherLogin(Teacher record) throws Exception {
@@ -105,19 +117,6 @@ public class TeacherServiceImpl implements TeacherService {
 	@Override
 	public void deleteStudentTextbookByTeacherTextbookId(Integer id){
 		studentTextbookMapper.deleteByTeacherTextbookId(id);
-	}
-
-	//帮助文档
-	@Override
-	public int getTitleLevelOneCount() {
-		// TODO Auto-generated method stub
-		return helpDocumentMapper.getTitleLevelOneCount();
-	}
-
-	@Override
-	public List<HelpDocument> selectAllHelpDocument() {
-		// TODO Auto-generated method stub
-		return helpDocumentMapper.selectAllHelpDocument();
 	}
 	
 	//教员工具箱中
@@ -234,14 +233,43 @@ public class TeacherServiceImpl implements TeacherService {
 		return teacherPolicyDecisionMapper.findMarketInfoById(id);
 	}
 	
-	//找季度增加的产能
+	//找季度公司的产能
+	//查找公司产能
 	@Override
-	public int findAddCapacityByIdQuarter(IdQuarter idQuarter){
-		return teacherPolicyDecisionMapper.findAddCapacityByIdQuarter(idQuarter);
+	public CompanyCapacity findCompanyCapacityByIdQuarter(IdQuarter idQuarter){
+		return teacherPolicyDecisionMapper.findCompanyCapacityByIdQuarter(idQuarter);
 	}
+	
+	//公司持股
 	@Override
-	public int findTotalCapacityByIdQuarter(IdQuarter idQuarter){
-		return teacherPolicyDecisionMapper.findTotalCapacityByIdQuarter(idQuarter);
+	public List<CompanyStock> findCompanyStockByIdQuarter(IdQuarter idQuarter){
+		return teacherPolicyDecisionMapper.findCompanyStockByIdQuarter(idQuarter);
 	}
+	
+	//公司定期存款
+	public FixedDeposit findCompanyFixedDepositByIdQuarter(IdQuarter idQuarter){
+		return teacherPolicyDecisionMapper.findCompanyFixedDepositByIdQuarter(idQuarter);
+	}
+	//帮助文档
+	@Override
+	public int getTitleLevelOneCount() {
+		// TODO Auto-generated method stub
+		return helpDocumentMapper.getTitleLevelOneCount();
+	}
+
+	@Override
+	public HelpDocument selectHelpDocument(HelpDocument helpDocument) {
+		// TODO Auto-generated method stub
+		return helpDocumentMapper.selectHelpDocument(helpDocument);
+	}
+	
+	@Override
+	public List<HelpDocument> selectAllHelpDocument() {
+		// TODO Auto-generated method stub
+		return helpDocumentMapper.selectAllHelpDocument();
+	}
+	
+	
+	
 	
 }

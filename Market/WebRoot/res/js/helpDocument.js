@@ -14,13 +14,11 @@
 					</li>
  * 
  */
+
 $(function(){
 	$.ajax({
 		type:'post',
 		url:'selectAllHelpDocument.do',
-		//请求是key/value这里不需要指定contentType，因为默认就是key/value
-		//contentType:'application/json;charset=utf-8',
-		//数据格式是json串，商品信息
 		success:function(data){//返回json结果
 			var count = 0;
 			for(var i = 0; i < data[0].size; i ++){//$("#u1").append("<li>"+data[i].name+"</li>");
@@ -35,8 +33,14 @@ $(function(){
 					if(data[j].titleLevelOne == data[count].titleLevelOne){
 						var liNode1 = $("<li></li>");
 						var aNode = $("<a></a>");
-						aNode.attr("href","jsp/teacherHelpDocument/AMarketIntroduction.jsp?titleOne="+data[j].titleLevelOne+"&content="+data[j].content+"&titleTwo="+data[j].titleLevelTwo);
-						aNode.attr("target","main");
+						aNode.attr("href","javascript:void(0)");
+						aNode.attr("titleOne",data[j].titleLevelOne);
+						aNode.attr("titleTwo",data[j].titleLevelTwo);
+						aNode.click(function(){
+							var titleOne = $(this).attr("titleone");
+							var titleTwo = $(this).attr("titletwo");
+							select(titleOne,titleTwo);
+						});
 						aNode.html(data[j].titleLevelTwo);
 						liNode1.append(aNode);
 						ulNode.append(liNode1);
@@ -56,6 +60,19 @@ $(function(){
 		
 	});
 });
+
+function select(titleOne, titleTwo){
+	$.ajax({
+		type:'post',
+		url:'selectSingleItem.do',
+		data:'titleOne=' + titleOne + '&titleTwo=' + titleTwo,
+		success:function(data){//返回json结果
+			$("#title").html(data.titleLevelOne + "----" + data.titleLevelTwo);
+			$("#documentContent").html(data.content);
+		}
+		
+	});
+}
 
 function addClick(){   		
 	$(".list-group").children("a").click(function(){

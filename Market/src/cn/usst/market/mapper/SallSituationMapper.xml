@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.usst.market.mapper.SallSituationMapper">
+
+  <resultMap type="cn.usst.market.po.SallSituationVo" id="saleSituationMap">
+    <result column="product_id" property="PP.productId"/>
+    <result column="company_id" property="PP.companyId"/>
+    <result column="price" property="PP.price"/>
+    <result column="youji" property="PP.youji"/>
+    <result column="product_type" property="PMS.productType"/>
+    <result column="market_share" property="PMS.marketShare"/>
+    <result column="need" property="PMS.need"/>
+    <result column="sale" property="PMS.sale"/>
+    <result column="stockoun" property="PMS.stockoun"/>
+    <result column="stock" property="PMS.stock"/>
+  </resultMap>
+
+  <!--  输入公式ID和季度编号，输出产品的市场和价格信息 -->
+  <!-- 这里选择这个传入PysicalEmploeePo只是为了方便调用companyid和quater两个字段而已 -->
+  <select id="selectSaleSituationbyCompanyID" parameterType="cn.usst.market.po.PysicalEmploeePo" resultMap="saleSituationMap">
+  	select
+        product_price.company_id,
+        product_price.product_id,
+        product_price.price,
+        product_price.youji,
+        product_market_share.product_type,
+        product_market_share.market_share,
+        product_market_share.need,
+        product_market_share.sale,
+        product_market_share.stockoun,
+        product_market_share.stock
+    from 
+        product_price,
+        product_market_share
+    where
+        product_price.company_id = #{companyid} and
+        product_price.quarter = #{quater} and
+        product_price.product_id = product_market_share.product_id
+  </select>
+  
+</mapper>
