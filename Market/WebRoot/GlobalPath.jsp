@@ -125,7 +125,7 @@ float:left;
 </head>
 <body onLoad="init()">
 	<div class="panel panel-info">
-		<div class="panel-heading">各产品销量统计</div>
+		<div class="panel-heading">各渠道需求量</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#notice1" data-toggle="tab">
@@ -157,27 +157,15 @@ float:left;
 									<input type="hidden" value="${len }" id="len"/>
 									<input type="hidden" value="${quater }" name="quater"/>
 									<input type="hidden" value="${add }" name="add"/>
-									<td>品牌</td>
-									<td>公司编号</td>
-									<td>产品需求量</td>
-									<td>产品销量</td>
-									<td>销售额</td>
-									<td>产品脱销</td>
-									<td>脱销损失</td>
-									<td>毛利率</td>
+									<td>公司名称</td>
+									<td>需求量</td>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${listssv }" var="lists">
+								<c:forEach items="${ListGPNV }" var="lists">
 									<tr>
-										<td>${lists.PMS.productType }</td>
-										<td>${lists.PP.companyId }</td>
-										<td>${lists.PMS.need }</td>
-										<td>${lists.PMS.sale }</td>
-										<td>${lists.saleIncom }</td>
-										<td>${lists.PMS.stockoun }</td>
-										<td>${lists.saleLost }</td>
-										<td>${lists.saleIncom }</td>
+										<td>${lists.c.name }</td>
+										<td>${lists.pms.need }</td>
 									</tr>
 								</c:forEach>
 							</tbody>

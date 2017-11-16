@@ -10,8 +10,12 @@ import cn.usst.market.mapper.CompanyMapper;
 import cn.usst.market.mapper.SallSituationMapper;
 import cn.usst.market.po.Company;
 import cn.usst.market.po.CompanyMarket;
+import cn.usst.market.po.GlobalPathNeedsVo;
+import cn.usst.market.po.ProductMarketShare;
 import cn.usst.market.po.PysicalEmploeePo;
+import cn.usst.market.po.SaleIncomVo;
 import cn.usst.market.po.SallSituationVo;
+import cn.usst.market.po.StoreInforVo;
 import cn.usst.market.service.SearchService;
 
 @Service("SearchServiceImpl")
@@ -68,4 +72,93 @@ public class SearchServiceImpl implements SearchService {
 		return ListCM;
 	}
 
+	@Override
+	public List<SaleIncomVo> selectPathAbilitybyCompanyID(PysicalEmploeePo po) {
+		// TODO Auto-generated method stub
+		return SSM.selectPathAbilitybyCompanyID(po);
+	}
+
+	@Override
+	public List<SaleIncomVo> selectPathAbilitybyCompanyID(int companyid, int quarter) {
+		// TODO Auto-generated method stub
+		PysicalEmploeePo po = new PysicalEmploeePo();
+		po.setQuater(quarter);
+		po.setCompanyid(companyid);
+		
+		//查询
+		List<SaleIncomVo> ListSIV = selectPathAbilitybyCompanyID(po);
+
+		//整理数据
+		List<SaleIncomVo> ListSIV2 = new ArrayList<SaleIncomVo>();
+		for(SaleIncomVo vo:ListSIV){
+			int saleIncomSum = vo.getPP().getPrice()*vo.getPMS().getSale();
+			vo.setSaleIncomSum(saleIncomSum);
+			int saleCostSum = vo.getCP().getCost()*vo.getPMS().getSale();
+			vo.setSaleCostSum(saleCostSum);
+			int youjiSum = vo.getPP().getYouji()*vo.getPMS().getSale();
+			vo.setYoujiSum(youjiSum);
+			ListSIV2.add(vo);
+		}
+		return ListSIV2;
+	}
+
+	
+	@Override
+	public List<GlobalPathNeedsVo> selectGlobalPathSharebycompanyid(int companyid, int quarter) {
+		// TODO Auto-generated method stub
+		PysicalEmploeePo po = new PysicalEmploeePo();
+		po.setQuater(quarter);
+		po.setCompanyid(companyid);
+		
+		return SSM.selectGlobalPathSharebycompanyid(po);
+	}
+
+	@Override
+	public List<StoreInforVo> selectStoreInforbycompanyid(int companyid, int quarter) {
+		// TODO Auto-generated method stub
+		PysicalEmploeePo po = new PysicalEmploeePo();
+		po.setQuater(quarter);
+		po.setCompanyid(companyid);
+		
+		System.out.println("InforGet");
+		System.out.println("quarter : "+quarter);
+		System.out.println("companyid : "+companyid);
+		List<StoreInforVo> SIVmid = SSM.selectStoreInforbycompanyid(po);
+
+		System.out.println("DBVisited");
+		List<StoreInforVo> SIV = new ArrayList<StoreInforVo>();
+		
+		for(StoreInforVo s:SIVmid){
+			String[] str = s.getCM().getMarketId().split(",");
+			int[] i = new int[4];
+			for(Integer count = 0;count<4;count++){
+				for(int y = 0;y<str.length;y++){
+					if(str[y].equals(count.toString()))
+						i[count] = 1;
+					else
+						i[count]=0;
+				}
+			}
+			String[] mStr = new String[4];
+			for(int j = 0;j<4;j++){
+				if(i[j]==1)
+					mStr[j]="是";
+				else
+					mStr[j]="否";
+			}
+			if(s.getCM().getIsPhy()==1)
+				s.setIsphy("实体店");
+			else
+				s.setIsphy("网店");
+			s.setStoreList(i);
+			s.setmStr(mStr);
+			SIV.add(s);
+		}
+		
+
+		System.out.println("ServiceReturned");
+		return SIV;
+	}
+	
+	
 }

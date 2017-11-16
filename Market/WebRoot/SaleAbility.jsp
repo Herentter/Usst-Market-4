@@ -125,7 +125,7 @@ float:left;
 </head>
 <body onLoad="init()">
 	<div class="panel panel-info">
-		<div class="panel-heading">各产品销量统计</div>
+		<div class="panel-heading">渠道盈利能力</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#notice1" data-toggle="tab">
@@ -157,30 +157,24 @@ float:left;
 									<input type="hidden" value="${len }" id="len"/>
 									<input type="hidden" value="${quater }" name="quater"/>
 									<input type="hidden" value="${add }" name="add"/>
-									<td>品牌</td>
-									<td>公司编号</td>
-									<td>产品需求量</td>
-									<td>产品销量</td>
-									<td>销售额</td>
-									<td>产品脱销</td>
-									<td>脱销损失</td>
-									<td>毛利率</td>
+									<td>销售收入</td>
+									<td>邮寄返款</td>
+									<td>销货成本</td>
+									<td>毛利</td>
+									<td>销售人员费用</td>
+									<td>销售利润</td>
+									<td>利润占收入比重</td>
 								</tr>
 							</thead>
-							<tbody>
-								<c:forEach items="${listssv }" var="lists">
-									<tr>
-										<td>${lists.PMS.productType }</td>
-										<td>${lists.PP.companyId }</td>
-										<td>${lists.PMS.need }</td>
-										<td>${lists.PMS.sale }</td>
-										<td>${lists.saleIncom }</td>
-										<td>${lists.PMS.stockoun }</td>
-										<td>${lists.saleLost }</td>
-										<td>${lists.saleIncom }</td>
-									</tr>
-								</c:forEach>
-							</tbody>
+							<tr>
+										<td>${vo.saleIncomSum }</td>
+										<td>${vo.youjiSum }</td>
+										<td>${vo.saleCostSum }</td>
+										<td>${fuzzyincom }</td>
+										<td>${salary_sum }</td>
+										<td>${income }</td>
+										<td>${rate }</td>
+							</tr>
 						</table>
 					</form>
 				</div>

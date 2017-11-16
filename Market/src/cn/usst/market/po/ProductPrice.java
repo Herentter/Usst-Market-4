@@ -9,6 +9,10 @@ public class ProductPrice {
 
     private Integer quarter;
 
+	private Integer price;
+
+    private Integer youji;
+
     public Integer getId() {
 		return id;
 	}
@@ -56,10 +60,6 @@ public class ProductPrice {
 	public void setYouji(Integer youji) {
 		this.youji = youji;
 	}
-
-	private Integer price;
-
-    private Integer youji;
 
 
     

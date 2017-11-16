@@ -15,6 +15,15 @@
     <result column="stock" property="PMS.stock"/>
   </resultMap>
 
+  <resultMap type="cn.usst.market.po.SaleIncomVo" id="PathAbilityMap">
+  	<result column="cost" property="CP.cost"/>
+  	<result column="company_id" property="PMS.companyId"/>
+  	<result column="product_id" property="PMS.productId"/>
+  	<result column="youji" property="PP.youji"/>
+  	<result column="price" property="PP.price"/>
+  	<result column="sale" property="PMS.sale"/>
+  </resultMap>
+
   <!--  输入公式ID和季度编号，输出产品的市场和价格信息 -->
   <!-- 这里选择这个传入PysicalEmploeePo只是为了方便调用companyid和quater两个字段而已 -->
   <select id="selectSaleSituationbyCompanyID" parameterType="cn.usst.market.po.PysicalEmploeePo" resultMap="saleSituationMap">
@@ -38,4 +47,79 @@
         product_price.product_id = product_market_share.product_id
   </select>
   
+  <select id="selectPathAbilitybyCompanyID" parameterType="cn.usst.market.po.PysicalEmploeePo" resultMap="PathAbilityMap">
+	select
+		cp.cost,<!-- 生产成本 -->
+		pms.company_id,<!-- 公司ID -->
+		pms.product_id,<!-- 产品ID -->
+		pp.youji,<!-- 邮寄返款 -->
+		pp.price,<!-- 售价 -->
+		pms.sale<!-- 销量 -->
+	from
+		product_price pp,
+		product_market_share pms,
+		company_product cp
+	where
+		pp.company_id = #{companyid}
+		and pp.quarter = #{quater}
+		and pms.product_id = pp.product_id
+		and cp.id = pp.product_id
+  </select>
+  
+  <resultMap type="cn.usst.market.po.GlobalPathNeedsVo" id="GlobalPathSharebycompanyidMap">
+  	<result column="need" property="pms.need"/>
+  	<result column="name" property="c.name"/>
+  </resultMap>
+  
+  <select id="selectGlobalPathSharebycompanyid" parameterType="cn.usst.market.po.PysicalEmploeePo" resultMap="GlobalPathSharebycompanyidMap">
+	select 
+		pms.need need,
+		company.name name
+	from
+		company,
+		product_market_share pms,
+		(
+			select
+				competition_id
+			from
+				product_market_share
+			where
+				company_id = #{companyid}
+				and quarter = #{quater}
+		) subpms
+	where
+		pms.competition_id = subpms.competition_id
+		and company.id = pms.company_id
+		and company.competition_id = subpms.competition_id
+  </select>
+  
+  <resultMap type="cn.usst.market.po.StoreInforVo" id="selectStoreInforMapper">
+  	<result column="id" property="c.id"/>
+  	<result column="mi" property="CM.marketId"/>
+  	<result	column="isphy" property="CM.isPhy"/>
+  	<result column="name" property="c.name"/>
+  </resultMap>
+  
+  <select id="selectStoreInforbycompanyid" parameterType="cn.usst.market.po.PysicalEmploeePo" resultMap="selectStoreInforMapper">
+	select 
+		company.id id,
+		cm.market_id mi,
+		cm.is_phy isphy,
+		company.name name
+	from
+		company,
+		company_market cm,
+		(
+			select
+				competition_id
+			from
+				company
+			where
+				id = #{companyid}
+		) subc
+	where
+		company.competition_id = subc.competition_id
+		and cm.company_id = company.id
+		and cm.quarter = #{quater}
+  </select>
 </mapper>

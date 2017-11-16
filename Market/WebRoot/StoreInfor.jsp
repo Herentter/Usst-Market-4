@@ -125,7 +125,7 @@ float:left;
 </head>
 <body onLoad="init()">
 	<div class="panel panel-info">
-		<div class="panel-heading">各产品销量统计</div>
+		<div class="panel-heading">各个城市竞争对手</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#notice1" data-toggle="tab">
@@ -137,14 +137,14 @@ float:left;
 				<div class="tab-pane fade in active" id="notice1">
 					<div class="course_content">
 						<div class="text1">
-							(在这里输入实体店店员雇佣的介绍字段)</div>
-						<div class="text1">本页面假设：<p><p>招聘成本100元/人<p>离职补偿150元/人</div>
+							(在这里输入竞争对手页面的介绍字段)</div>
+						<div class="text1">本页面将显示各个城市的竞争对手信息</div>
 					</div>
 					<div class="left">
 						<div class="left_title">
 							<span><i class="fa fa-tasks"></i></span><label>你的任务</label>
 						</div>
-						<div class="left_content">雇佣适当数量的销售人员</div>
+						<div class="left_content">分析各个竞争对手的市场战略</div>
 					</div>
 
 				</div>
@@ -157,27 +157,23 @@ float:left;
 									<input type="hidden" value="${len }" id="len"/>
 									<input type="hidden" value="${quater }" name="quater"/>
 									<input type="hidden" value="${add }" name="add"/>
-									<td>品牌</td>
-									<td>公司编号</td>
-									<td>产品需求量</td>
-									<td>产品销量</td>
-									<td>销售额</td>
-									<td>产品脱销</td>
-									<td>脱销损失</td>
-									<td>毛利率</td>
+									<td>公司名称</td>
+									<td>店铺类型</td>
+									<td>印度</td>
+									<td>俄罗斯</td>
+									<td>中国</td>
+									<td>新加坡</td>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${listssv }" var="lists">
+								<c:forEach items="${ListSIV }" var="lists">
 									<tr>
-										<td>${lists.PMS.productType }</td>
-										<td>${lists.PP.companyId }</td>
-										<td>${lists.PMS.need }</td>
-										<td>${lists.PMS.sale }</td>
-										<td>${lists.saleIncom }</td>
-										<td>${lists.PMS.stockoun }</td>
-										<td>${lists.saleLost }</td>
-										<td>${lists.saleIncom }</td>
+										<td>${lists.c.name }</td>
+										<td>${lists.isphy }</td>
+										<td>${lists.mStr[0] }</td>
+										<td>${lists.mStr[1] }</td>
+										<td>${lists.mStr[2] }</td>
+										<td>${lists.mStr[3] }</td>
 									</tr>
 								</c:forEach>
 							</tbody>
