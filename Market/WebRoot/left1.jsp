@@ -66,7 +66,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    <li>
         <a href="#none">市场调研<i></i></a>
         <ul>
-            <li><a href="showDemandInfo.do" target="main">客户需求</a></li>
+            <li><a href="showDemandInfo.do" target="main">产品性能需求</a></li>
             <li><a href="showUsageInfo.do" target="main">产品用途</a></li>
             <li><a href="showPriceInfo.do" target="main">愿意支付的价格</a></li>
             <li><a href="showMarketInfo2.do" target="main">市场规模</a></li>

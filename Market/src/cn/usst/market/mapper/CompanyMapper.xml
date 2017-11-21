@@ -251,6 +251,9 @@
 	</select>
   	
   	<update id="insertCompanyProduct" parameterType="cn.usst.market.po.CompanyProduct">
+  		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+          SELECT LAST_INSERT_ID()
+      	</selectKey>
 	    insert into company_product (company_id, quarter,name, 
       detail,cost,type
       )
@@ -263,6 +266,19 @@
 		update company_product
 		set name=#{name,jdbcType=VARCHAR},detail=#{detail,jdbcType=VARCHAR},cost=#{cost,jdbcType=INTEGER},type=#{type,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	
+	<delete id="deleteCompanyProductDemand">
+		delete from company_product_demand where product_id=#{0}
+	</delete>
+	
+	<delete id="deleteProductPrice">
+		delete from product_price where product_id=#{0}
+	</delete>
+	
+	<update id="updateProductDemand">
+		update company_product_demand set demand=#{2} where product_id=#{0} and quarter=#{1}
 	</update>
   	
   	
@@ -457,9 +473,8 @@
   <update id="updateBalanceSheetHuoBi">
   	update balance_sheet set huobi=#{0} where company_id=#{1} and quarter=#{2}
   </update>
-  
   <select id="selectGuBen" resultType="java.lang.Integer">
-  	select total_price from company_stock where company_id=#{0} and quarter=#{1}
+  	select ifnull(sum(total_price),0) as total_price from company_stock where company_id=#{0} and quarter=#{1}
   </select>
 
 	<select id="showCompanyStock" resultType="cn.usst.market.po.CompanyStock">
@@ -625,13 +640,6 @@
   update company_product set demand_num_two=#{demandNumTwo} where  id=#{id}
   </update>
   
-  
-  <!-- <select id="selectProductByCompanyIdAndQuarter" resultType="cn.usst.market.po.CompanyProduct">
-			select * from
-			company_product where company_id=#{0} and quarter=#{1}
-  
-  </select> -->
-  
   <!--产品定价  -->
   <insert id="insertProductPrice" parameterType="cn.usst.market.po.ProductPrice">
   	insert into product_price(product_id,company_id,quarter,price,youji)values(
@@ -744,13 +752,34 @@
   </insert>
   
   
-  <select id="selectInventoryControl" resultType="cn.usst.market.po.CompanyProduct">
-  	select * from company_product where company_id=#{0} and quarter=#{1}
+  <select id="selectInventoryControl" resultType="cn.usst.market.po.CompanyProductVo2">
+  	select a.*,b.inventory from company_product as a,company_product_inventory as b where company_id=#{0} and a.quarter &lt;=#{1} and b.quarter=#{1} and a.id=b.product_id
   </select>
+  
+  <select id="selectInvertoryCountFinancialRatio" resultType="cn.usst.market.po.CompanyProductVo2">
+  	select a.*,b.inventory,b.quarter 
+	from company_product as a,company_product_inventory as b 
+	where company_id=#{0} 
+	and b.quarter &lt;= #{1} 
+	and a.quarter &lt;= #{1} 
+	and a.id=b.product_id
+  </select>
+  
+  <update id="updateCompanyProductInventory">
+  	update company_product_inventory set inventory=#{1} where product_id=#{0} and quarter=#{2}
+  </update>
+  
+  <delete id="deleteCompanyProductInventory">
+  	delete from company_product_inventory where product_id=#{0}
+  </delete>
   
  <update id="updateInventoryControl" parameterType="cn.usst.market.po.CompanyProduct">
   update company_product set inventory_max_two=#{inventoryMaxTwo} where  id=#{id}
   </update>
+  
+  <insert id="insertCompanyProductInventoryById">
+  	insert into company_product_inventory(product_id,quarter,inventory)values(#{0},#{1},0)
+  </insert>
   
   <!-- 显示销售人员页面 -->
   <select id="selectHirePeople" resultMap="HirePeopleResultMap">
@@ -767,7 +796,7 @@
 	where market_info.id=hire_people_online.market_id
 	and company_id=#{0} and market_id=#{1} and quarter=#{2}
   </select>
-  
+
 	<resultMap type="cn.usst.market.po.HirePeopleVo" id="HirePeopleResultMap">
 		<id column="id"/>
 		<result column="city" property="city"/>
@@ -842,13 +871,64 @@
   
 	<!-- 上季度结果-->
   
-  <select id="selectProductMarketShare" parameterType="cn.usst.market.po.ProductMarketShare"  resultType="cn.usst.market.po.ProductMarketShare">
-  	select * from product_market_share  where product_id=#{productId}
+  <select id="selectProductMarketShare" resultType="cn.usst.market.po.ProductMarketShare">
+  	select * from product_market_share  where product_id=#{0} and quarter=#{1}
+  </select>
+  
+  <select id="selectCompanyProductByCompanyIdQuarter" resultType="cn.usst.market.po.CompanyProduct">
+  	select * from company_product where company_id=#{0} and quarter &lt; #{1}
   </select>
   
 <select id="selectCompanyInvestment"  parameterType="cn.usst.market.po.CompanyInvestment" resultType="cn.usst.market.po.CompanyInvestment">
   	select  * from company_investment  where company_id=#{companyId} and  quarter=#{quarter}
   </select>
   
+  <!-- 紧急贷款 -->
+  <select id="selectCompanyLoan" resultType="cn.usst.market.po.CompanyLoan">
+  	select * from company_loan where company_id=#{0} and quarter=#{1}
+  </select>
   
+  <insert id="insertCompanyLoan">
+  	insert into company_loan(company_id,quarter,loan_last,get_num,return_num,lilv)values(#{0}
+  	,#{1},0,#{2},#{3},4)
+  </insert>
+  
+  <update id="updateCompanyLoan">
+  	update company_loan set get_num=#{2},return_num=#{3} where company_id=#{0} and quarter=#{1} 
+  </update>
+  
+  <insert id="insertLoanLast">
+  	insert into company_loan(company_id,quarter,loan_last,get_num,return_num,lilv)values(#{1}
+  	,#{2},#{0},0,0,4)
+  </insert>
+  
+  
+  <!-- 需求量预测 -->
+	<select id="selectHirePeopleList" resultType="cn.usst.market.po.HirePeople">
+  		select * from hire_people where company_id=#{0} and quarter=#{1}
+	</select>
+	
+	<select id="selectHirePeopleOnlineList" resultType="cn.usst.market.po.HirePeopleOnline">
+  		select * from hire_people_online where company_id=#{0} and quarter=#{1}
+	</select>
+	
+	<select id="getDemandForecastByCompanyIdAndQuarter" resultType="cn.usst.market.po.DemandForecast">
+		select * from demand_forecast where company_id=#{0} and quarter=#{1}
+	</select>
+	<select id="selectCompanyProduct" resultType="cn.usst.market.po.CompanyProductVo">
+		select a.*,b.demand from company_product as a,company_product_demand as b where a.company_id=#{0} and a.quarter=#{1} and b.quarter=#{2} and a.id=b.product_id
+	</select>
+  
+	<insert id="insertCompanyProductDemandById">
+		insert into company_product_demand(product_id,quarter,demand)values(#{0},#{1},0)
+	</insert>
+ 
+ 	<delete id="deleteCompanyMedia">
+ 		delete from company_media where product_id=#{0}
+ 	</delete>
+ 	
+ 	<delete id="deleteCompanyAdvertise">
+ 		delete from company_advertise where product_id=#{0}
+ 	</delete>
+ 
 </mapper>

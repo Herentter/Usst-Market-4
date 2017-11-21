@@ -11,7 +11,7 @@
 <base href="<%=basePath %>">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>结果汇总</title>
+<title>有用图表</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="css/strategy.css">
 <style type="text/css">
@@ -22,7 +22,7 @@
 	<div id="nav44">
 		<div class="panel panel-info">
 			<div class="panel-heading">
-				<span>结果汇总</span>
+				<span>有用图表</span>
 			</div>
 
 			<div class="panel-body">

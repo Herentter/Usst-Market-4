@@ -11,7 +11,7 @@
 <base href="<%=basePath %>">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>损益表</title>
+<title>利润表</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="css/strategy.css">
 
@@ -20,175 +20,178 @@
 	<div id="nav44">
 		<div class="panel panel-info">
 			<div class="panel-heading">
-				<span>损益表</span>
+				<span>利润表</span>
+				<input type="button" value="返回" onclick="javascript:history.back();">
 			</div>
 
 			<div class="panel-body">
 				
 				<table class="table table-bordered">
 					<thead>
-						<tr>
+						<tr bgcolor="#D9EDF7">
 							<th>公司名称</th>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<th>${item.company.name }</th>
+							<c:forEach items="${companyList }" var="item">
+								<th>${item.name }</th>
 							</c:forEach>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td id="assetTd"><strong>毛利</strong></td>
-						</tr>
-						<tr>
-							<td>+营业收入</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.yingyeIncome }</td>
+						<tr bgcolor="#D9EDF7">
+							<td><strong>营业总收入</strong></td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.yingYeTotalIncome }</td>
 							</c:forEach>
 						</tr>
 						<tr>
-							<td>-邮寄返款</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.fankuan }</td>
+							<td>&nbsp;&nbsp;营业收入</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.yingyeIncome }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;利息收入</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.lixiIncome }</td>
+							</c:forEach>
+						</tr>
+						<tr bgcolor="#D9EDF7">
+							<td><strong>营业总成本</strong></td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.yingYeTotalCost }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;营业成本</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.yingyeCost }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;邮寄返款</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.fankuan }</td>
 							</c:forEach>
 						</tr>
 						
 						<tr>
-							<td>-营业成本</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.yingyeCost }</td>
+							<td>&nbsp;&nbsp;研发投入</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.yanfa }</td>
 							</c:forEach>
 						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;广告费用</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.guanggao }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;销售人员费用</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.salerCost }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;实体及网络销售中心费用</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.salescenterCost+item.salescenterWebCost }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;市场调研报告</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.baogao }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;货运</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.huoyun }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;库存持有成本</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.kucun }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;过剩产能成本</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.excessCapacity }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;折旧</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.zhejiu }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;网络营销费用</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.netmarketCost }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;利息费用</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.lixiCost }</td>
+							</c:forEach>
+						</tr>
+						
 						<tr bgcolor="#D9EDF7">
-							<td><strong>=毛利</strong></td>
-							<c:forEach items="${grossProfitList }" var="item">
-								<td><strong>${item }</strong></td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td id="payId"><strong>支出</strong></td>
-						</tr>
-						<tr>
-							<td>-研发投入</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.yanfa }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-广告投入</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.guanggao }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-销售人员费用</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.salerCost }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-实体及网络销售中心费用</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.salescenterCost }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-市场调研报告</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.baogao }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-货运</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.huoyun }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-库存持有成本</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.kucun }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-过剩产能成本</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.excessCapacity }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-折旧</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.zhejiu }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-网络营销费用</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.netmarketCost }</td>
-							</c:forEach>
-						</tr>
-						<tr bgcolor="#D9EDF7">
-							<td><strong>=总支出</strong></td>
-							<c:forEach items="${sumPayList }" var="item">
-								<td><strong>${item }</strong></td>
-							</c:forEach>
-						</tr>
-						<tr bgcolor="#D9EDF7">
-							<td><strong>营业利润</strong></td>
-							<c:forEach items="${sumProfitList }" var="item">
-								<td><strong>${item }</strong></td>
+							<td><strong>营业利润（收入-成本）</strong></td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.yingYeTotalIncome-item.yingYeTotalCost }</td>
 							</c:forEach>
 						</tr>
 						
 						<tr>
-							<td id="debtShareTd"><strong>其他收入及支出</strong></td>
-						</tr>
-						<tr>
-							<td>+技术授权收入</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.techIncome }</td>
+							<td>&nbsp;&nbsp;+：技术授权收入</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.techIncome }</td>
 							</c:forEach>
 						</tr>
 						<tr>
-							<td>-技术授权费用</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.techCost }</td>
+							<td>&nbsp;&nbsp;+：其他收入</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.qitaIncome }</td>
 							</c:forEach>
 						</tr>
 						<tr>
-							<td>+其他收入</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.qitaIncome }</td>
+							<td>&nbsp;&nbsp;-：技术授权费用</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.techCost }</td>
 							</c:forEach>
 						</tr>
 						<tr>
-							<td>-其他费用</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.qitaCost }</td>
+							<td>&nbsp;&nbsp;-：其他费用</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.qitaCost }</td>
+							</c:forEach>
+						</tr>
+						
+						<tr bgcolor="#D9EDF7">
+							<td><strong>利润总额</strong></td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.totalLiRun }</td>
 							</c:forEach>
 						</tr>
 						<tr>
-							<td>+利息收入</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.lixiIncome }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-利息费用</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.lixiCost }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-收入税</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.incomeStatement.taxCost }</td>
+							<td>&nbsp;&nbsp;-：所得税费用</td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td>${item.taxCost }</td>
 							</c:forEach>
 						</tr>
 						<tr bgcolor="#D9EDF7">
-							<td><strong>=净收入</strong></td>
-							<c:forEach items="${netIncomeList }" var="item">
-								<td><strong>${item }</strong></td>
+							<td><strong>=净利润</strong></td>
+							<c:forEach items="${incomeStatementList }" var="item">
+								<td><strong>${item.jingLiRun }</strong></td>
 							</c:forEach>
+						</tr>
+						<tr>
+							<td><strong>每股收益</strong></td>
 						</tr>
 					</tbody>
 				</table>
@@ -204,9 +207,10 @@
 <script type="text/javascript">
 	$(function(){
 		var col=$("table").find("tr").children("th").length;
-		$("#assetTd").attr("colspan",col);
+		/* $("#assetTd").attr("colspan",col);
 		$("#payId").attr("colspan",col);
-		$("#debtShareTd").attr("colspan",col);
+		$("#debtShareTd").attr("colspan",col); */
+		
 		/* for(var i=2;i<=col;i++){
 			var sum=0;
 			var node=$("#asset tr td:nth-child(i)");

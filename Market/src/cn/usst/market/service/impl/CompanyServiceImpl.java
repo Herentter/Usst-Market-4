@@ -21,10 +21,13 @@ import cn.usst.market.po.CompanyAdvertise;
 import cn.usst.market.po.CompanyCapacity;
 import cn.usst.market.po.CompanyDuty;
 import cn.usst.market.po.CompanyInvestment;
+import cn.usst.market.po.CompanyLoan;
 import cn.usst.market.po.CompanyMarket;
 import cn.usst.market.po.CompanyMedia;
 import cn.usst.market.po.CompanyPersonGoal;
 import cn.usst.market.po.CompanyProduct;
+import cn.usst.market.po.CompanyProductVo;
+import cn.usst.market.po.CompanyProductVo2;
 import cn.usst.market.po.CompanyReport;
 import cn.usst.market.po.CompanyRule;
 import cn.usst.market.po.CompanyStock;
@@ -834,7 +837,7 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 
 		@Override
-		public List<CompanyProduct> selectInventoryControl(int companyIdInt, int quarter) {
+		public List<CompanyProductVo2> selectInventoryControl(int companyIdInt, int quarter) {
 			return companyMapper.selectInventoryControl(companyIdInt, quarter);
 		}
 
@@ -1382,9 +1385,9 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 		
 		@Override
-		public List<ProductMarketShare> selectProductMarketShare(Integer id) {
+		public List<ProductMarketShare> selectProductMarketShare(Integer id,Integer quarter) {
 			// TODO Auto-generated method stub
-			return companyMapper.selectProductMarketShare(id);
+			return companyMapper.selectProductMarketShare(id,quarter);
 		}
 
 		@Override
@@ -1393,9 +1396,130 @@ public class CompanyServiceImpl implements CompanyService {
 			return companyMapper.selectCompanyInvestment(companyId, quarter);
 		}
 
+		@Override
+		public CompanyLoan selectCompanyLoan(int company_id, int quarter) {
+			// TODO Auto-generated method stub
+			return companyMapper.selectCompanyLoan(company_id, quarter);
+		}
+
+		@Override
+		public void insertCompanyLoan(int company_id, int quarter, float get, float payBack) {
+			// TODO Auto-generated method stub
+			companyMapper.insertCompanyLoan(company_id, quarter, get, payBack);
+		}
+
+		@Override
+		public void updateCompanyLoan(int company_id, int quarter, float get, float payBack) {
+			// TODO Auto-generated method stub
+			companyMapper.updateCompanyLoan(company_id, quarter, get, payBack);
+		}
+
+		@Override
+		public void insertLoanLast(float loanLast, int company_id, int quarter) {
+			// TODO Auto-generated method stub
+			companyMapper.insertLoanLast(loanLast, company_id, quarter);
+		}
+
+		@Override
+		public List<HirePeople> selectHirePeopleList(int companyId, int quarter) {
+			// TODO Auto-generated method stub
+			return companyMapper.selectHirePeopleList(companyId, quarter);
+		}
 		
+		@Override
+		public List<HirePeopleOnline> selectHirePeopleOnlineList(int companyId, int quarter) {
+			// TODO Auto-generated method stub
+			return companyMapper.selectHirePeopleOnlineList(companyId, quarter);
+		}
+
+		@Override
+		public DemandForecast getDemandForecastByCompanyIdAndQuarter(int companyId, int quarter) {
+			// TODO Auto-generated method stub
+			return companyMapper.getDemandForecastByCompanyIdAndQuarter(companyId, quarter);
+		}
+
+		@Override
+		public List<CompanyProductVo> selectCompanyProduct(int companyId, int quarter,int quarter2) {
+			// TODO Auto-generated method stub
+			return companyMapper.selectCompanyProduct(companyId, quarter,quarter2);
+		}
+
+		@Override
+		public void insertCompanyProductDemandById(int id, int quarter) {
+			// TODO Auto-generated method stub
+			companyMapper.insertCompanyProductDemandById(id, quarter);
+		}
+
+		@Override
+		public void deleteCompanyProductDemand(int productId) {
+			// TODO Auto-generated method stub
+			companyMapper.deleteCompanyProductDemand(productId);
+		}
+
+		@Override
+		public void deleteProductPrice(int productId) {
+			// TODO Auto-generated method stub
+			companyMapper.deleteProductPrice(productId);
+		}
+
+		@Override
+		public void updateProductDemand(int productId, int quarter, int demand) {
+			companyMapper.updateProductDemand(productId, quarter, demand);
+		}
+
+		@Override
+		public void updateCompanyProductInventory(int productId, int inventory, int quarter) {
+			// TODO Auto-generated method stub
+			companyMapper.updateCompanyProductInventory(productId, inventory, quarter);
+		}
+
+		@Override
+		public void deleteCompanyProductInventory(int productId) {
+			// TODO Auto-generated method stub
+			companyMapper.deleteCompanyProductInventory(productId);
+		}
+
+		@Override
+		public void insertCompanyProductInventoryById(int id, int i) {
+			// TODO Auto-generated method stub
+			companyMapper.insertCompanyProductInventoryById(id, i);
+		}
+
+		@Override
+		public void deleteCompanyMedia(int productId) {
+			companyMapper.deleteCompanyMedia(productId);
+			
+		}
+
+		@Override
+		public void deleteCompanyAdvertise(int productId) {
+			// TODO Auto-generated method stub
+			companyMapper.deleteCompanyAdvertise(productId);
+		}
 		
-		
+		@Override
+		public List<CompanyProductVo2> selectInvertoryCountFinancialRatio(int companyIdInt, int quarter) {
+			// TODO Auto-generated method stub
+			return companyMapper.selectInvertoryCountFinancialRatio(companyIdInt, quarter);
+		}
+
+		@Override
+		public List<CompanyProduct> selectCompanyProductByCompanyIdQuarter(int companyId, int quarter) {
+			// TODO Auto-generated method stub
+			return companyMapper.selectCompanyProductByCompanyIdQuarter(companyId, quarter);
+		}
+
+		@Override
+		public int selectProductDemand(int productId, int quarter) {
+			// TODO Auto-generated method stub
+			return cashFlowMapper.selectProductDemand(productId, quarter);
+		}
+
+		@Override
+		public int selectProductKuCun(int productId, int quarter) {
+			// TODO Auto-generated method stub
+			return cashFlowMapper.selectProductKuCun(productId, quarter);
+		}
 		
 		
 }

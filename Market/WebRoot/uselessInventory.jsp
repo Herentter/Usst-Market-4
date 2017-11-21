@@ -118,12 +118,12 @@ td, th {
 		<div class="panel-heading">无用库存</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#notice1" data-toggle="tab">
+				<li ><a href="#notice1" data-toggle="tab">
 						课程介绍</a></li>
-				<li><a href="#notice2" data-toggle="tab">决策界面</a></li>
+				<li class="active"><a href="#notice2" data-toggle="tab">决策界面</a></li>
 			</ul>
 			<div class="tab-content">
-				<div class="tab-pane fade in active" id="notice1">
+				<div class="tab-pane fade" id="notice1">
 
 					<div class="left">
 						<div class="left_title">
@@ -135,7 +135,7 @@ td, th {
 							如果您选择对无用库存进行清仓处理，则从其出库到资金回笼支票账户将耗费一个季度的时间。</div>
 					</div>
 				</div>
-				<div class="tab-pane fade" id="notice2">
+				<div class="tab-pane fade in active" id="notice2">
 					<form class="form-horizontal" id="form" method="post" action="">
 						<table class="table table-bordered">
 							<tr>
@@ -153,7 +153,7 @@ td, th {
 									<td><B>${items.companyProducts.name}</B></td>
 									<td>${items.stock}</td>
 									<td>${items.companyProducts.cost}</td>
-									<td>${items.stock}</td>
+									<td>${items.sale}</td>
 									<td>${items.stock*items.companyProducts.cost}</td>
 								</tr>
 							</c:forEach>

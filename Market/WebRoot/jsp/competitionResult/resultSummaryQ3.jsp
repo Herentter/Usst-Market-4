@@ -61,7 +61,7 @@
 								</c:forEach>
 							</tr>
 							<tr id="marketShare">
-								<td>市场份额</td>
+								<td>市场份额（%）</td>
 								<c:forEach items="${marketShareList }" var="item">
 									<td>${item }</td>
 								</c:forEach>
@@ -136,13 +136,13 @@
 		
 		//2:定义数组存储各个公司的市场份额
 		var marketShareArr= new Array();
-		for(var i=1;i<column-1;i++){
+		for(var i=1;i<=column-1;i++){
 			marketShareArr[i-1]=document.getElementById("marketShare").cells[i].innerHTML;
 		}
 		
 		//3:定义数组存储各个公司的需求量
 		var needNumArr= new Array();
-		for(var i=1;i<column-1;i++){
+		for(var i=1;i<=column-1;i++){
 			needNumArr[i-1]=document.getElementById("needNum").cells[i].innerHTML;
 		}
 		

@@ -167,7 +167,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	            </div>
 	       
 		       	<div id="decisionFoot">
-		            <input type="button" id="cancel" class="btn" value="取消" style="margin-right:100px" onclick="window.open('CompanyProduct.do', '_self'); " />
+		            <input type="button" id="cancel" class="btn" value="取消" style="margin-right:100px" onclick="window.open('CompanyProduct.do?quarter=${quarter}', '_self'); " />
 		            <input type="button" id="baocun" class="btn" value="保存" style="margin-right:20px" onclick="baocun(); "/>
 	       		</div>
     		</form> 

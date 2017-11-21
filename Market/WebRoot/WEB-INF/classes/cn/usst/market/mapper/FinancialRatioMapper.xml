@@ -81,6 +81,6 @@
 		fixedassetover_ratio,totalasset_ratio,debt_ratio,
 		grossprofit_ratio,netprofit_ratio,return_ratio,
 		quarter,company_id) 
-		VALUES(#{quickRatio},#{invertoryoverRatio},#{fixedassetoverRatio},#{totalassetRatio},#{debtRatio},#{grossprofitRatio},#{netprofitRatio},#{returnRatio},#{quarter},#{companyId})
+		VALUES(#{quickRatio},#{inventoryoverRatio},#{fixedassetoverRatio},#{totalassetRatio},#{debtRatio},#{grossprofitRatio},#{netprofitRatio},#{returnRatio},#{quarter},#{companyId})
 	</insert>
 </mapper>

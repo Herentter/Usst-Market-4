@@ -141,7 +141,7 @@
 	</select>
 	<select id="findCompanyNetSalesNum" resultType="cn.usst.market.po.HirePeopleOnline">
 		select * from hire_people_online
-		where companyid=#{0}
+		where company_id=#{0}
 		and quarter=#{1}
 	</select>
 	<select id="findMarketInfoById" resultType="cn.usst.market.po.MarketInfo">

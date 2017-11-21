@@ -148,27 +148,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  </tr>
 						  <tr class="secondnav">
 						    <td style="padding-left:30px;">货币资金</td>
-						    <td> ${assertSheetList[0].getHuobi()}</td>
-						    <td  class="quarter2"> ${assertSheetList[1].getHuobi()}</td>
-						    <td  class="quarter3"> ${assertSheetList[2].getHuobi()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getHuobi()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td  class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getHuobi()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td  class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getHuobi()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="secondnav">
 						    <td style="padding-left:30px;">三个月定期存款</td>
-						    <td> ${assertSheetList[0].getCunkuan()}</td>
-						    <td  class="quarter2"> ${assertSheetList[1].getCunkuan()}</td>
-						    <td  class="quarter3"> ${assertSheetList[2].getCunkuan()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getCunkuan()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td  class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getCunkuan()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td  class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getCunkuan()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="secondnav">
 						    <td style="padding-left:30px;">存货</td>
-						    <td>${assertSheetList[0].getCunhuo()}</td>
-						    <td  class="quarter2">${assertSheetList[1].getCunhuo()}</td>
-						    <td  class="quarter3">${assertSheetList[2].getCunhuo()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getCunhuo()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td  class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getCunhuo()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td  class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getCunhuo()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:120px;">流动资产合计</td>
-						    <td>  ${assertSheetList[0].getLiuDongZiChan()}</td>
-						    <td  class="quarter2">${assertSheetList[1].getLiuDongZiChan()}</td>
-						    <td  class="quarter3">${assertSheetList[2].getLiuDongZiChan()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getLiuDongZiChan()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td  class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getLiuDongZiChan()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td  class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getLiuDongZiChan()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="firstnav">
 						    <td>非流动资产：</td>
@@ -178,21 +178,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  </tr>
 						  <tr class="secondnav">
 						    <td style="padding-left:30px;">固定资产</td>
-						    <td>${assertSheetList[0].getZichan()}</td>
-						    <td  class="quarter2">${assertSheetList[1].getZichan()}</td>
-						    <td  class="quarter3">${assertSheetList[2].getZichan()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getZichan()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td  class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getZichan()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td  class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getZichan()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:120px;">非流动资产合计</td>
-						    <td>${assertSheetList[0].getZichan()}</td>
-						    <td class="quarter2">${assertSheetList[1].getZichan()}</td>
-						     <td class="quarter3">${assertSheetList[2].getZichan()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getZichan()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getZichan()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						     <td class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getZichan()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:120px;">资产总计</td>
-						    <td>${assertSheetList[0].getTotalZiChan()}</td>
-						    <td class="quarter2">${assertSheetList[1].getTotalZiChan()}</td>
-						    <td class="quarter3">${assertSheetList[2].getTotalZiChan()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getTotalZiChan()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getTotalZiChan()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getTotalZiChan()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="firstnav">
 						    <td>流动负债：</td>
@@ -203,21 +203,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  
 						  <tr class="secondnav">
 						    <td style="padding-left:30px;">紧急贷款</td>
-						    <td>${assertSheetList[0].getDaikuanEmergency()}</td>
-						    <td class="quarter2">${assertSheetList[1].getDaikuanEmergency()}</td>
-						    <td class="quarter3">${assertSheetList[2].getDaikuanEmergency()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getDaikuanEmergency()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getDaikuanEmergency()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getDaikuanEmergency()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="secondnav">
 						    <td style="padding-left:30px;">应付利息</td>
-						    <td>${assertSheetList[0].getLixiPay()}</td>
-						   	<td class="quarter2">${assertSheetList[1].getLixiPay()}</td>
-						   	<td class="quarter3">${assertSheetList[2].getLixiPay()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getLixiPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						   	<td class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getLixiPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						   	<td class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getLixiPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:120px;">流动负债合计</td>
-						    <td>${assertSheetList[0].getLiuDongFuzhai()}</td>
-						    <td class="quarter2">${assertSheetList[1].getLiuDongFuzhai()}</td>
-						    <td class="quarter3">${assertSheetList[2].getLiuDongFuzhai()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getLiuDongFuzhai()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getLiuDongFuzhai()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getLiuDongFuzhai()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="firstnav">
 						    <td>非流动负债：</td>
@@ -227,21 +227,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  </tr>
 						  <tr class="secondnav">
 						    <td style="padding-left:30px;">常规银行贷款</td>
-						    <td>${assertSheetList[0].getDaikuanNormal()}</td>
-						    <td class="quarter2">${assertSheetList[1].getDaikuanNormal()}</td>
-						     <td class="quarter3">${assertSheetList[2].getDaikuanNormal()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getDaikuanNormal()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getDaikuanNormal()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getDaikuanNormal()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:120px;">非流动负债合计</td>
-						    <td>${assertSheetList[0].getDaikuanNormal()}</td>
-						    <td class="quarter2">${assertSheetList[1].getDaikuanNormal()}</td>
-						    <td class="quarter3">${assertSheetList[2].getDaikuanNormal()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getDaikuanNormal()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getDaikuanNormal()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getDaikuanNormal()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:120px;">负债合总计</td>
-						    <td>${assertSheetList[0].getTotalFuZhai()}</td>
-						   	<td class="quarter2">${assertSheetList[1].getTotalFuZhai()}</td>
-						   	<td class="quarter3">${assertSheetList[2].getTotalFuZhai()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getTotalFuZhai()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						   	<td class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getTotalFuZhai()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						   	<td class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getTotalFuZhai()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="firstnav">
 						    <td>所有者权益：</td>
@@ -251,27 +251,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  </tr>
 						  <tr class="secondnav">
 						    <td style="padding-left:30px;">股本</td>
-						    <td>${assertSheetList[0].getGuben()}</td>
-						    <td class="quarter2">${assertSheetList[1].getGuben()}</td>
-						    <td class="quarter3">${assertSheetList[2].getGuben()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getGuben()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getGuben()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getGuben()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="secondnav">
 						    <td style="padding-left:30px;">留存收益</td>
-						    <td>${assertSheetList[0].getLiucun()}</td>
-						    <td class="quarter2">${assertSheetList[1].getLiucun()}</td>
-						    <td class="quarter3">${assertSheetList[2].getLiucun()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getLiucun()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getLiucun()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getLiucun()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:120px;">所有者权益合计</td>
-						    <td>${assertSheetList[0].getOwner()}</td>
-						    <td class="quarter2">${assertSheetList[1].getOwner()}</td>
-						    <td class="quarter3">${assertSheetList[2].getOwner()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getOwner()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getOwner()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getOwner()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:120px;">负债和所有者权益总计</td>
-						    <td>${assertSheetList[0].getOwnerAndFuZhai()}</td>
-						   	<td class="quarter2">${assertSheetList[1].getOwnerAndFuZhai()}</td>
-						   	<td class="quarter3">${assertSheetList[2].getOwnerAndFuZhai()}</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getOwnerAndFuZhai()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						   	<td class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getOwnerAndFuZhai()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						   	<td class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getOwnerAndFuZhai()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tbody>
 						</table>
                 </div>

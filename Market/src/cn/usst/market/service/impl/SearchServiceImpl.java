@@ -127,20 +127,23 @@ public class SearchServiceImpl implements SearchService {
 
 		System.out.println("DBVisited");
 		List<StoreInforVo> SIV = new ArrayList<StoreInforVo>();
-		
+		System.out.println("-----For Started-----");
 		for(StoreInforVo s:SIVmid){
+			System.out.println("CompanyId : "+s.getCM().getCompanyId());
+			System.out.println("Isphy : "+s.getCM().getIsPhy());
 			String[] str = s.getCM().getMarketId().split(",");
+			for(String ss:str)
+				System.out.println("ss : "+ss);
 			int[] i = new int[4];
 			for(Integer count = 0;count<4;count++){
 				for(int y = 0;y<str.length;y++){
 					if(str[y].equals(count.toString()))
 						i[count] = 1;
-					else
-						i[count]=0;
 				}
 			}
 			String[] mStr = new String[4];
 			for(int j = 0;j<4;j++){
+				System.out.println("i["+j+"] = "+i[j]);
 				if(i[j]==1)
 					mStr[j]="是";
 				else
@@ -154,7 +157,7 @@ public class SearchServiceImpl implements SearchService {
 			s.setmStr(mStr);
 			SIV.add(s);
 		}
-		
+		System.out.println("-----For Ended-----");
 
 		System.out.println("ServiceReturned");
 		return SIV;

@@ -197,8 +197,10 @@ body {
 		                		<tr>
 		                			<td>${item.city }</td>
 		                			
-		                			<td><input type="text" name="hirePeopleOnlineList[${status.index }].saleman" value="${item.hirePeopleOnline.saleman }"></td>
-		                			<td><input type="text" name="hirePeopleOnlineList[${status.index }].afterSale" value="${item.hirePeopleOnline.afterSale }"></td>
+		                			<td><input type="text" name="hirePeopleOnlineList[${status.index }].saleman" value="${item.hirePeopleOnline.saleman }"
+		                			onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></td>
+		                			<td><input type="text" name="hirePeopleOnlineList[${status.index }].afterSale" value="${item.hirePeopleOnline.afterSale }"
+		                			onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></td>
 		                		</tr>
 	                		</c:forEach>
 	                		

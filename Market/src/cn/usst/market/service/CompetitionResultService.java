@@ -95,7 +95,7 @@ public interface CompetitionResultService {
 	
 	//公司人数
 	List<HirePeople> findCompanyPhySalesNum(int companyId, int quarter);
-	HirePeopleOnline findCompanyNetSalesNum(int companyId, int quarter);
+	List<HirePeopleOnline> findCompanyNetSalesNum(int companyId, int quarter);
 	MarketInfo findMarketInfoById(int id);
 	
 	//公司平衡计分卡

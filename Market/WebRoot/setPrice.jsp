@@ -183,8 +183,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<input type="hidden" name="productId" value="${product.productId }"/>
 											<tr id="${product.productId }">
 												<td><label id="${product.productId }name"></label></td>
-												<td><input class="text" type="text" name="${product.productId }price" value="${product.price }"/></td>
-												<td><input class="text" type="text" name="${product.productId }youji" value="${product.youji }"/></td>
+												<td>
+													<input class="text" type="text" name="${product.productId }price" value="${product.price }"
+													onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+												</td>
+												<td>
+													<input class="text" type="text" name="${product.productId }youji" value="${product.youji }"
+													onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+												</td>
 											</tr>
 										</c:forEach>
 									</c:when>

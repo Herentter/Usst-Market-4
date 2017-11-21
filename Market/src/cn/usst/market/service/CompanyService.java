@@ -16,10 +16,13 @@ import cn.usst.market.po.CompanyAdvertise;
 import cn.usst.market.po.CompanyCapacity;
 import cn.usst.market.po.CompanyDuty;
 import cn.usst.market.po.CompanyInvestment;
+import cn.usst.market.po.CompanyLoan;
 import cn.usst.market.po.CompanyMarket;
 import cn.usst.market.po.CompanyMedia;
 import cn.usst.market.po.CompanyPersonGoal;
 import cn.usst.market.po.CompanyProduct;
+import cn.usst.market.po.CompanyProductVo;
+import cn.usst.market.po.CompanyProductVo2;
 import cn.usst.market.po.CompanyReport;
 import cn.usst.market.po.CompanyRule;
 import cn.usst.market.po.CompanyStock;
@@ -323,7 +326,7 @@ public interface CompanyService {
 
 		void insertInventoryControl(CompanyProduct companyProduct);
 
-		List<CompanyProduct> selectInventoryControl(int companyIdInt, int quarter);
+		List<CompanyProductVo2> selectInventoryControl(int companyIdInt, int quarter);
 
 		void updateInventoryControl(CompanyProduct companyProduct);
 		
@@ -535,12 +538,66 @@ List<CompanyProduct> selectProductByCompanyIdAndQuarter(int company_id,int quart
 		
 		//第三季度
 		
-		public List<ProductMarketShare> selectProductMarketShare(Integer id);
+		public List<ProductMarketShare> selectProductMarketShare(Integer id,Integer quarter);
 
 		List<CompanyInvestment> selectCompanyInvestment(@Param("companyId")int companyId, @Param("quarter") int quarter);
 		
 
+		//紧急贷款
+		CompanyLoan selectCompanyLoan(int company_id,int quarter);
 		
+		void insertCompanyLoan(int company_id,int quarter,float get,float payBack);
+		
+		void updateCompanyLoan(int company_id,int quarter,float get,float payBack);
+		
+		void insertLoanLast(float loanLast,int company_id,int quarter);
+
+		public List<HirePeople> selectHirePeopleList(int companyId, int quarter);
+		
+		public List<HirePeopleOnline> selectHirePeopleOnlineList(int companyId, int quarter);
+		
+		public DemandForecast getDemandForecastByCompanyIdAndQuarter(int companyId, int quarter);
+
+		public List<CompanyProductVo> selectCompanyProduct(int companyId, int quarter,int quarter2);
+
+		//  需求量预测
+		
+		public void insertCompanyProductDemandById(int id, int quarter);
+
+		public void updateProductDemand(int productId, int quarter, int demand);
+		
+		//删除产品时 附带要删除的信息
+		public void deleteCompanyProductDemand(int productId);
+
+		public void deleteProductPrice(int productId);
+		
+		public void deleteCompanyMedia(int productId);
+		
+		public void deleteCompanyAdvertise(int productId);
+
+		//更新库存控制
+		public void updateCompanyProductInventory(int productId, int inventory, int quarter);
+
+		public void deleteCompanyProductInventory(int productId);
+		
+		List<CompanyProductVo2> selectInvertoryCountFinancialRatio(int companyIdInt, int quarter);
+
+		public void insertCompanyProductInventoryById(int id, int i);
+
+		public List<cn.usst.market.po.CompanyProduct> selectCompanyProductByCompanyIdQuarter(int companyId,int quarter);
+
+		
+		
+		
+		/*2017-11-15*/
+		
+		int selectProductDemand(int productId,int quarter);
+		
+		int selectProductKuCun(int productId,int quarter);
+		
+
+		
+
 		
 		
 		

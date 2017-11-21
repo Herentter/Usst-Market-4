@@ -83,7 +83,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </head>
 <body>
     <div class="panel panel-info">
-        <div class="panel-heading">客户需求</div>
+        <div class="panel-heading">产品性能需求</div>
         <div class="panel-body">
         	<ul class="nav nav-tabs">
                 <li><a href="#notice1" data-toggle="tab"> 课程介绍</a></li>

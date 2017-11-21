@@ -188,4 +188,9 @@ public interface CashFlowMapper {
 	
 	CompanyProduct selectCompanyProduct(int productId);
 	
+	int selectProductDemand(int productId,int quarter);
+	
+	int selectProductKuCun(int productId,int quarter);
+	
+	
 }

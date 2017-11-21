@@ -180,7 +180,7 @@ body {
                    	</div>
                 </div>
                 <div class="tab-pane fade in active" id="notice2">
-                	<input type="hidden" id="quarter" value="${quarter }">
+                	<input type="hidden" id="quarter" name="quarter" value="${quarter }">
                 	<div id="toubu">
 						<label class="chanpin">产品信息</label> 
 						<input type="button"
@@ -278,7 +278,7 @@ body {
 
 	}  
 	 
-	
+	var quarter=$("#quarter").val();
 	var del = function(btn) {
 		$($(btn))
 				.each(
@@ -289,7 +289,7 @@ body {
 							var productId=$(tr).attr("id");
 							$("#operate").attr(
 									"action",
-									"operateProduct.do?method=" + method
+									"operateProduct.do?quarter="+quarter+"&method=" + method
 											+ "&id=" + productId );
 							$("#operate").submit();
 							}

@@ -45,7 +45,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						当前季度:&nbsp;<span id="currentQuarter"></span>
 		        </div>
 		        <div class="pabel-body">
-		        	行业结果季度:&nbsp;<span id="quarter">${balanceScoreVo.balanceScore.quarter } </span>
+		        	平衡记分卡结果季度:&nbsp;<span id="quarter">${balanceScoreVo.balanceScore.quarter } </span>
 		        	<table class="table table-bordered table-hover table-striped" id="tab">
 						<thead>
 							<tr>
@@ -154,5 +154,4 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 	});
 </script>
-<script type="text/javascript" src="js/classIntroduction.js"></script>
 </html>

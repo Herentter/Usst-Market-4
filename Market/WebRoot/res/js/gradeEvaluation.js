@@ -20,15 +20,19 @@ $(function(){
 	});
 });
 
+function toThousands(num) {
+    return (num || 0).toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
+}
+
 function operateGradeEvaluation(trNodes, data){
 	/*var minTd = $("<td></td>");
-	minTd.html(data[0].balanceScoreMinData.grossRevenue);
+	minTd.html(toThousands(data[0].balanceScoreMinData.grossRevenue);
 	trNodes[0].append(minTd);
 	var maxTd = $("<td></td>");
-	maxTd.html(data[0].balanceScoreMaxData.grossRevenue);
+	maxTd.html(toThousands(data[0].balanceScoreMaxData.grossRevenue);
 	trNodes[0].append(maxTd);
 	var avgTd = $("<td></td>");
-	avgTd.html(data[0].balanceScoreAvgData.grossRevenue);
+	avgTd.html(toThousands(data[0].balanceScoreAvgData.grossRevenue);
 	trNodes[0].append(avgTd);*/
 	for(var i = 0; i < data.length; i ++){
 		var nameTd = $("<td></td>");
@@ -36,154 +40,154 @@ function operateGradeEvaluation(trNodes, data){
 		trNodes.eq(0).append(nameTd);
 	}
 	var minTd = $("<td></td>");
-	minTd.html(data[0].balanceScoreMinData.grossRevenue);
+	minTd.html(toThousands(data[0].balanceScoreMinData.grossRevenue));
 	trNodes.eq(1).append(minTd);
 	var maxTd = $("<td></td>");
-	maxTd.html(data[0].balanceScoreMaxData.grossRevenue);
+	maxTd.html(toThousands(data[0].balanceScoreMaxData.grossRevenue));
 	trNodes.eq(1).append(maxTd);
 	var avgTd = $("<td></td>");
-	avgTd.html(data[0].balanceScoreAvgData.grossRevenue);
+	avgTd.html(toThousands(data[0].balanceScoreAvgData.grossRevenue));
 	trNodes.eq(1).append(avgTd);
 	for(var i = 0; i < data.length; i ++){
 		var nameTd = $("<td></td>");
-		nameTd.html(data[i].balanceScore.grossRevenue);
+		nameTd.html(toThousands(data[0].balanceScoreMinData.grossRevenue));
 		trNodes.eq(1).append(nameTd);
 	}
 	
 	minTd = $("<td></td>");
-	minTd.html(data[0].balanceScoreMinData.grossCost);
+	minTd.html(toThousands(data[0].balanceScoreMinData.grossCost));
 	trNodes.eq(2).append(minTd);
 	maxTd = $("<td></td>");
-	maxTd.html(data[0].balanceScoreMaxData.grossCost);
+	maxTd.html(toThousands(data[0].balanceScoreMaxData.grossCost));
 	trNodes.eq(2).append(maxTd);
 	avgTd = $("<td></td>");
-	avgTd.html(data[0].balanceScoreAvgData.grossCost);
+	avgTd.html(toThousands(data[0].balanceScoreAvgData.grossCost));
 	trNodes.eq(2).append(avgTd);
 	for(var i = 0; i < data.length; i ++){
 		var nameTd = $("<td></td>");
-		nameTd.html(data[i].balanceScore.grossCost);
+		nameTd.html(toThousands(data[i].balanceScore.grossCost));
 		trNodes.eq(2).append(nameTd);
 	}
 	
 	minTd = $("<td></td>");
-	minTd.html(data[0].balanceScoreMinData.operatingProfit);
+	minTd.html(toThousands(data[0].balanceScoreMinData.operatingProfit));
 	trNodes.eq(3).append(minTd);
 	maxTd = $("<td></td>");
-	maxTd.html(data[0].balanceScoreMaxData.operatingProfit);
+	maxTd.html(toThousands(data[0].balanceScoreMaxData.operatingProfit));
 	trNodes.eq(3).append(maxTd);
 	avgTd = $("<td></td>");
-	avgTd.html(data[0].balanceScoreAvgData.operatingProfit);
+	avgTd.html(toThousands(data[0].balanceScoreAvgData.operatingProfit));
 	trNodes.eq(3).append(avgTd);
 	for(var i = 0; i < data.length; i ++){
 		var nameTd = $("<td></td>");
-		nameTd.html(data[i].balanceScore.operatingProfit);
+		nameTd.html(toThousands(data[i].balanceScore.operatingProfit));
 		trNodes.eq(3).append(nameTd);
 	}
 	
 	
 	
 	minTd = $("<td></td>");
-	minTd.html(data[0].balanceScoreMinData.cashEquivalent);
+	minTd.html(toThousands(data[0].balanceScoreMinData.cashEquivalent));
 	trNodes.eq(4).append(minTd);
 	maxTd = $("<td></td>");
-	maxTd.html(data[0].balanceScoreMaxData.cashEquivalent);
+	maxTd.html(toThousands(data[0].balanceScoreMaxData.cashEquivalent));
 	trNodes.eq(4).append(maxTd);
 	avgTd = $("<td></td>");
-	avgTd.html(data[0].balanceScoreAvgData.cashEquivalent);
+	avgTd.html(toThousands(data[0].balanceScoreAvgData.cashEquivalent));
 	trNodes.eq(4).append(avgTd);
 	for(var i = 0; i < data.length; i ++){
 		var nameTd = $("<td></td>");
-		nameTd.html(data[i].balanceScore.cashEquivalent);
+		nameTd.html(toThousands(data[i].balanceScore.cashEquivalent));
 		trNodes.eq(4).append(nameTd);
 	}
 	
 	minTd = $("<td></td>");
-	minTd.html(data[0].balanceScoreMinData.marketShare);
+	minTd.html(toThousands(data[0].balanceScoreMinData.marketShare));
 	trNodes.eq(5).append(minTd);
 	maxTd = $("<td></td>");
-	maxTd.html(data[0].balanceScoreMaxData.marketShare);
+	maxTd.html(toThousands(data[0].balanceScoreMaxData.marketShare));
 	trNodes.eq(5).append(maxTd);
 	avgTd = $("<td></td>");
-	avgTd.html(data[0].balanceScoreAvgData.marketShare);
+	avgTd.html(toThousands(data[0].balanceScoreAvgData.marketShare));
 	trNodes.eq(5).append(avgTd);
 	for(var i = 0; i < data.length; i ++){
 		var nameTd = $("<td></td>");
-		nameTd.html(data[i].balanceScore.marketShare);
+		nameTd.html(toThousands(data[i].balanceScore.marketShare));
 		trNodes.eq(5).append(nameTd);
 	}
 	
 	minTd = $("<td></td>");
-	minTd.html(data[0].balanceScoreMinData.unitMarketingRevenue);
+	minTd.html(toThousands(data[0].balanceScoreMinData.unitMarketingRevenue));
 	trNodes.eq(6).append(minTd);
 	maxTd = $("<td></td>");
-	maxTd.html(data[0].balanceScoreMaxData.unitMarketingRevenue);
+	maxTd.html(toThousands(data[0].balanceScoreMaxData.unitMarketingRevenue));
 	trNodes.eq(6).append(maxTd);
 	avgTd = $("<td></td>");
-	avgTd.html(data[0].balanceScoreAvgData.unitMarketingRevenue);
+	avgTd.html(toThousands(data[0].balanceScoreAvgData.unitMarketingRevenue));
 	trNodes.eq(6).append(avgTd);
 	for(var i = 0; i < data.length; i ++){
 		var nameTd = $("<td></td>");
-		nameTd.html(data[i].balanceScore.unitMarketingRevenue);
+		nameTd.html(toThousands(data[i].balanceScore.unitMarketingRevenue));
 		trNodes.eq(6).append(nameTd);
 	}
 	
 	minTd = $("<td></td>");
-	minTd.html(data[0].balanceScoreMinData.salesStaffRemuneration);
+	minTd.html(toThousands(data[0].balanceScoreMinData.salesStaffRemuneration));
 	trNodes.eq(7).append(minTd);
 	maxTd = $("<td></td>");
-	maxTd.html(data[0].balanceScoreMaxData.salesStaffRemuneration);
+	maxTd.html(toThousands(data[0].balanceScoreMaxData.salesStaffRemuneration));
 	trNodes.eq(7).append(maxTd);
 	avgTd = $("<td></td>");
-	avgTd.html(data[0].balanceScoreAvgData.salesStaffRemuneration);
+	avgTd.html(toThousands(data[0].balanceScoreAvgData.salesStaffRemuneration));
 	trNodes.eq(7).append(avgTd);
 	for(var i = 0; i < data.length; i ++){
 		var nameTd = $("<td></td>");
-		nameTd.html(data[i].balanceScore.salesStaffRemuneration);
+		nameTd.html(toThousands(data[i].balanceScore.salesStaffRemuneration));
 		trNodes.eq(7).append(nameTd);
 	}
 	
 	minTd = $("<td></td>");
-	minTd.html(data[0].balanceScoreMinData.trainingTime);
+	minTd.html(toThousands(data[0].balanceScoreMinData.trainingTime));
 	trNodes.eq(8).append(minTd);
 	maxTd = $("<td></td>");
-	maxTd.html(data[0].balanceScoreMaxData.trainingTime);
+	maxTd.html(toThousands(data[0].balanceScoreMaxData.trainingTime));
 	trNodes.eq(8).append(maxTd);
 	avgTd = $("<td></td>");
-	avgTd.html(data[0].balanceScoreAvgData.trainingTime);
+	avgTd.html(toThousands(data[0].balanceScoreAvgData.trainingTime));
 	trNodes.eq(8).append(avgTd);
 	for(var i = 0; i < data.length; i ++){
 		var nameTd = $("<td></td>");
-		nameTd.html(data[i].balanceScore.trainingTime);
+		nameTd.html(toThousands(data[i].balanceScore.trainingTime));
 		trNodes.eq(8).append(nameTd);
 	}
 	
 	minTd = $("<td></td>");
-	minTd.html(data[0].balanceScoreMinData.assetManagement);
+	minTd.html(toThousands(data[0].balanceScoreMinData.assetManagement));
 	trNodes.eq(9).append(minTd);
 	maxTd = $("<td></td>");
-	maxTd.html(data[0].balanceScoreMaxData.assetManagement);
+	maxTd.html(toThousands(data[0].balanceScoreMaxData.assetManagement));
 	trNodes.eq(9).append(maxTd);
 	avgTd = $("<td></td>");
-	avgTd.html(data[0].balanceScoreAvgData.assetManagement);
+	avgTd.html(toThousands(data[0].balanceScoreAvgData.assetManagement));
 	trNodes.eq(9).append(avgTd);
 	for(var i = 0; i < data.length; i ++){
 		var nameTd = $("<td></td>");
-		nameTd.html(data[i].balanceScore.assetManagement);
+		nameTd.html(toThousands(data[i].balanceScore.assetManagement));
 		trNodes.eq(9).append(nameTd);
 	}
 	
 	minTd = $("<td></td>");
-	minTd.html(data[0].balanceScoreMinData.productionEfficiency);
+	minTd.html(toThousands(data[0].balanceScoreMinData.productionEfficiency));
 	trNodes.eq(10).append(minTd);
 	maxTd = $("<td></td>");
-	maxTd.html(data[0].balanceScoreMaxData.productionEfficiency);
+	maxTd.html(toThousands(data[0].balanceScoreMaxData.productionEfficiency));
 	trNodes.eq(10).append(maxTd);
 	avgTd = $("<td></td>");
-	avgTd.html(data[0].balanceScoreAvgData.productionEfficiency);
+	avgTd.html(toThousands(data[0].balanceScoreAvgData.productionEfficiency));
 	trNodes.eq(10).append(avgTd);
 	for(var i = 0; i < data.length; i ++){
 		var nameTd = $("<td></td>");
-		nameTd.html(data[i].balanceScore.productionEfficiency);
+		nameTd.html(toThousands(data[i].balanceScore.productionEfficiency));
 		trNodes.eq(10).append(nameTd);
 	}
 	

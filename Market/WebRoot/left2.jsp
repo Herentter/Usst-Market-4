@@ -83,7 +83,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <li><a href="showDemandInfo.do" target="main">客户需求</a></li>
                     <li><a href="showUsageInfo.do" target="main">产品用途</a></li>
                     <li><a href="showMediaInfo.do" target="main">媒体偏好</a></li>
-                    <li><a href="showOperateMedia.do" target="main">主流媒体投放</a></li>
+                    <li><a href="showOperateMedia.do?quarter=2" target="main">主流媒体投放</a></li>
                     <li><a href="designAdvertisement.do?quarter=2" target="main">设计广告语</a></li>
                     <li><a href="checkAdvertisement.do?quarter=2" target="main">核查广告语</a></li>
              		<li><a href="ShowCompanyReport.do?quarter=2" target="main">购买市场调研报告</a>
@@ -105,15 +105,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <ul>
             <li><a href="#" target="main">实体销售中心</a>
                 <ul>
-                    <li><a href="hireSalePeople.do?quarter=2" target="main">雇佣实体销售人员</a></li>
                     <li><a href="showMarketInfo2.do" target="main">市场规模</a></li>
                     <li><a href="showMarketInfo.do?quarter=2" target="main">开设实体销售中心</a></li>
+                    <li><a href="hireSalePeople.do?quarter=2" target="main">雇佣实体销售人员</a></li>
                 </ul>
             </li>
             <li><a href="#" target="main">网络销售中心</a>
                 <ul>
-                    <li><a href="hireSalePeopleOnline.do?quarter=2" target="main">雇佣网络销售人员</a></li>
                     <li><a href="showMarketWebInfo.do?quarter=2" target="main">开设网络销售中心</a></li>
+                    <li><a href="hireSalePeopleOnline.do?quarter=2" target="main">雇佣网络销售人员</a></li>
                 </ul>
             </li>
             
@@ -122,8 +122,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <li>
         <a href="#none">生产制造<i></i></a>
         <ul>
-            <li><a href="showDemandForecast.do" target="main">需求量预测</a></li>
-            <li><a href="showInventoryControl.do" target="main">库存控制</a></li>
+            <li><a href="demandForecast.do?quarter=2" target="main">需求量预测</a></li>
+            <li><a href="showInventoryControl.do?quarter=2" target="main">库存控制</a></li>
             <li><a href="showOperationCapacity.do?quarter=2" target="main">运行产能</a></li>
             <li><a href="showCapacityInfo.do?quarter=2" target="main">固定产能</a></li>
         </ul>
@@ -150,7 +150,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <a href="#none">其他决策<i></i></a>
         <ul>
             <li><a href="companyRuleInfo.do?quarter=2" target="main">团队规则</a></li>
-            <li><a href="showAllMemberByComapnyId.do?quarter=2" target="main">职位分配</a></li>
+            <!-- <li><a href="showAllMemberByComapnyId.do?quarter=2" target="main">职位分配</a></li> -->
             <li><a href="strategyInfo.do?quarter=2" target="main">目标策略</a></li>
         </ul>
     </li>

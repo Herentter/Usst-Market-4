@@ -15,21 +15,7 @@ public class CompanyProduct {
     
     private String type;
     
-    private Integer demandNumTwo;
-    
-    private Integer demandNumThree;
-    
-    private Integer demandNumFour;
-    
-    private Integer demandNumFive;
-    
-    private Integer inventoryMaxTwo;
-    
-    private Integer inventoryMaxThree;
-    
-    private Integer inventoryMaxFour;
-    
-    private Integer inventoryMaxFive;
+   
 
 	public Integer getId() {
 		return id;
@@ -87,69 +73,6 @@ public class CompanyProduct {
 		this.type = type;
 	}
 
-	public Integer getDemandNumTwo() {
-		return demandNumTwo;
-	}
-
-	public void setDemandNumTwo(Integer demandNumTwo) {
-		this.demandNumTwo = demandNumTwo;
-	}
-
-	public Integer getDemandNumThree() {
-		return demandNumThree;
-	}
-
-	public void setDemandNumThree(Integer demandNumThree) {
-		this.demandNumThree = demandNumThree;
-	}
-
-	public Integer getDemandNumFour() {
-		return demandNumFour;
-	}
-
-	public void setDemandNumFour(Integer demandNumFour) {
-		this.demandNumFour = demandNumFour;
-	}
-
-	public Integer getDemandNumFive() {
-		return demandNumFive;
-	}
-
-	public void setDemandNumFive(Integer demandNumFive) {
-		this.demandNumFive = demandNumFive;
-	}
-
-	public Integer getInventoryMaxTwo() {
-		return inventoryMaxTwo;
-	}
-
-	public void setInventoryMaxTwo(Integer inventoryMaxTwo) {
-		this.inventoryMaxTwo = inventoryMaxTwo;
-	}
-
-	public Integer getInventoryMaxThree() {
-		return inventoryMaxThree;
-	}
-
-	public void setInventoryMaxThree(Integer inventoryMaxThree) {
-		this.inventoryMaxThree = inventoryMaxThree;
-	}
-
-	public Integer getInventoryMaxFour() {
-		return inventoryMaxFour;
-	}
-
-	public void setInventoryMaxFour(Integer inventoryMaxFour) {
-		this.inventoryMaxFour = inventoryMaxFour;
-	}
-
-	public Integer getInventoryMaxFive() {
-		return inventoryMaxFive;
-	}
-
-	public void setInventoryMaxFive(Integer inventoryMaxFive) {
-		this.inventoryMaxFive = inventoryMaxFive;
-	}
 	
 	public Integer getShengChanCost(int num,int cost){
 		int costSum=0;

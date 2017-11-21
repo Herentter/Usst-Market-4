@@ -21,16 +21,17 @@
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				<span>资产负债表</span>
+				<input type="button" value="返回" onclick="javascript:history.back();">
 			</div>
 
 			<div class="panel-body">
 				
 				<table class="table table-bordered">
 					<thead>
-						<tr>
+						<tr bgcolor="#D9EDF7">
 							<th>公司名称</th>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<th>${item.company.name }</th>
+							<c:forEach items="${companyList }" var="item">
+								<th>${item.name }</th>
 							</c:forEach>
 						</tr>
 					</thead>
@@ -40,33 +41,33 @@
 						</tr>
 						<tr>
 							<td>现金货币</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.balanceSheet.huobi }</td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td>${item.huobi }</td>
 							</c:forEach>
 						</tr>
 						<tr>
-							<td>季度定期存款</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.balanceSheet.cunkuan }</td>
+							<td>三个月定期存款</td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td>${item.cunkuan }</td>
 							</c:forEach>
 						</tr>
-						
+						<tr>
+							<td>存货</td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td>${item.cunhuo }</td>
+							</c:forEach>
+						</tr>
 						<tr>
 							<td>利息</td>
 							<c:forEach items="${companyFinanceVoList }" var="item">
 								<td>${item.balanceSheet.lixiCollection }</td>
 							</c:forEach>
 						</tr>
-						<tr>
-							<td>存货</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.balanceSheet.cunhuo }</td>
-							</c:forEach>
-						</tr>
+						
 						<tr bgcolor="#D9EDF7">
 							<td><strong>流动资产合计</strong></td>
-							<c:forEach items="${liquidAssetsSumList }" var="item">
-								<td><strong>${item }</strong></td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td><strong>${item.liuDongZiChan }</strong></td>
 							</c:forEach>
 						</tr>
 						<tr>
@@ -74,20 +75,20 @@
 						</tr>
 						<tr>
 							<td>固定资产</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.balanceSheet.zichan }</td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td>${item.zichan }</td>
 							</c:forEach>
 						</tr>
 						<tr bgcolor="#D9EDF7">
 							<td><strong>非流动资产合计</strong></td>
-							<c:forEach items="${unLiquidAssetsSumList }" var="item">
-								<td><strong>${item }</strong></td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td><strong>${item.zichan }</strong></td>
 							</c:forEach>
 						</tr>
 						<tr id="assetSum" bgcolor="#D9EDF7">
 							<td><strong>资产合计</strong></td>
-							<c:forEach items="${assetSumList }" var="item">
-								<td><strong>${item }</strong></td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td><strong>${item.totalZiChan }</strong></td>
 							</c:forEach>
 						</tr>
 						
@@ -97,20 +98,20 @@
 						
 						<tr>
 							<td>紧急贷款</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.balanceSheet.daikuanEmergency }</td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td>${item.daikuanEmergency }</td>
 							</c:forEach>
 						</tr>
 						<tr>
 							<td>应付利息</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.balanceSheet.lixiPay }</td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td>${item.lixiPay }</td>
 							</c:forEach>
 						</tr>
 						<tr bgcolor="#D9EDF7">
 							<td><strong>流动负债合计</strong></td>
-							<c:forEach items="${liquidDebtSumList }" var="item">
-								<td><strong>${item }</strong></td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td><strong>${item.liuDongFuzhai }</strong></td>
 							</c:forEach>
 						</tr>
 						<tr>
@@ -118,47 +119,47 @@
 						</tr>
 						<tr>
 							<td>常规银行贷款</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.balanceSheet.daikuanNormal }</td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td>${item.daikuanNormal }</td>
 							</c:forEach>
 						</tr>
 						<tr bgcolor="#D9EDF7">
 							<td><strong>非流动负债合计</strong></td>
-							<c:forEach items="${unLiquidDebtSumList }" var="item">
-								<td><strong>${item }</strong></td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td><strong>${item.daikuanNormal }</strong></td>
 							</c:forEach>
 						</tr>
 						<tr bgcolor="#D9EDF7">
 							<td><strong>负债合计</strong></td>
-							<c:forEach items="${debtSumList }" var="item">
-								<td><strong>${item }</strong></td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td><strong>${item.totalFuZhai }</strong></td>
 							</c:forEach>
 						</tr>
 						<tr>
 							<td id="ownerEquityTd"><strong>所有者权益</strong></td>
 						</tr>
 						<tr>
-							<td>普通股</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.balanceSheet.guben }</td>
+							<td>股本</td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td>${item.guben }</td>
 							</c:forEach>
 						</tr>
 						<tr>
 							<td>留存收益</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.balanceSheet.liucun }</td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td>${item.liucun }</td>
 							</c:forEach>
 						</tr>
 						<tr bgcolor="#D9EDF7">
 							<td><strong>所有者权益合计</strong></td>
-							<c:forEach items="${ownerEquitySumList }" var="item">
-								<td><strong>${item }</strong></td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td><strong>${item.owner }</strong></td>
 							</c:forEach>
 						</tr>
 						<tr bgcolor="#D9EDF7">
 							<td><strong>资产负债总计</strong></td>
-							<c:forEach items="${debtShareSumList }" var="item">
-								<td><strong>${item }</strong></td>
+							<c:forEach items="${balanceSheetList }" var="item">
+								<td><strong>${item.ownerAndFuZhai }</strong></td>
 							</c:forEach>
 						</tr>
 					</tbody>

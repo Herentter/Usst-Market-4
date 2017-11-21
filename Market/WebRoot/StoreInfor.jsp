@@ -125,7 +125,7 @@ float:left;
 </head>
 <body onLoad="init()">
 	<div class="panel panel-info">
-		<div class="panel-heading">各个城市竞争对手</div>
+		<div class="panel-heading">各产品销量统计</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#notice1" data-toggle="tab">
@@ -137,14 +137,14 @@ float:left;
 				<div class="tab-pane fade in active" id="notice1">
 					<div class="course_content">
 						<div class="text1">
-							(在这里输入竞争对手页面的介绍字段)</div>
-						<div class="text1">本页面将显示各个城市的竞争对手信息</div>
+							(在这里输入实体店店员雇佣的介绍字段)</div>
+						<div class="text1">本页面假设：<p><p>招聘成本100元/人<p>离职补偿150元/人</div>
 					</div>
 					<div class="left">
 						<div class="left_title">
 							<span><i class="fa fa-tasks"></i></span><label>你的任务</label>
 						</div>
-						<div class="left_content">分析各个竞争对手的市场战略</div>
+						<div class="left_content">雇佣适当数量的销售人员</div>
 					</div>
 
 				</div>

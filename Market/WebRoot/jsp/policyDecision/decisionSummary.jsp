@@ -41,7 +41,7 @@ $(function(){
 
 			<div class="panel-body">
 				<input type="hidden" id="currentQuarter" value="${currentQuarter }"/>
-				<label>点击公司名称来查看其决策汇总的完整版本</label>
+				<label><h4>点击公司名称来查看其决策汇总的完整版本</h4></label>
 				<ul>
 					<c:forEach items="${companyList }" var="item">
 						<li>

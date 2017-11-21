@@ -138,10 +138,10 @@ ul.nav span {
 			<ul>
 				<!-- balance_score_report -->
 				<li><a href="showCompanyMarketShare.do?quarter=3" target="main">市场份额</a></li>
-				<li><a href="showTotalSale.do?quarter=3" target="main">各渠道销售量</a></li>
-				<li><a href="showCashFlow.do?quarter=3" target="main">现金流表</a></li>
-				<li><a href="showIncomeStatement.do?quarter=3 " target="main">利润表</a></li>
-				<li><a href="showBalanceSheet.do?quarter=3" target="main">资产负债表</a></li>
+				<li><a href="showTotalSale.do?quarter=3" target="main">各公司销售量</a></li>
+				<li><a href="showCashFlowResult.do?quarter1=2" target="main">现金流表</a></li>
+				<li><a href="showIncomeStatementResult.do?quarter=2 " target="main">利润表</a></li>
+				<li><a href="showBalanceSheetResult.do?quarter=2" target="main">资产负债表</a></li>
 				<li><a href="loadBalanceScoreReport.do?quarter=3" target="main">平衡积分卡</a></li>
 				<li><a href="showFinancialRatio.do?quarter=3" target="main">财务比率</a></li>
 				<li><a href="showProductMarketShare.do?quarter=3" target="main">品牌详细需求报告</a></li>
@@ -174,15 +174,15 @@ ul.nav span {
 			</ul></li>
 		<li><a href="#none">销售渠道<i></i></a>
 			<ul>
-				<li><a href="#" target="main">各渠道销售量</a></li>
-				<li><a href="#" target="main">渠道盈利能力</a></li>
-				<li><a href="#" target="main">各渠道需求量</a></li>
-				<li><a href="#" target="main">各城市的竞争对手</a></li>
+				<li><a href="SalePathInfor.do?quarter=3" target="main">各产品销量</a></li>
+				<li><a href="SaleAbilityInfor.do?quarter=3" target="main">盈利能力</a></li>
+				<li><a href="GlobalPathNeeds.do?quarter=3" target="main">需求预测与实际销售</a></li>
+				<li><a href="StoreInfor.do?quarter=3" target="main">各城市的竞争对手</a></li>
 				<li><a href="#" target="main">实体销售中心</a>
 					<ul>
-						<li><a href="employeeSaleman.jsp" target="main">竞争对手的销售人员</a></li>
-						<li><a href="hireSalePeople.do?quarter=3" target="main">雇佣实体销售人员</a></li>
+						<li><a href="employeeSaleman.jsp" target="main">竞争对手销售人员</a></li>
 						<li><a href="showMarketInfo.do?quarter=3" target="main">开设实体销售中心</a></li>
+						<li><a href="hireSalePeople.do?quarter=3" target="main">雇佣实体销售人员</a></li>
 					</ul></li>
 				<li><a href="#" target="main">网络销售中心</a>
 					<ul>
@@ -203,7 +203,7 @@ ul.nav span {
 				<li><a href="showQuarterResult.do?quarter=3" target="main">上季度结果</a></li>
 				<li><a href="showCompetitivePower.do?quarter=3" target="main">竞争力</a></li>
 				<li><a href="showUselessInventory.do?quarter=3" target="main">无用库存</a></li>
-				<li><a href="requirePredict.jsp" target="main">需求量预测</a></li>
+				<li><a href="demandForecast.do?quarter=3" target="main">需求量预测</a></li>
 				<li><a href="showInventoryControl.do?quarter=3" target="main">库存控制</a></li>
 				<li><a href="showOperationCapacity.do?quarter=3" target="main">运行产能</a></li>
 				<li><a href="showCapacityInfo.do?quarter=3" target="main">固定产能</a></li>
@@ -222,19 +222,24 @@ ul.nav span {
 				<li><a href="showBalanceSheet.do?quarter=3" target="main">资产负债表</a></li>
 			</ul></li>
 
-		<li><a href="#none">决策汇总<i></i></a>
-			<ul>
-				<li><a href="11.jsp">导航选项</a></li>
-				<li><a href="11.jsp">导航选项</a></li>
-			</ul></li>
-		<li><a href="#none">其他决策<i></i></a>
-			<ul>
-				<li><a href="11.jsp">公司名称</a></li>
-				<li><a href="11.jsp">团队规则</a></li>
-				<li><a href="11.jsp">职责</a></li>
-				<li><a href="11.jsp">个人目标</a></li>
-				<li><a href="11.jsp">目标与策略</a></li>
-			</ul></li>
+		<li>
+        <a href="#none">其他决策<i></i></a>
+        <ul>
+            <li><a href="companyRuleInfo.do?quarter=3" target="main">团队规则</a></li>
+            <!-- <li><a href="showAllMemberByComapnyId.do?quarter=2" target="main">职位分配</a></li> -->
+            <li><a href="strategyInfo.do?quarter=3" target="main">目标策略</a></li>
+        </ul>
+    </li>
+
+    <li>
+         <a href="#none">决策汇总<i></i></a>
+        <ul>
+        	<li><a href="policyDecision/companyDecisionSummary.do?companyId=<%=request.getParameter("companyId") %> &currentQuarter=3" target="main">决策汇总</a></li>
+        	
+            <li><a href="finalCheck.do?quarter=3" target="main">最终检查</a></li>
+
+        </ul>
+    </li>
 
 	</ul>
 

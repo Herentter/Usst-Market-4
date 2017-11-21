@@ -70,7 +70,7 @@ public interface CompetitionResultMapper {
     
     //找每个公司的公司人数
     public List<HirePeople> findCompanyPhySalesNum(int companyId,int quarter);
-    public HirePeopleOnline findCompanyNetSalesNum(int companyId,int quarter);
+    public List<HirePeopleOnline> findCompanyNetSalesNum(int companyId,int quarter);
     public MarketInfo findMarketInfoById(int id);
     
     //找公司销售工人薪酬

@@ -1,18 +1,24 @@
 package cn.usst.market.po;
 
 public class ProductMarketShare {
-	int id;
-	int competitionId;
-	int companyId;
-	int productId;
-	int quarter;
-	String productType;
-	double marketShare;
-	int need;
-	int sale;
-	int stockoun;
-	int stock;
-	
+	private int id;
+	private int competitionId;
+	private int companyId;
+	private int productId;
+	private int quarter;
+	private String productType;
+	private double marketShare;//产品市场份额
+	private int need;//产品需求量
+	private int sale;//产品销售量
+	private int stockoun;//产品脱销
+	private int stock;//库存
+	private int isPhy;//是否实体销售中心
+	public int getStock() {
+		return stock;
+	}
+	public void setStock(int stock) {
+		this.stock = stock;
+	}
 	public int getId() {
 		return id;
 	}
@@ -73,11 +79,11 @@ public class ProductMarketShare {
 	public void setStockoun(int stockoun) {
 		this.stockoun = stockoun;
 	}
-	public int getStock() {
-		return stock;
+	public int getIsPhy() {
+		return isPhy;
 	}
-	public void setStock(int stock) {
-		this.stock = stock;
+	public void setIsPhy(int isPhy) {
+		this.isPhy = isPhy;
 	}
 	
 	

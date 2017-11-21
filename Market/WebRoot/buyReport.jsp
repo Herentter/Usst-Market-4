@@ -158,6 +158,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</thead>
 						<tbody>
 						<form id="form1" action="" method="post">
+							<input type="hidden" id="quarter" value="${quarter }">
 							<tr>
 								<td>全球市场</td>
 								<td>15000</td>
@@ -191,9 +192,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script>
 	function sign(){
 		//获取check值
+		var quarter =$("#quarter").val();
 		var flag=$("#buyReport").prop("checked");
 		alert("保存成功");
-		$("#form1").attr("action","OperateReport.do?flag="+flag);
+		$("#form1").attr("action","OperateReport.do?quarter="+quarter+"&flag="+flag);
 		$("#form1").submit();
 	}
 </script>

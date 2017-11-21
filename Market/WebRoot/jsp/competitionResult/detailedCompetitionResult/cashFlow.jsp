@@ -21,234 +21,243 @@
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				<span>现金流表</span>
+				<input type="button" value="返回" onclick="javascript:history.back();">
 			</div>
 
 			<div class="panel-body">
 				
 				<table class="table table-bordered">
 					<thead>
-						<tr>
+						<tr bgcolor="#D9EDF7">
 							<th>公司名称</th>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<th>${item.company.name }</th>
+							<c:forEach items="${companyList }" var="item">
+								<th>${item.name }</th>
 							</c:forEach>
 						</tr>
 					</thead>
 					<tbody>
-						<tr bgcolor="#D9EDF7">
+						<%-- <tr bgcolor="#D9EDF7">
 							<td><strong>季初现金余额</strong></td>
-							<c:forEach items="${yuEPreList }" var="item">
-								<td><strong>${item }</strong></td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td id="operatingActiveTd"><strong>经营活动收支</strong></td>
-						</tr>
-						<tr>
-							<td>+销售收入</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.xiaoshouGet }</td>
-							</c:forEach>
-						</tr>
-						
-						<tr>
-							<td>+利息收入</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.lixiGet }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>+技术授权收入</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.jishuGet }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>+其他收入</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.qitaGet }</td>
-							</c:forEach>
-						</tr>
-						<tr bgcolor="#D9EDF7">
-							<td><strong>=经营收入小计</strong></td>
-							<c:forEach items="${incomeSumList }" var="item">
-								<td><strong>${item }</strong></td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-邮寄返款</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.fankuanPay }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-生产支出</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.shengchanPay }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-研发支付</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.yanfaPay }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-广告支付</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.guanggaoPay }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-销售人员费用</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.salerPay }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-实体及网络销售中心费用</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.salescenterPay }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-市场调研支付</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.diaoyanPay }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-货运支付</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.huoyunPay }</td>
-							</c:forEach>
-						</tr>
-						<%-- <tr>
-							<td>-库存持有成本</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.kucunPay }</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td><strong>${item.yuE }</strong></td>
 							</c:forEach>
 						</tr> --%>
 						<tr>
-							<td>-网络销售费用</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.netmarketPay }</td>
-							</c:forEach>
+							<td id="operatingActiveTd"><strong>一、经营活动产生的现金流量</strong></td>
 						</tr>
 						<tr>
-							<td>-收入税</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.taxPay }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-利息费用</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.lixiPay }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-技术授权费用</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.jishuPay }</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<td>-其他费用</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.qitaPay }</td>
-							</c:forEach>
-						</tr>
-						<tr bgcolor="#D9EDF7">
-							<td><strong>=经营支出小计</strong></td>
-							<c:forEach items="${paySumList }" var="item">
-								<td><strong>${item }</strong></td>
-							</c:forEach>
-						</tr>
-						<tr bgcolor="#D9EDF7">
-							<td><strong>=净营业现金</strong></td>
-							<c:forEach items="${operatingCashSumList }" var="item">
-								<td><strong>${item }</strong></td>
+							<td>销售商品收到的现金</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.xiaoshouGet }</td>
 							</c:forEach>
 						</tr>
 						
 						<tr>
-							<td id="investActivityTd"><strong>投资活动</strong></td>
+							<td>收取利息的现金</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.lixiGet }</td>
+							</c:forEach>
 						</tr>
 						<tr>
-							<td>工厂固定产能</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.gongchangPay }</td>
+							<td>收取利息授权的现金</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.jishuGet }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>收到其他与经营活动有关的现金</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.qitaGet }</td>
 							</c:forEach>
 						</tr>
 						<tr bgcolor="#D9EDF7">
-							<td><strong>=所有投资活动</strong></td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td><strong>${item.cashFlow.gongchangPay }</strong></td>
+							<td><strong>经营活动现金流入小计</strong></td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td><strong>${item.xianJinGet }</strong></td>
 							</c:forEach>
 						</tr>
 						<tr>
-							<td id="financeActivityTd"><strong>财务活动</strong></td>
-						</tr>
-						<tr>
-							<td>+借入常规贷款</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.daikuanNormalGet }</td>
+							<td>邮寄返款支出的现金</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.fankuanPay }</td>
 							</c:forEach>
 						</tr>
 						<tr>
-							<td>+借入紧急贷款</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.daikuanEmergyGet }</td>
+							<td>生产支出的现金</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.shengchanPay }</td>
 							</c:forEach>
 						</tr>
 						<tr>
-							<td>+提取上季度存款</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.cunkuanRegularGet }</td>
+							<td>支付的研发费用</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.yanfaPay }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>支付的广告费用</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.guanggaoPay }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>支付的销售人员费用</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.salerPay }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>支付的实体及网络销售中心费用</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.salescenterPay+item.salescenterWebPay }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>支付的市场调研费用</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.diaoyanPay }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>支付的货运的现金</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.huoyunPay }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>支付的库存费用</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.kucunPay }</td>
+							</c:forEach>
+						<tr>
+							<td>支付的网络营销费用</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.netmarketPay }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>支付的收入税</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.taxPay }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>支付的利息费用</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.lixiPay }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>支付的技术授权费用</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.jishuPay }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>支付其他与经营活动有关的现金</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.qitaPay }</td>
 							</c:forEach>
 						</tr>
 						<tr bgcolor="#D9EDF7">
-							<td><strong>=筹资活动收入小计</strong></td>
-							<c:forEach items="${financingSumList }" var="item">
-								<td><strong>${item }</strong></td>
+							<td><strong>经营活动产生的现金流出小计</strong></td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td><strong>${item.xianJinPay }</strong></td>
 							</c:forEach>
 						</tr>
-						<tr>
-							<td>-偿还常规银行贷款</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.balanceSheet.daikuanNormalPay }</td>
+						<tr bgcolor="#D9EDF7">
+							<td><strong>经营活动产生的现金流量净额</strong></td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td><strong>${item.xianJinGet-item.xianJinPay }</strong></td>
 							</c:forEach>
 						</tr>
 						
 						<tr>
-							<td>-偿还紧急贷款</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.daikuanEmergyPay }</td>
+							<td id="investActivityTd"><strong>二、投资活动产生的现金流量</strong></td>
+						</tr>
+						<tr>
+							<td>构建工厂固定产能支出的现金</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.gongchangPay }</td>
+							</c:forEach>
+						</tr>
+						<tr bgcolor="#D9EDF7">
+							<td><strong>投资活动现金流出小计</strong></td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td><strong>${item.gongchangPay }</strong></td>
+							</c:forEach>
+						</tr>
+						<tr bgcolor="#D9EDF7">
+							<td><strong>投资活动产生的现金流量净额</strong></td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td><strong>${item.gongchangPay }</strong></td>
 							</c:forEach>
 						</tr>
 						<tr>
-							<td>-本季度存款</td>
-							<c:forEach items="${companyFinanceVoList }" var="item">
-								<td>${item.cashFlow.cunkuanRegularPay }</td>
+							<td id="chouziActivityTd"><strong>三、筹资活动产生的现金流量</strong></td>
+						</tr>
+						<tr>
+							<td>取得常规贷款收到的现金</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.daikuanNormalGet }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>取得紧急贷款收到的现金</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.daikuanEmergyGet }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>提取三个月定期存款收到的现金</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.cunkuanRegularGet }</td>
 							</c:forEach>
 						</tr>
 						<tr bgcolor="#D9EDF7">
-							<td><strong>=投资活动小计</strong></td>
-							<c:forEach items="${investmentSumList }" var="item">
-								<td><strong>${item }</strong></td>
+							<td><strong>筹资活动现金流入小计</strong></td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td><strong>${item.chouZiGet }</strong></td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>偿还常规贷款支出的现金</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.daikuanNormalPay }</td>
+							</c:forEach>
+						</tr>
+						
+						<tr>
+							<td>偿还紧急贷款支出的现金</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.daikuanEmergyPay }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>三个月定期存款支出的现金</td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td>${item.cunkuanRegularPay }</td>
 							</c:forEach>
 						</tr>
 						<tr bgcolor="#D9EDF7">
-							<td><strong>=所有财务活动</strong></td>
-							<c:forEach items="${financeActiveSumList }" var="item">
-								<td><strong>${item }</strong></td>
+							<td><strong>投资活动现金流出小计</strong></td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td><strong>${item.chouZiPay }</strong></td>
 							</c:forEach>
+						</tr>
+						<tr bgcolor="#D9EDF7">
+							<td><strong>筹资活动产生的现金流量净额</strong></td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td><strong>${item.chouZiGet-item.chouZiPay }</strong></td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td id="cashYuETd"><strong>四、现金及现金等级物净增加额</strong></td>
 						</tr>
 						<tr bgcolor="#D9EDF7">
 							<td><strong>季末现金余额</strong></td>
-							<c:forEach items="${yuEList }" var="item">
-								<td><strong>${item }</strong></td>
+							<c:forEach items="${cashFlowList }" var="item">
+								<td><strong>${item.yuE }</strong></td>
 							</c:forEach>
 						</tr>
 					</tbody>
@@ -267,7 +276,8 @@
 		var col=$("table").find("tr").children("th").length;
 		$("#operatingActiveTd").attr("colspan",col);
 		$("#investActivityTd").attr("colspan",col);
-		$("#financeActivityTd").attr("colspan",col);
+		$("#chouziActivityTd").attr("colspan",col);
+		$("#cashYuETd").attr("colspan",col);
 		
 		/* for(var i=2;i<=col;i++){
 			var sum=0;

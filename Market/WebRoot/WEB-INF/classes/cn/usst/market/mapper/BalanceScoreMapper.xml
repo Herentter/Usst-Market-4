@@ -81,12 +81,12 @@
   </select>
   
   <select id="getMinData" resultMap="MinDataMap">
-  	SELECT cast(MIN(gross_revenue) as decimal(10,3)) gross_revenue,cast(MIN(gross_cost) as decimal(10,3)) gross_cost,
-	cast(MIN(operating_profit) as decimal(10,3)) operating_profit,
-	cast(MIN(cash_equivalent) as decimal(10,3)) cash_equivalent,cast(MIN(market_share) as decimal(10,3)) market_share,
-	cast(MIN(unit_marketing_revenue) as decimal(10,3)) unit_marketing_revenue,cast(MIN(sales_staff_remuneration) as decimal(10,3)) sales_staff_remuneration,
-	cast(MIN(training_time) as decimal(10,3)) training_time,cast(MIN(asset_management) as decimal(10,3)) asset_management,
-	cast(MIN(production_efficiency) as decimal(10,3)) production_efficiency
+  	SELECT cast(MIN(gross_revenue) as decimal(15,3)) gross_revenue,cast(MIN(gross_cost) as decimal(15,3)) gross_cost,
+	cast(MIN(operating_profit) as decimal(15,3)) operating_profit,
+	cast(MIN(cash_equivalent) as decimal(15,3)) cash_equivalent,cast(MIN(market_share) as decimal(15,3)) market_share,
+	cast(MIN(unit_marketing_revenue) as decimal(15,3)) unit_marketing_revenue,cast(MIN(sales_staff_remuneration) as decimal(15,3)) sales_staff_remuneration,
+	cast(MIN(training_time) as decimal(15,3)) training_time,cast(MIN(asset_management) as decimal(15,3)) asset_management,
+	cast(MIN(production_efficiency) as decimal(15,3)) production_efficiency
 	from balance_score,company 
 	WHERE balance_score.company_id=company.id 
 	and competition_id = #{0}
@@ -94,12 +94,12 @@
   </select>
   
   <select id="getMaxData" resultMap="MaxDataMap">
-  	SELECT cast(MAX(gross_revenue) as decimal(10,3)) gross_revenue,cast(MAX(gross_cost) as decimal(10,3)) gross_cost,
-	cast(MAX(operating_profit) as decimal(10,3)) operating_profit,
-	cast(MAX(cash_equivalent) as decimal(10,3)) cash_equivalent,cast(MAX(market_share) as decimal(10,3)) market_share,
-	cast(MAX(unit_marketing_revenue) as decimal(10,3)) unit_marketing_revenue,cast(MAX(sales_staff_remuneration) as decimal(10,3)) sales_staff_remuneration,
-	cast(MAX(training_time) as decimal(10,3)) training_time,cast(MAX(asset_management) as decimal(10,3)) asset_management,
-	cast(MAX(production_efficiency) as decimal(10,3)) production_efficiency
+  	SELECT cast(MAX(gross_revenue) as decimal(15,3)) gross_revenue,cast(MAX(gross_cost) as decimal(15,3)) gross_cost,
+	cast(MAX(operating_profit) as decimal(15,3)) operating_profit,
+	cast(MAX(cash_equivalent) as decimal(15,3)) cash_equivalent,cast(MAX(market_share) as decimal(15,3)) market_share,
+	cast(MAX(unit_marketing_revenue) as decimal(15,3)) unit_marketing_revenue,cast(MAX(sales_staff_remuneration) as decimal(15,3)) sales_staff_remuneration,
+	cast(MAX(training_time) as decimal(15,3)) training_time,cast(MAX(asset_management) as decimal(15,3)) asset_management,
+	cast(MAX(production_efficiency) as decimal(15,3)) production_efficiency
 	from balance_score,company 
 	WHERE balance_score.company_id=company.id 
 	and competition_id = #{0}
@@ -107,16 +107,16 @@
   </select>
   
   <select id="getAvgData" resultMap="AvgDataMap">
-  	SELECT cast(AVG(gross_revenue) as decimal(10,3)) gross_revenue,
-	cast(AVG(gross_cost) as decimal(10,3)) gross_cost,
-	cast(AVG(operating_profit) as decimal(10,3)) operating_profit,
-	cast(AVG(cash_equivalent) as decimal(10,3)) cash_equivalent,
-	cast(AVG(market_share) as decimal(10,3)) market_share,
-	cast(AVG(unit_marketing_revenue) as decimal(10,3)) unit_marketing_revenue,
-	cast(AVG(sales_staff_remuneration) as decimal(10,3)) sales_staff_remuneration,
-	cast(AVG(training_time) as decimal(10,3)) training_time,
-	cast(AVG(asset_management) as decimal(10,3)) asset_management, 
-	cast(AVG(production_efficiency) as decimal(10,3)) production_efficiency 
+  	SELECT cast(AVG(gross_revenue) as decimal(15,3)) gross_revenue,
+	cast(AVG(gross_cost) as decimal(15,3)) gross_cost,
+	cast(AVG(operating_profit) as decimal(15,3)) operating_profit,
+	cast(AVG(cash_equivalent) as decimal(15,3)) cash_equivalent,
+	cast(AVG(market_share) as decimal(15,3)) market_share,
+	cast(AVG(unit_marketing_revenue) as decimal(15,3)) unit_marketing_revenue,
+	cast(AVG(sales_staff_remuneration) as decimal(15,3)) sales_staff_remuneration,
+	cast(AVG(training_time) as decimal(15,3)) training_time,
+	cast(AVG(asset_management) as decimal(15,3)) asset_management, 
+	cast(AVG(production_efficiency) as decimal(15,3)) production_efficiency 
 	from balance_score,company 
 	WHERE balance_score.company_id=company.id 
 	and competition_id = #{0}

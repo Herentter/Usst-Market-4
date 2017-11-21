@@ -27,10 +27,14 @@ import cn.usst.market.po.CompanyAdvertise;
 import cn.usst.market.po.CompanyCapacity;
 import cn.usst.market.po.CompanyDuty;
 import cn.usst.market.po.CompanyInvestment;
+import cn.usst.market.po.CompanyLoan;
 import cn.usst.market.po.CompanyMarket;
 import cn.usst.market.po.CompanyMedia;
 import cn.usst.market.po.CompanyPersonGoal;
 import cn.usst.market.po.CompanyProduct;
+import cn.usst.market.po.CompanyProductVo;
+import cn.usst.market.po.CompanyProductVo2;
+import cn.usst.market.po.CompanyProductVo2List;
 import cn.usst.market.po.CompanyReport;
 import cn.usst.market.po.CompanyRule;
 import cn.usst.market.po.CompanyStock;
@@ -1080,7 +1084,6 @@ public class CompanyController {
 	public ModelAndView showWorkersSalary1(HttpServletRequest request) throws Exception {
 		int companyIdInt = (int) request.getSession().getAttribute("companyId");
 		int quarter=Integer.parseInt(request.getParameter("quarter"));
-		
 		//获取表单数据
 		int salary = Integer.parseInt(request.getParameter("salary"));
 		int welfare = Integer.parseInt(request.getParameter("welfare"));
@@ -1223,14 +1226,18 @@ public class CompanyController {
 			List<CompanyProduct> demandForecastList2 = companyService.selectDemandForecast2(companyIdInt, 2);
 			List<CompanyProduct> companyProducts = companyService.selectProductByCompanyId(companyIdInt);
 			ModelAndView modelAndView = new ModelAndView();
+		
+			
 			modelAndView.addObject("demandForecastList", demandForecastList);
+			
 			modelAndView.addObject("demandForecastList2", demandForecastList2);
+			
 			modelAndView.addObject("companyProducts", companyProducts);
 			modelAndView.setViewName("demandForecast");
 			return modelAndView;
 		}
 
-		@MethodLog(description = "修改需求量预测")
+		/*@MethodLog(description = "修改需求量预测")
 		@RequestMapping(value = "/showDemandForecast1.do")
 		public ModelAndView showDemandForecast1(HttpServletRequest request) {
 			int companyIdInt = (int) request.getSession().getAttribute("companyId");
@@ -1258,7 +1265,182 @@ public class CompanyController {
 			}
 			ModelAndView mv = showDemandForecast(request);
 			return mv;
+		}*/
+		
+		
+		//需求量预测  改
+		
+		@MethodLog(description = "查看需求量预测操作")
+		@RequestMapping(value = "/demandForecast.do")
+		public ModelAndView demandForecast(HttpServletRequest request) {
+			
+			int companyId = (int) request.getSession().getAttribute("companyId");
+			int quarter=Integer.parseInt(request.getParameter("quarter"));
+			
+			
+			
+			// 实体销售中心的销售数量   不区分市场
+			
+			//上季度
+			List<HirePeople> hirePeopelListPro=companyService.selectHirePeopleList(companyId,quarter-1);
+			int phySalemanNumberPro=0;
+			if(hirePeopelListPro!=null){
+				for(HirePeople hirePeople:hirePeopelListPro ){
+					phySalemanNumberPro+=hirePeople.getSaleman();
+				}
+			}
+			
+			
+			//这季度
+			List<HirePeople> hirePeopelList=companyService.selectHirePeopleList(companyId,quarter);
+			int phySalemanNumber=0;
+			if(hirePeopelList!=null){
+				for(HirePeople hirePeople:hirePeopelList ){
+					phySalemanNumber+=hirePeople.getSaleman();
+				}
+			}
+			
+			// 网络销售中心的销售人员数量  不区分市场
+			
+			//上季度
+			
+			List<HirePeopleOnline> hirePeopleOnlineListPro=companyService.selectHirePeopleOnlineList(companyId,quarter-1);
+			int webSalemanNumberPro=0;
+			if(hirePeopelList!=null){
+				for(HirePeopleOnline hirePeopleOnline:hirePeopleOnlineListPro ){
+					webSalemanNumberPro+=hirePeopleOnline.getSaleman();
+				}
+			}
+			
+			//这季度
+			List<HirePeopleOnline> hirePeopleOnlineList=companyService.selectHirePeopleOnlineList(companyId,quarter);
+			int webSalemanNumber=0;
+			if(hirePeopelList!=null){
+				for(HirePeopleOnline hirePeopleOnline:hirePeopleOnlineList ){
+					webSalemanNumber+=hirePeopleOnline.getSaleman();
+				}
+			}
+			
+			//获取人均需求量 
+			
+			DemandForecast demandForecast=companyService.getDemandForecastByCompanyIdAndQuarter(companyId,quarter);
+			
+			DemandForecast demandForecastPro=companyService.getDemandForecastByCompanyIdAndQuarter(companyId,quarter-1);
+			
+			if(demandForecastPro==null){
+				demandForecastPro=new DemandForecast();
+				demandForecastPro.setDemandAveragePhy(0);
+				demandForecastPro.setDemandAverageWeb(0);
+			}
+			
+			//获取产品信息
+			
+			Map<Integer,List<CompanyProductVo>> companyProductResult=new HashMap<Integer,List<CompanyProductVo>>();
+			int demandNumber=0;
+			
+			for(int i=1;i<=quarter;i++){
+				List<CompanyProductVo> companyProductList=companyService.selectCompanyProduct(companyId,i,quarter);
+				
+				for(CompanyProductVo companyProductVo:companyProductList){
+					demandNumber+=companyProductVo.getDemand();
+				}
+				
+				if(companyProductList!=null){
+					companyProductResult.put(i, companyProductList);
+				}
+			}
+			
+			Map<Integer,List<CompanyProductVo>> companyProductResult2=new HashMap<Integer,List<CompanyProductVo>>();
+			
+			
+			
+			int demandNumberPro=0;
+			for(int i=1;i<=quarter;i++){
+				List<CompanyProductVo> companyProductList2=companyService.selectCompanyProduct(companyId,i,quarter-1);
+				
+				for(CompanyProductVo companyProductVo:companyProductList2){
+					demandNumberPro+=companyProductVo.getDemand();
+				}
+				
+				if(companyProductList2!=null){
+					companyProductResult2.put(i, companyProductList2);
+				}
+			}
+			
+			
+			
+
+			ModelAndView modelAndView = new ModelAndView();
+			
+			
+			modelAndView.addObject("quarter", quarter);
+			modelAndView.addObject("phySalemanNumberPro", phySalemanNumberPro);
+			modelAndView.addObject("webSalemanNumberPro", webSalemanNumberPro);
+			modelAndView.addObject("phySalemanNumber", phySalemanNumber);
+			modelAndView.addObject("webSalemanNumber", webSalemanNumber);
+			
+			modelAndView.addObject("demandForecastPro", demandForecastPro);
+			modelAndView.addObject("demandForecast", demandForecast);
+			
+			modelAndView.addObject("companyProductResult", companyProductResult);
+			modelAndView.addObject("companyProductResult2", companyProductResult2);
+			
+			modelAndView.addObject("demandNumberPro", demandNumberPro);
+			modelAndView.addObject("demandNumber", demandNumber);
+			
+			
+			modelAndView.setViewName("demandForecast2");
+			return modelAndView;
+				
+			
 		}
+		
+		
+		@MethodLog(description = "更新需求量预测操作")
+		@RequestMapping(value = "/updateDemandForecast.do")
+		public ModelAndView updateDemandForecast(HttpServletRequest request) {
+			
+			int companyId = (int) request.getSession().getAttribute("companyId");
+			int quarter=Integer.parseInt(request.getParameter("quarter"));
+			
+			String string1=request.getParameter("demand_average_phy");
+			String string2=request.getParameter("demand_average_web");
+			if(string1==null||string1.equals("")){
+				string1="0";
+			}
+			if(string2==null||string2.equals("")){
+				string2="0";
+			}
+			
+			int demandAveragePhy=Integer.parseInt(string1);
+																		
+			int demandAverageWeb=Integer.parseInt(string2);
+			
+			if(companyService.getDemandForecastByCompanyIdAndQuarter(companyId, quarter)!=null){
+				
+				companyService.updateDemandForecast(companyId, quarter, demandAveragePhy, demandAverageWeb);
+			}else{
+				companyService.insertDemandForecast(companyId, quarter, demandAveragePhy, demandAverageWeb);
+			}
+				
+			String[] productIds=request.getParameterValues("productId");
+			System.out.println("产品Id为："+productIds[0]);
+			
+			for(int i=0;i<productIds.length;i++){
+				int demand=Integer.parseInt(request.getParameter(productIds[i]+"demand"));
+				int productId=Integer.parseInt(productIds[i]);
+				companyService.updateProductDemand(productId, quarter, demand);
+			}
+			
+			
+			
+			return demandForecast(request);
+			
+		}
+		
+		
+		
+		
 		
 		@MethodLog(description="显示销货成本")
 		@RequestMapping("/showSoldCost.do")
@@ -1272,15 +1454,11 @@ public class CompanyController {
 			
 			//获取该公司当季度及之前的所有产品及成本
 			ModelAndView modelAndView=new ModelAndView();
-			if(quarter>=1){
-				List<CompanyProduct> companyProducts=companyService.selectProductByCompanyIdAndQuarter(company_id, 1);
-				for(int i=2;i<quarter;i++){
-					List<CompanyProduct> xx=companyService.selectProductByCompanyIdAndQuarter(company_id, i);
-					companyProducts.addAll(xx);
-				}
-				System.out.println("list："+companyProducts.size());
-				modelAndView.addObject("companyProducts", companyProducts);
+			List<CompanyProduct> companyProducts=companyService.selectProductByCompanyIdAndQuarter(company_id, 1);
+			for(int i=2;i<=quarter;i++){
+				companyProducts.addAll(companyService.selectProductByCompanyIdAndQuarter(company_id, i));
 			}
+			modelAndView.addObject("companyProducts", companyProducts);
 			
 			modelAndView.setViewName("soldCost");	
 			return modelAndView;
@@ -1335,6 +1513,14 @@ public class CompanyController {
 			for(int i=0;i<productId.length;i++){
 				String price=request.getParameter(productId[i]+"price");
 				String youji=request.getParameter(productId[i]+"youji");
+				
+				if(price==null||price.equals("")){
+					price="0";
+				}
+				if(youji==null||youji.equals("")){
+					youji="0";
+				}
+				
 				System.out.println("产品ID"+Integer.parseInt(productId[i])+"产品价格："+Integer.parseInt(price)+"邮寄返款："+youji);
 				companyService.updateProductPrice(Integer.parseInt(productId[i]), quarter, Integer.parseInt(price),Integer.parseInt(youji) );
 			}
@@ -1348,25 +1534,26 @@ public class CompanyController {
 			System.out.println("显示主流媒体投放成功");
 			//获取公司id和季度
 			int company_id=(int)request.getSession().getAttribute("companyId");
-			int quarter=2;	
-			System.out.println("公司ID:"+company_id+"季度："+quarter);
+			int quarter=Integer.parseInt(request.getParameter("quarter"));	
+		
 			
 			ModelAndView modelAndView=new ModelAndView();
 			//媒体初始信息
-			System.out.println("d断电--------------------");
+			
 			List<MediaInfo> mediaInfos=staticInfoService.showMediaInfo();
 			
 			modelAndView.addObject("mediaInfos", mediaInfos);
 			System.out.println("媒体初始："+mediaInfos.size());
 			//产品初始信息
 			List<CompanyProduct> companyProducts=companyService.selectProductByCompanyIdAndQuarter(company_id, 1);
-			for(int i=2;i<quarter;i++){
+			for(int i=2;i<=quarter;i++){
 				List<CompanyProduct> xx=companyService.selectProductByCompanyIdAndQuarter(company_id, i);
 				companyProducts.addAll(xx);
 			}
 			System.out.println("list："+companyProducts.size());
 			modelAndView.addObject("companyProducts", companyProducts);
 			modelAndView.addObject("len", companyProducts.size());
+			modelAndView.addObject("quarter", quarter);
 			
 			//公司媒体投放信息
 			List<CompanyMedia> companyMedias=companyService.selectTotalCompanyMedia(company_id, quarter);
@@ -1384,11 +1571,11 @@ public class CompanyController {
 			
 			//获取公司id和季度
 			int company_id=(int)request.getSession().getAttribute("companyId");
-			int quarter=2;	
+			int quarter=Integer.parseInt(request.getParameter("quarter"));	
 			
 			//产品初始信息
 			List<CompanyProduct> companyProducts=companyService.selectProductByCompanyIdAndQuarter(company_id, 1);
-			for(int i=2;i<quarter;i++){
+			for(int i=2;i<=quarter;i++){
 				List<CompanyProduct> xx=companyService.selectProductByCompanyIdAndQuarter(company_id, i);
 				companyProducts.addAll(xx);
 			}
@@ -1445,6 +1632,7 @@ public class CompanyController {
 		
 		ModelAndView modelAndView=new ModelAndView();
 		modelAndView.addObject("flag", flag);
+		modelAndView.addObject("quarter", quarter);
 		modelAndView.setViewName("buyReport");
 		return modelAndView;
 	}
@@ -1506,11 +1694,10 @@ public class CompanyController {
 		
 		@MethodLog(description="查看品牌管理操作")
 		@RequestMapping(value = "/CompanyProduct.do")
-		public ModelAndView CompanyProduct(HttpServletRequest request) {
+		public ModelAndView CompanyProduct(HttpServletRequest request,int quarter) {
 			
 			System.out.println("查看品牌管理操作success");
 			int companyId=(int) request.getSession().getAttribute("companyId");
-			int quarter=Integer.parseInt(request.getParameter("quarter"));
 			
 			
 			
@@ -1543,7 +1730,7 @@ public class CompanyController {
 		public ModelAndView operateProduct(HttpServletRequest request) throws Exception {
 			// 获取操作的方法
 			System.out.println("操作产品。。。");
-			
+			int quarter=Integer.parseInt(request.getParameter("quarter"));
 			int productId=Integer.parseInt(request.getParameter("id"));
 			System.out.println("产品ID："+productId);
 			String method = request.getParameter("method");
@@ -1555,7 +1742,12 @@ public class CompanyController {
 			if(method.equals("delete")){
 				System.out.println("删除操作");
 				companyService.deleteCompanyProduct(productId);
-				modelAndView=CompanyProduct(request);
+				companyService.deleteCompanyProductDemand(productId);
+				companyService.deleteProductPrice(productId);
+				companyService.deleteCompanyProductInventory(productId);
+				companyService.deleteCompanyMedia(productId);
+				companyService.deleteCompanyAdvertise(productId);
+				modelAndView=CompanyProduct(request,quarter);
 				modelAndView.setViewName("design");
 			}else{
 				System.out.println("查询操作");
@@ -1659,6 +1851,14 @@ public class CompanyController {
 				companyProduct.setDetail(request.getParameter("selectOption"));
 				companyProduct.setCost(Integer.parseInt(cost));
 				companyService.insertCompanyProduct(companyProduct);
+				
+				int id=companyProduct.getId();
+				for(int i=1;i<=6;i++){
+					companyService.insertCompanyProductDemandById(id,i);
+				}
+				for(int i=2;i<=6;i++){
+					companyService.insertCompanyProductInventoryById(id,i);
+				}
 			}
 			else{
 				//更新操作
@@ -1675,7 +1875,7 @@ public class CompanyController {
 				companyService.updateCompanyProduct(companyProduct);
 			}
 			
-			ModelAndView modelAndView = CompanyProduct(request);
+			ModelAndView modelAndView = CompanyProduct(request,quarter);
 			return modelAndView;
 		}
 
@@ -1808,17 +2008,40 @@ public class CompanyController {
 		@MethodLog(description = "查看库存控制")
 		@RequestMapping(value = "/showInventoryControl.do")
 		public ModelAndView showInventoryControl(HttpServletRequest request) {
-			int companyIdInt = (int) request.getSession().getAttribute("companyId");
+			int companyId = (int) request.getSession().getAttribute("companyId");
 			
-			int quarter=Integer.parseInt(request.getParameter("quarter"))-1;
-			List<CompanyProduct> inventoryControl = companyService.selectInventoryControl(companyIdInt, quarter-1);
-			List<CompanyProduct> companyProducts = companyService.selectProductByCompanyId(companyIdInt);
+			int quarter=Integer.parseInt(request.getParameter("quarter"));
+			List<CompanyProductVo2> inventoryControl = companyService.selectInventoryControl(companyId, quarter);
 			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.addObject("quarter", quarter);
 			modelAndView.addObject("inventoryControl", inventoryControl);
-			modelAndView.addObject("companyProducts", companyProducts);
+			
 			modelAndView.setViewName("inventoryControl");
 			return modelAndView;
 		}
+		
+		//修改库存控制
+		
+		@MethodLog(description = "修改库存控制")
+		@RequestMapping(value = "/updateInventoryControl.do")
+		public ModelAndView updateInventoryControl(HttpServletRequest request,CompanyProductVo2List companyProductVo2List) {
+			
+			int quarter=Integer.parseInt(request.getParameter("quarter"));
+			
+			for(CompanyProductVo2 companyProductVo2:companyProductVo2List.getCompanyProductVo2List()){
+				System.out.println("输出 产品库存:"+ companyProductVo2.getId()+companyProductVo2.getInventory());
+				int productId=companyProductVo2.getId();
+				int inventory=companyProductVo2.getInventory();
+				companyService.updateCompanyProductInventory(productId,inventory,quarter);
+			}
+			
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.addObject("quarter", quarter);	
+			modelAndView.setViewName("inventoryControl");
+			return showInventoryControl(request);
+		}
+		
+		
 
 		@MethodLog(description = "查看上季度结果")
 		@RequestMapping(value = "/showQuarterResult.do")
@@ -1829,11 +2052,11 @@ public class CompanyController {
 	        List<CompanyInvestment> companyInvestmentList =companyService.selectCompanyInvestment(companyId, quarter);
 			System.out.println("size"+companyInvestmentList.get(0).getWorkerEfficiency());
 	        
-	        List<CompanyProduct> companyProducts = companyService.selectProductByCompanyId(companyId);
+	        List<CompanyProduct> companyProducts = companyService.selectCompanyProductByCompanyIdQuarter(companyId,quarter);
 		    List<StockLevelVo> SLVoList = new ArrayList<>();
 			for (CompanyProduct compro : companyProducts) {
 				List<ProductMarketShare> PMS = new ArrayList<>();
-				PMS = companyService.selectProductMarketShare(compro.getId());
+				PMS = companyService.selectProductMarketShare(compro.getId(),quarter);
 				StockLevelVo SLV = new StockLevelVo();
 				SLV.setCompanyProducts(compro);
 				SLV.setNeed(PMS.get(0).getNeed());
@@ -1861,18 +2084,18 @@ public class CompanyController {
 		@RequestMapping(value = "/showUselessInventory.do")
 		public ModelAndView showUselessInventory(HttpServletRequest request) {
 			int companyId = (int) request.getSession().getAttribute("companyId");
-			int quarter = Integer.parseInt(request.getParameter("quarter"))-1;
-			List<CompanyInvestment> companyInvestmentList = companyService.selectCompanyInvestment(companyId, quarter);
+			int quarter = Integer.parseInt(request.getParameter("quarter"));
+			List<CompanyInvestment> companyInvestmentList = companyService.selectCompanyInvestment(companyId, quarter-1);
 
-			List<CompanyProduct> companyProducts = companyService.selectProductByCompanyId(companyId);
+			List<CompanyProduct> companyProducts = companyService.selectCompanyProductByCompanyIdQuarter(companyId,quarter);
 			List<StockLevelVo> SLVoList = new ArrayList<>();
 			for (CompanyProduct compro : companyProducts) {
 				List<ProductMarketShare> PMS = new ArrayList<>();
-				PMS = companyService.selectProductMarketShare(compro.getId());
+				PMS = companyService.selectProductMarketShare(compro.getId(),quarter-1);
 				StockLevelVo SLV = new StockLevelVo();
 				SLV.setCompanyProducts(compro);
 				SLV.setStock(PMS.get(0).getStock());
-
+				SLV.setSale(PMS.get(0).getSale());
 				SLVoList.add(SLV);
 
 			}
@@ -1886,7 +2109,7 @@ public class CompanyController {
 		}
 		
 		
-		@MethodLog(description = "修改库存控制")
+		/*@MethodLog(description = "修改库存控制")
 		@RequestMapping(value = "/showInventoryControl1.do")
 		public ModelAndView showInventoryControl1(HttpServletRequest request) {
 			String[] ids = request.getParameterValues("ids");
@@ -1904,14 +2127,14 @@ public class CompanyController {
 			ModelAndView mv = showInventoryControl(request);
 			return mv;
 		
-		}
+		}*/
 		
 		//雇佣销售人员  
 		@RequestMapping(value="/hireSalePeople.do")
 		public ModelAndView hireSalePeople(HttpServletRequest request){
 			int companyId = (int) request.getSession().getAttribute("companyId");
 			int currentQuarter=Integer.parseInt(request.getParameter("quarter"));
-			int quarter=currentQuarter-1;
+			int quarter=currentQuarter;
 			
 			IdQuarter idQuarter=new IdQuarter();
 			idQuarter.setId(companyId);
@@ -1933,8 +2156,13 @@ public class CompanyController {
 				hirePeopleVo=companyService.selectHirePeople(companyId,marketInt,quarter);
 				System.out.println("城市的名字："+hirePeopleVo.getCity());
 				System.out.println("销售人员："+hirePeopleVo.getHirePeople().getSaleman());
+				if(hirePeopleVo.getHirePeople().getSaleman()==null||hirePeopleVo.getHirePeople().getSaleman().equals("")){
+					hirePeopleVo.getHirePeople().setSaleman(0);
+				}
+				if(hirePeopleVo.getHirePeople().getAfterSale()==null||hirePeopleVo.getHirePeople().getAfterSale().equals("")){
+					hirePeopleVo.getHirePeople().setAfterSale(0);
+				}
 				totalPeople=totalPeople+hirePeopleVo.getHirePeople().getSaleman()+hirePeopleVo.getHirePeople().getAfterSale();
-				
 				hirePeopleListVo.add(hirePeopleVo);
 			}
 			
@@ -1942,8 +2170,10 @@ public class CompanyController {
 			
 			SalesSalary salesSalary=companyService.findCompanySalesSalary(companyId, currentQuarter);
 			
-			System.out.println("员工工资："+salesSalary.getSalaryTotal());
-			
+			if(salesSalary==null){
+				salesSalary=new SalesSalary();
+				salesSalary.setSalaryTotal(0);
+			}
 			ModelAndView modelAndView =  new ModelAndView();
 			modelAndView.addObject("totalPeople",totalPeople);
 			modelAndView.addObject("salesSalary",salesSalary);
@@ -1972,7 +2202,7 @@ public class CompanyController {
 		public ModelAndView hireSalePeopleOnline(HttpServletRequest request){
 			int companyId = (int) request.getSession().getAttribute("companyId");
 			int currentQuarter=Integer.parseInt(request.getParameter("quarter"));
-			int quarter=currentQuarter-1;
+			int quarter=currentQuarter;
 			
 			IdQuarter idQuarter=new IdQuarter();
 			idQuarter.setId(companyId);
@@ -2021,6 +2251,14 @@ public class CompanyController {
 				
 				System.out.println("提交后售后人员："+hirePeopleOnline.getAfterSale());
 				System.out.println("提交后 id:"+hirePeopleOnline.getId());
+				if(hirePeopleOnline.getAfterSale()==null||hirePeopleOnline.getAfterSale().equals("")){
+					hirePeopleOnline.setAfterSale(0);
+				}
+				if(hirePeopleOnline.getSaleman()==null||hirePeopleOnline.getSaleman().equals("")){
+					hirePeopleOnline.setSaleman(0);
+				}
+				
+				
 				companyService.updateHirePeopleOnlineById(hirePeopleOnline);
 			}
 			return hireSalePeopleOnline(request);	
@@ -2030,258 +2268,7 @@ public class CompanyController {
 		
 		
 	//2017-11-1	 财务
-		
-		
-		
-		@MethodLog(description="查看现金流表操作")
-		@RequestMapping(value="/showCashFlow.do ")
-		public ModelAndView showCashFlow(HttpServletRequest request,String quarter1) throws Exception{
-			int company_id=(int)request.getSession().getAttribute("companyId");
-			int quarter=Integer.parseInt(quarter1);
-			//找出该公司当季度所有产品
-			List<CompanyProduct> companyProducts=companyService.selectProductByCompanyIdAndQuarter(company_id, 1);
-			for(int i=2;i<=quarter;i++){
-				companyProducts.addAll(companyService.selectProductByCompanyIdAndQuarter(company_id, i));
-			}
-			//收入
-			int income=0;
-			for(int i=0;i<companyProducts.size();i++){
-				int productId=companyProducts.get(i).getId();
-				int productPrice=0;
-				ProductPrice price=companyService.showPrice(productId, quarter);
-				if(price!=null){
-					productPrice=price.getPrice();
-				}
-				if(quarter==1){
-					break;
-				}else if(quarter==2){
-					int demandNum=companyService.selectDemandNum2(productId);
-					income+=productPrice*demandNum;
-				}else if(quarter==3){
-					int demandNum=companyService.selectDemandNum3(productId);
-					income+=productPrice*demandNum;
-				}
-			}
-			companyService.updateCashFlowShouRu(income, company_id, quarter);
-			//收取利息以及存款
-			int cunru=companyService.selectCunru(company_id, quarter);
-			int tiqu=companyService.selectTiQu(company_id, quarter);
-			int cunkuanLast=companyService.selectCunKuanLast(company_id, quarter);
-			DecimalFormat df=new DecimalFormat("#.00");
-			float lixi=Float.parseFloat(df.format((cunkuanLast+cunru-tiqu)*0.015));
-			companyService.updateCashFlowCunkuanPay(cunru, company_id, quarter);
-			companyService.updateCashFlowTiqu(tiqu, company_id, quarter);
-			companyService.updateCashFlowLixi(lixi, company_id, quarter);
-			//邮寄返款
-			int youji_sum=0;
-			for(int i=0;i<companyProducts.size();i++){
-				int productId=companyProducts.get(i).getId();
-				int youji=0;
-				ProductPrice price=companyService.showPrice(productId, quarter);
-				if(price!=null){
-					youji=price.getYouji();
-				}
-				if(quarter==1){
-					break;
-				}else if(quarter==2){
-					int demandNum=companyService.selectDemandNum2(productId);
-					youji_sum+=youji*demandNum;
-				}else if(quarter==3){
-					int demandNum=companyService.selectDemandNum3(productId);
-					youji_sum+=youji*demandNum;
-				}
-			}
-			companyService.updateCashFlowYouJi(youji_sum, company_id, quarter);
-			//生产支出的现金和库存费用
-			int shengchanCostSum=0;
-			int kucunCostSum=0;
-			for(int i=0;i<companyProducts.size();i++){
-				int productId=companyProducts.get(i).getId();
-				int productCost=companyService.selectProductCost(productId);
-				int num=0;
-				int kucunNum=0;
-				if(quarter==1){
-					break;
-				}else if(quarter==2){
-					num=companyService.selectDemandNum2(productId);
-					kucunNum=companyService.selectKucunNum2(productId);
-				}else if(quarter==3){
-					num=companyService.selectDemandNum3(productId);
-					kucunNum=companyService.selectKucunNum3(productId);
-				}
-				int shengchanCost=companyProducts.get(i).getShengChanCost(num+kucunNum, productCost);
-				kucunCostSum+=shengchanCost*kucunNum;
-				shengchanCostSum+=shengchanCost*(num+kucunNum);
-			}
-			companyService.updateCashFlowShengChan(shengchanCostSum, company_id, quarter);
-			companyService.updateCashFlowKuCun(kucunCostSum/10, company_id, quarter);
-			//研发
-			companyService.updateCashFlowYanfa((float)(companyService.selectProductByCompanyIdAndQuarter(company_id, quarter).size()*60000), company_id, quarter);
-			//广告
-			int mediaCost=0;
-			for(int i=0;i<companyProducts.size();i++){
-				int productId=companyProducts.get(i).getId();
-				List<CompanyMedia> companyMedias=companyService.selectProductMedia(productId, quarter);
-				for(int j=0;j<companyMedias.size();j++){
-					int mediaId=companyMedias.get(j).getMediaId();
-					int num=companyMedias.get(j).getNum();
-					int cost=companyService.selectMediaCost(mediaId);
-					mediaCost+=num*cost;
-				}
-			}
-			companyService.updateCashFlowMediaCost(mediaCost, company_id, quarter);
-			//销售人员
-			//销售人员的工资以及数量
-			if(quarter!=1){
-				
-				IdQuarter idQuarter=new IdQuarter();
-				idQuarter.setId(company_id);
-				idQuarter.setQuarter(quarter);
-				
-				//返回一个用逗号分隔得字符串
-				CompanyMarket companyMarket=teacherService.findCompanyPhyMarketByIdQuarter(idQuarter);
-				
-				String[] marketString=companyMarket.getMarketId().split(",");
-				HirePeopleVo hirePeopleVo=null;
-				int totalPeople=0;			
-				
-				
-				for(int i=0;i<marketString.length;i++){
-					int marketInt=Integer.parseInt(marketString[i]);
-					hirePeopleVo=companyService.selectHirePeople(company_id,marketInt,quarter);
-					totalPeople=hirePeopleVo.getHirePeople().getSaleman()+hirePeopleVo.getHirePeople().getAfterSale();
-				}
-				
-				//根据公司id 和季度 查找 sale_salary 表中的 员工工资
-				
-				SalesSalary salesSalary=companyService.findCompanySalesSalary(company_id, quarter);
-				
-				System.out.println("员工工资："+salesSalary.getSalaryTotal());
-				
-				
-				
-				int totalCost=totalPeople*salesSalary.getSalaryTotal();
-				
-				System.out.println("2017-11-1 销售人员员工总工资："+totalCost);
-				
-				companyService.updateCashFlowSalerPay(totalCost, company_id, quarter);
-			}
-			//销售中心(实体加网络)
-			int PhyCost=0;
-			int WebCost=0;
-			String Phy="";
-			String Web="";
-			if(quarter==1){
-				CompanyMarket companyMarketPhy=companyService.selectPhyCompanyMarket(company_id, quarter);
-				if(companyMarketPhy!=null){
-					Phy=companyMarketPhy.getMarketId();
-					String[] PhyId=Phy.split(",");
-					for(int i=0;i<PhyId.length;i++){
-						int id=Integer.parseInt(PhyId[i]);
-						PhyCost+=companyService.selectOpenByMarketId(id);
-					}
-				}
-				CompanyMarket companyMarketWeb=companyService.selectWebCompanyMarket(company_id, quarter);
-				if(companyMarketWeb!=null){
-					Web=companyMarketWeb.getMarketId();
-					String[] WebId=Web.split(",");
-					for(int i=0;i<WebId.length;i++){
-						int id=Integer.parseInt(WebId[i]);
-						WebCost+=companyService.selectWebOpenByMarketId(id);
-					}
-				}
-			}else{
-				//实体店
-				CompanyMarket companyMarketPhy=companyService.selectPhyCompanyMarket(company_id, quarter-1);
-				Phy=companyMarketPhy.getMarketId();
-				String[] PhyId=Phy.split(",");
-				CompanyMarket companyMarketPhy2=companyService.selectPhyCompanyMarket(company_id, quarter);
-				if(companyMarketPhy2!=null){
-					String Phy2=companyMarketPhy2.getMarketId();
-					String[] PhyId2=Phy2.split(",");
-					int flag;
-					for(int i=0;i<PhyId2.length;i++){
-						int id2=Integer.parseInt(PhyId2[i]);
-						flag=0;
-						for(int j=0;j<PhyId.length;j++){
-							int id=Integer.parseInt(PhyId[j]);
-							if(id2==id){
-								PhyCost+=companyService.selectRent(id2);
-								flag=1;
-								break;
-							}
-						}
-						if(flag==0){
-							PhyCost+=companyService.selectOpenByMarketId(id2);
-						}
-					}
-				}
-				//网络店
-				CompanyMarket companyMarketWeb=companyService.selectWebCompanyMarket(company_id, quarter-1);
-				Web=companyMarketWeb.getMarketId();
-				String[] WebId=Web.split(",");
-				CompanyMarket companyMarketWeb2=companyService.selectWebCompanyMarket(company_id, quarter);
-				if(companyMarketWeb2!=null){
-					String Web2=companyMarketWeb2.getMarketId();
-					String[] WebId2=Web2.split(",");
-					int Webflag;
-					for(int i=0;i<WebId2.length;i++){
-						int id2=Integer.parseInt(WebId2[i]);
-						Webflag=0;
-						for(int j=0;j<WebId.length;j++){
-							int id=Integer.parseInt(WebId[j]);
-							if(id2==id){
-								WebCost+=companyService.selectWebRent(id2);
-								Webflag=1;
-								break;
-							}
-						}
-						if(Webflag==0){
-							WebCost+=companyService.selectWebOpenByMarketId(id2);
-						}
-					}
-				}
-			}
-			companyService.updateCashFlowPhyMarket(PhyCost, company_id, quarter);
-			companyService.updateCashFlowWebMarket(WebCost, company_id, quarter);
-			//调研费用
-			CompanyReport companyReport=companyService.showReport(company_id, quarter);
-			if(companyReport==null){
-				companyService.updateCashFlowDiaoYan(0, company_id, quarter);
-			}else if(companyReport.getBuyReport()==1){
-				companyService.updateCashFlowDiaoYan(15000, company_id, quarter);
-			}else{
-				companyService.updateCashFlowDiaoYan(0, company_id, quarter);
-			}
-			//货运
-			int demand_sum=0;
-			for(int i=0;i<companyProducts.size();i++){
-				int productId=companyProducts.get(i).getId();
-				if(quarter==1){
-					break;
-				}else if(quarter==2){
-					int demandNum=companyService.selectDemandNum2(productId);
-					demand_sum+=demandNum;
-				}else if(quarter==3){
-					int demandNum=companyService.selectDemandNum3(productId);
-					demand_sum+=demandNum;
-				}
-			}
-			companyService.updateCashFlowHuoYun(demand_sum*100, company_id, quarter);
-			//工厂
-			int capacity=companyService.selectCapacity(company_id, quarter);
-			int invest=companyService.selectInvestByCapacity(capacity);
-			companyService.updateCashFlowCapacity(invest, company_id, quarter);
-			
-			ModelAndView modelAndView =  new ModelAndView();
-			List<CashFlow> list1=companyService.showCashFlow(company_id, 1);
-			list1.addAll(companyService.showCashFlow(company_id, 2));
-			list1.addAll(companyService.showCashFlow(company_id, 3));
-			modelAndView.addObject("cashFlowList", list1);
-		    modelAndView.addObject("quarter", quarter);
-			modelAndView.setViewName("cashFlow");
-			return modelAndView;
-		}
+
 		@MethodLog(description="查看利润表操作")
 		@RequestMapping(value="/showIncomeStatement.do ")
 		public ModelAndView showIncomeStatement(HttpServletRequest request) throws Exception{
@@ -2560,7 +2547,7 @@ public class CompanyController {
 			cashFlowResult.addAll(companyService.selectCashFlowResult(company_id, 3));
 			modelAndView.addObject("cashFlowList", cashFlowResult);
 			modelAndView.addObject("quarter", quarter);
-			modelAndView.setViewName("cashFlow");
+			modelAndView.setViewName("cashFlow11");
 			return modelAndView;
 		}
 		
@@ -2717,5 +2704,308 @@ public class CompanyController {
 			ModelAndView modelAndView=designAdvertisement(request,productId);
 			return modelAndView;
 		}
+		
+		@MethodLog(description="紧急银行贷款")
+		@RequestMapping(value="/showEmergencyLoan.do ")
+		public ModelAndView showEmergencyLoan(HttpServletRequest request,int quarter) throws Exception{
+			System.out.println("查看紧急银行贷款");
+			int company_id=(int)request.getSession().getAttribute("companyId");
+			ModelAndView modelAndView=new ModelAndView();
+			BalanceSheet balanceSheet=companyService.selectBalanceSheet(company_id, quarter);
+			float huobi=balanceSheet.getHuobi();
+			modelAndView.addObject("huobi", huobi);
+			int guben=companyService.selectGuBen(company_id, quarter);
+			float totalDebt=(float)(guben*1.5);
+			modelAndView.addObject("totalDebt", totalDebt);
+			CompanyLoan companyLoan=companyService.selectCompanyLoan(company_id, quarter);
+			if(companyLoan==null){
+				if(quarter>4){
+					CompanyLoan companyLoan1=companyService.selectCompanyLoan(company_id, quarter-1);
+					float loanLast=Float.parseFloat((String.valueOf(((companyLoan1.getLoanLast()+companyLoan1.getGetNum()-companyLoan1.getReturnNum())*1.04))));
+					System.out.println("上季度贷款总额："+loanLast);
+					companyService.insertLoanLast(loanLast, company_id, quarter);
+				}
+			}
+			CompanyLoan companyLoan2=companyService.selectCompanyLoan(company_id, quarter);
+			modelAndView.addObject("companyLoan", companyLoan2);
+			modelAndView.addObject("quarter", quarter);
+			modelAndView.setViewName("emergencyLoan");	
+			return modelAndView;
+		}
+		
+		@RequestMapping(value="/showEmergencyLoan1.do ")
+		public ModelAndView showEmergencyLoan1(HttpServletRequest request) throws Exception{
+			System.out.println("操作紧急银行贷款");
+			int company_id=(int)request.getSession().getAttribute("companyId");
+			int quarter=Integer.parseInt(request.getParameter("quarter"));
+			float get = Float.parseFloat(request.getParameter("get"));
+			float payBack = Float.parseFloat(request.getParameter("return"));
+			CompanyLoan companyLoan=companyService.selectCompanyLoan(company_id, quarter);
+			if(companyLoan==null){
+				companyService.insertCompanyLoan(company_id, quarter, get, payBack);
+			}else{
+				companyService.updateCompanyLoan(company_id, quarter, get, payBack);
+			}
+			ModelAndView mv=showEmergencyLoan(request,quarter);
+			mv.addObject("quarter", quarter);
+			return mv;
+		}
 
+		public ModelAndView checkCashAmount(HttpServletRequest request,float expense,int quarter) throws Exception{
+			/*若是返回NULL值，可用资金充足
+			 * 若不是NULL值，说明资金不够，跳转至贷款页面
+			*/
+			ModelAndView modelAndView=showBalanceSheet(request);
+			int company_id=(int)request.getSession().getAttribute("companyId");
+			BalanceSheet balanceSheet=companyService.selectBalanceSheet(company_id, quarter);
+			float huobi=balanceSheet.getHuobi();
+			if((huobi-expense)<0){
+				ModelAndView mv=showEmergencyLoan(request,quarter);
+				mv.addObject("method", "redirect");
+				mv.setViewName("emergencyLoan");
+				return mv;
+			}else{
+				return null;
+			}
+		}
+		
+		//2017-11-15
+
+		@MethodLog(description="查看现金流表操作")
+		@RequestMapping(value="/showCashFlow.do ")
+		public ModelAndView showCashFlow(HttpServletRequest request,String quarter1) throws Exception{
+			int company_id=(int)request.getSession().getAttribute("companyId");
+			int quarter=Integer.parseInt(quarter1);
+			//找出该公司当季度所有产品
+			List<CompanyProduct> companyProducts=companyService.selectProductByCompanyIdAndQuarter(company_id, 1);
+			for(int i=2;i<=quarter;i++){
+				companyProducts.addAll(companyService.selectProductByCompanyIdAndQuarter(company_id, i));
+			}
+			//收入
+			int income=0;
+			for(int i=0;i<companyProducts.size();i++){
+				int productId=companyProducts.get(i).getId();
+				int productPrice=0;
+				ProductPrice price=companyService.showPrice(productId, quarter);
+				if(price!=null){
+					productPrice=price.getPrice();
+				}
+				if(quarter==1){
+					break;
+				}else {
+					int demandNum=companyService.selectProductDemand(productId, quarter);
+					income+=productPrice*demandNum;
+				}
+			}
+			companyService.updateCashFlowShouRu(income, company_id, quarter);
+			//收取利息以及存款
+			int cunru=companyService.selectCunru(company_id, quarter);
+			int tiqu=companyService.selectTiQu(company_id, quarter);
+			int cunkuanLast=companyService.selectCunKuanLast(company_id, quarter);
+			DecimalFormat df=new DecimalFormat("#.00");
+			float lixi=Float.parseFloat(df.format((cunkuanLast+cunru-tiqu)*0.015));
+			companyService.updateCashFlowCunkuanPay(cunru, company_id, quarter);
+			companyService.updateCashFlowTiqu(tiqu, company_id, quarter);
+			companyService.updateCashFlowLixi(lixi, company_id, quarter);
+			//邮寄返款
+			int youji_sum=0;
+			for(int i=0;i<companyProducts.size();i++){
+				int productId=companyProducts.get(i).getId();
+				int youji=0;
+				ProductPrice price=companyService.showPrice(productId, quarter);
+				if(price!=null){
+					youji=price.getYouji();
+				}
+				if(quarter==1){
+					break;
+				}else {
+					int demandNum=companyService.selectProductDemand(productId, quarter);
+					youji_sum+=youji*demandNum;
+				}
+			}
+			companyService.updateCashFlowYouJi(youji_sum, company_id, quarter);
+			//生产支出的现金和库存费用
+			int shengchanCostSum=0;
+			int kucunCostSum=0;
+			for(int i=0;i<companyProducts.size();i++){
+				int productId=companyProducts.get(i).getId();
+				int productCost=companyService.selectProductCost(productId);
+				int num=0;
+				int kucunNum=0;
+				if(quarter==1){
+					break;
+				}else{
+					num=companyService.selectProductDemand(productId, quarter);
+					kucunNum=companyService.selectProductKuCun(productId, quarter);
+				}
+				int shengchanCost=companyProducts.get(i).getShengChanCost(num+kucunNum, productCost);
+				kucunCostSum+=shengchanCost*kucunNum;
+				shengchanCostSum+=shengchanCost*(num+kucunNum);
+			}
+			companyService.updateCashFlowShengChan(shengchanCostSum, company_id, quarter);
+			companyService.updateCashFlowKuCun(kucunCostSum/10, company_id, quarter);
+			//研发
+			companyService.updateCashFlowYanfa((float)(companyService.selectProductByCompanyIdAndQuarter(company_id, quarter).size()*60000), company_id, quarter);
+			//广告
+			int mediaCost=0;
+			for(int i=0;i<companyProducts.size();i++){
+				int productId=companyProducts.get(i).getId();
+				List<CompanyMedia> companyMedias=companyService.selectProductMedia(productId, quarter);
+				for(int j=0;j<companyMedias.size();j++){
+					int mediaId=companyMedias.get(j).getMediaId();
+					int num=companyMedias.get(j).getNum();
+					int cost=companyService.selectMediaCost(mediaId);
+					mediaCost+=num*cost;
+				}
+			}
+			companyService.updateCashFlowMediaCost(mediaCost, company_id, quarter);
+			//销售人员
+			//销售人员的工资以及数量
+			if(quarter!=1){
+				
+				IdQuarter idQuarter=new IdQuarter();
+				idQuarter.setId(company_id);
+				idQuarter.setQuarter(quarter);
+				
+				//返回一个用逗号分隔得字符串
+				CompanyMarket companyMarket=teacherService.findCompanyPhyMarketByIdQuarter(idQuarter);
+				
+				String[] marketString=companyMarket.getMarketId().split(",");
+				HirePeopleVo hirePeopleVo=null;
+				int totalPeople=0;			
+				
+				
+				for(int i=0;i<marketString.length;i++){
+					int marketInt=Integer.parseInt(marketString[i]);
+					hirePeopleVo=companyService.selectHirePeople(company_id,marketInt,quarter);
+					totalPeople=hirePeopleVo.getHirePeople().getSaleman()+hirePeopleVo.getHirePeople().getAfterSale();
+				}
+				
+				//根据公司id 和季度 查找 sale_salary 表中的 员工工资
+				
+				SalesSalary salesSalary=companyService.findCompanySalesSalary(company_id, quarter);
+				
+				System.out.println("员工工资："+salesSalary.getSalaryTotal());
+				
+				
+				
+				int totalCost=totalPeople*salesSalary.getSalaryTotal();
+				
+				System.out.println("2017-11-1 销售人员员工总工资："+totalCost);
+				
+				companyService.updateCashFlowSalerPay(totalCost, company_id, quarter);
+			}
+			//销售中心(实体加网络)
+			int PhyCost=0;
+			int WebCost=0;
+			String Phy="";
+			String Web="";
+			if(quarter==1){
+				CompanyMarket companyMarketPhy=companyService.selectPhyCompanyMarket(company_id, quarter);
+				if(companyMarketPhy!=null){
+					Phy=companyMarketPhy.getMarketId();
+					String[] PhyId=Phy.split(",");
+					for(int i=0;i<PhyId.length;i++){
+						int id=Integer.parseInt(PhyId[i]);
+						PhyCost+=companyService.selectOpenByMarketId(id);
+					}
+				}
+				CompanyMarket companyMarketWeb=companyService.selectWebCompanyMarket(company_id, quarter);
+				if(companyMarketWeb!=null){
+					Web=companyMarketWeb.getMarketId();
+					String[] WebId=Web.split(",");
+					for(int i=0;i<WebId.length;i++){
+						int id=Integer.parseInt(WebId[i]);
+						WebCost+=companyService.selectWebOpenByMarketId(id);
+					}
+				}
+			}else{
+				//实体店
+				CompanyMarket companyMarketPhy=companyService.selectPhyCompanyMarket(company_id, quarter-1);
+				Phy=companyMarketPhy.getMarketId();
+				String[] PhyId=Phy.split(",");
+				CompanyMarket companyMarketPhy2=companyService.selectPhyCompanyMarket(company_id, quarter);
+				if(companyMarketPhy2!=null){
+					String Phy2=companyMarketPhy2.getMarketId();
+					String[] PhyId2=Phy2.split(",");
+					int flag;
+					for(int i=0;i<PhyId2.length;i++){
+						int id2=Integer.parseInt(PhyId2[i]);
+						flag=0;
+						for(int j=0;j<PhyId.length;j++){
+							int id=Integer.parseInt(PhyId[j]);
+							if(id2==id){
+								PhyCost+=companyService.selectRent(id2);
+								flag=1;
+								break;
+							}
+						}
+						if(flag==0){
+							PhyCost+=companyService.selectOpenByMarketId(id2);
+						}
+					}
+				}
+				//网络店
+				CompanyMarket companyMarketWeb=companyService.selectWebCompanyMarket(company_id, quarter-1);
+				Web=companyMarketWeb.getMarketId();
+				String[] WebId=Web.split(",");
+				CompanyMarket companyMarketWeb2=companyService.selectWebCompanyMarket(company_id, quarter);
+				if(companyMarketWeb2!=null){
+					String Web2=companyMarketWeb2.getMarketId();
+					String[] WebId2=Web2.split(",");
+					int Webflag;
+					for(int i=0;i<WebId2.length;i++){
+						int id2=Integer.parseInt(WebId2[i]);
+						Webflag=0;
+						for(int j=0;j<WebId.length;j++){
+							int id=Integer.parseInt(WebId[j]);
+							if(id2==id){
+								WebCost+=companyService.selectWebRent(id2);
+								Webflag=1;
+								break;
+							}
+						}
+						if(Webflag==0){
+							WebCost+=companyService.selectWebOpenByMarketId(id2);
+						}
+					}
+				}
+			}
+			companyService.updateCashFlowPhyMarket(PhyCost, company_id, quarter);
+			companyService.updateCashFlowWebMarket(WebCost, company_id, quarter);
+			//调研费用
+			CompanyReport companyReport=companyService.showReport(company_id, quarter);
+			if(companyReport==null){
+				companyService.updateCashFlowDiaoYan(0, company_id, quarter);
+			}else if(companyReport.getBuyReport()==1){
+				companyService.updateCashFlowDiaoYan(15000, company_id, quarter);
+			}else{
+				companyService.updateCashFlowDiaoYan(0, company_id, quarter);
+			}
+			//货运
+			int demand_sum=0;
+			for(int i=0;i<companyProducts.size();i++){
+				int productId=companyProducts.get(i).getId();
+				if(quarter==1){
+					break;
+				}else{
+					int demandNum=companyService.selectProductDemand(productId, quarter);
+					demand_sum+=demandNum;
+				}
+			}
+			companyService.updateCashFlowHuoYun(demand_sum*100, company_id, quarter);
+			//工厂
+			int capacity=companyService.selectCapacity(company_id, quarter);
+			int invest=companyService.selectInvestByCapacity(capacity);
+			companyService.updateCashFlowCapacity(invest, company_id, quarter);
+			
+			ModelAndView modelAndView =  new ModelAndView();
+			List<CashFlow> list1=companyService.showCashFlow(company_id, 1);
+			list1.addAll(companyService.showCashFlow(company_id, 2));
+			list1.addAll(companyService.showCashFlow(company_id, 3));
+			modelAndView.addObject("cashFlowList", list1);
+		    modelAndView.addObject("quarter", quarter);
+			modelAndView.setViewName("cashFlow");
+			return modelAndView;
+		}
 }

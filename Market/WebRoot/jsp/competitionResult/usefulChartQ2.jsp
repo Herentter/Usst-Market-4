@@ -11,7 +11,7 @@
 <base href="<%=basePath %>">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>结果汇总</title>
+<title>有用图表</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="css/strategy.css">
 <style type="text/css">
@@ -22,7 +22,7 @@
 	<div id="nav44">
 		<div class="panel panel-info">
 			<div class="panel-heading">
-				<span>结果汇总</span>
+				<span>有用图表</span>
 			</div>
 
 			<div class="panel-body">
@@ -131,7 +131,7 @@
 						<!-- <li><a href="javascript:void(0)" onclick="marketShareChart()">市场份额</a></li> -->
 						<li><a href="javascript:void(0)" onclick="unitMarketingRevenueChart()">单位营销收益</a></li>
 						<li><a href="javascript:void(0)" onclick="salesRemunerationChart()">销售人员酬金</a></li>
-						<!-- <li><a href="javascript:void(0)" onclick="trainingTimeChart()">人员学习时间</a></li> -->
+						<li><a href="javascript:void(0)" onclick="trainingTimeChart()">人员学习时间</a></li>
 						<li><a href="javascript:void(0)" onclick="assetManagementChart()">资产管理</a></li>
 						<li><a href="javascript:void(0)" onclick="productionEfficiencyChart()">生产效率</a></li>
 					</ul>

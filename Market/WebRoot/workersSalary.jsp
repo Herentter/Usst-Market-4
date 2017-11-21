@@ -150,8 +150,8 @@ float:left;
 				</div>
 				<div class="tab-pane fade" id="notice2">
 					<input type="text" id="quarter" value="${quarter }">
-					<form class="form-horizontal" id="form"
-						name="addSalesSalaryForm" action="" >
+					<form class="form-horizontal" id="form" method="post"
+						name="addSalesSalaryForm" action="showWorkersSalary1.do?quarter=${quarter }">
 						<table class="table table-bordered">
 							<thead>
 								<tr>
@@ -216,10 +216,9 @@ float:left;
 <script type="text/javascript" src="js/jquery-2.2.4.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript">
+	
 	function sign() {
 		alert("提交成功");
-		var quarter=$("#quarter").val();
-		document.getElementById("form").action = "showWorkersSalary1.do";
 		document.getElementById("form").submit();
 	}
 	

@@ -127,7 +127,7 @@ public class CompetitionResultServiceImpl implements CompetitionResultService {
     	return competitionResultMapper.findCompanyPhySalesNum(companyId, quarter);
     }
     @Override
-    public HirePeopleOnline findCompanyNetSalesNum(int companyId,int quarter){
+    public List<HirePeopleOnline> findCompanyNetSalesNum(int companyId,int quarter){
     	return competitionResultMapper.findCompanyNetSalesNum(companyId, quarter);
     }
     @Override

@@ -336,4 +336,13 @@
 	<select id="selectCompanyProduct" resultType="cn.usst.market.po.CompanyProduct">
 	select * from company_product where id=#{0}
 </select>
+
+	<select	id="selectProductDemand" resultType="Integer">
+		select demand from company_product_demand where product_id=#{0} and quarter=#{1}
+	</select>
+	
+	<select id="selectProductKuCun" resultType="Integer">
+		select inventory from company_product_inventory where product_id=#{0} and quarter=#{1}
+	</select>
+
 </mapper>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <%
@@ -28,23 +29,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
 	<div class="container">
 		
-		<div class="row" id="row1">
-			<div class="col-md-3">
-				<div id="top_left">
-					<a href="javascript:void(0)" id="quarterSubtract">
-					<i class=" fa fa-caret-left"></i></a> &nbsp;&nbsp;<span>季度</span><span id="quarter">${competition.currentQuarter }</span>&nbsp;&nbsp;
-					<a href="javascript:void(0)" id="quarterAdd"><i class="fa fa-caret-right"></i></a>
-				</div>
-			</div>
-			<div class="col-md-7">
-				2
-			</div>
-			<div class="col-md-2">
-				3
-			</div>
-		</div>
-	
-	
 		<div class="top">
 		<input type="hidden" id="competitionId" value=<%=request.getParameter("id") %>>
 		
@@ -57,7 +41,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						当前季度:&nbsp;<span id="currentQuarter"></span>
 		        </div>
 		        <div class="pabel-body">
-		        	行业结果季度:&nbsp;<span id="quarter"></span>
+		        	平衡记分卡结果季度:&nbsp;<span id="quarter"></span>
 		        	<table class="table table-bordered table-hover table-striped" id="tab">
 						<thead>
 							<tr>

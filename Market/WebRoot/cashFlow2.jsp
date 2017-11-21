@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
 <!DOCTYPE html>
 <html>
 <%
@@ -198,7 +199,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						   </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">支付的实体及网络销售中心费用</td>
-						    <td>${cashFlowList[0].getSalescenterPay()+cashFlowList[0].getSalescenterWebPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getSalescenterPay()+cashFlowList[0].getSalescenterWebPay()}" pattern="#,#00.0"/></td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getSalescenterPay()+cashFlowList[0].getSalescenterWebPay()}" pattern="#,#00.0"/></td>
+						    
 						   	<td></td>
 						  </tr>
 						   </tr>

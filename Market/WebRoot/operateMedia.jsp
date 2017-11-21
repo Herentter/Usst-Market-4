@@ -102,63 +102,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		margin-top:5px;
 	}
     </style>
-    <script>
-    	function init(){
-    		//赋值给text
-    		var hiddens=$(":input[name=StringId]");
-    		for(var i=0;i<hiddens.length;i++){
-    			var num=hiddens[i].value;
-    			var id=hiddens[i].id;//id:**s**
-	   			var aa = id.split("s");
-	   			var textId="";
-   		      	textId=aa[0]+"n"+aa[1];
-   		      	var text=document.getElementById(textId);
-   		      	if(text!=null){
-   		      		text.value=num;
-   		      	}
-    		}
-    		cal();
-    	}
-    	function cal(){
-			/*计算文本框输入  */
-    		
-    		//获取表格行数
-    		var table=document.getElementById("table1");
-    		var rows=table.rows.length;//总行数
-    		
-    		//区域广告费用所在行数
-    		var partRow=rows-3;
-    		var totalRow=partRow+1;
-    		
-    		//获取text个数，即几个区域广告费用
-    		var input = table.rows[1].getElementsByTagName("input");//即列数
-    		var partCost=new Array();
-    		var totalCost=0;
-    		//全部初始化为0
-    		for(var i=0;i<input.length;i++){
-    			partCost[i]=0;
-    		}
-    		
-    		for(var i=1;i<rows-2;i++){
-    			//获取成本值，并进行计算
-    			var col = table.rows[i].getElementsByTagName("input");//获取每行的text
-    			var v = $("#table1 tr:gt(0):eq("+(i-1)+") td:eq(1)").text();//成本值
-    			for(var j=0;j<col.length;j++){
-    				var num=col[j].value;//媒体个数
-    				var perCost=parseInt(num)*parseInt(v);//单个媒体的成本
-    				partCost[j]+=perCost;//区域成本
-    				//赋值给区域成本
-    				var td=2+j;
-    				$("#table1 tr:gt(0):eq("+partRow+") td:eq("+td+")").html(partCost[j]);
-    			}
-    		}
-    		//计算总成本
-    		for(var i=0;i<input.length;i++){
-    			totalCost+=partCost[i];
-    		}
-    		$("#table1 tr:gt(0):eq("+totalRow+") td:eq(1)").html(totalCost); 
-    	}
-    </script>
+    
 </head>
 <body onLoad="init()">
     <div class="panel panel-info">
@@ -225,7 +169,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               				<input type="hidden" name="StringId" id="${aa.mediaId }s${aa.productId}" value="${aa.num }"/>
            				</c:forEach>
 		                <tbody>
-		                <form id="form1" method="post" action="UpdateCompanyMedia.do">
+		                <form id="form1" method="post" action="UpdateCompanyMedia.do?quarter=${quarter }">
 		                <c:forEach items="${mediaInfos }" var="aa">
               				<input type="hidden" name="mediaId"  value="${aa.id}"/>
            				</c:forEach>
@@ -271,6 +215,63 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </body>
 <script type="text/javascript" src="js/jquery-2.2.4.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
+<script>
+    	function init(){
+    		//赋值给text
+    		var hiddens=$(":input[name=StringId]");
+    		for(var i=0;i<hiddens.length;i++){
+    			var num=hiddens[i].value;
+    			var id=hiddens[i].id;//id:**s**
+	   			var aa = id.split("s");
+	   			var textId="";
+   		      	textId=aa[0]+"n"+aa[1];
+   		      	var text=document.getElementById(textId);
+   		      	if(text!=null){
+   		      		text.value=num;
+   		      	}
+    		}
+    		cal();
+    	}
+    	function cal(){
+			/*计算文本框输入  */
+    		
+    		//获取表格行数
+    		var table=document.getElementById("table1");
+    		var rows=table.rows.length;//总行数
+    		
+    		//区域广告费用所在行数
+    		var partRow=rows-3;
+    		var totalRow=partRow+1;
+    		
+    		//获取text个数，即几个区域广告费用
+    		var input = table.rows[1].getElementsByTagName("input");//即列数
+    		var partCost=new Array();
+    		var totalCost=0;
+    		//全部初始化为0
+    		for(var i=0;i<input.length;i++){
+    			partCost[i]=0;
+    		}
+    		
+    		for(var i=1;i<rows-2;i++){
+    			//获取成本值，并进行计算
+    			var col = table.rows[i].getElementsByTagName("input");//获取每行的text
+    			var v = $("#table1 tr:gt(0):eq("+(i-1)+") td:eq(1)").text();//成本值
+    			for(var j=0;j<col.length;j++){
+    				var num=col[j].value;//媒体个数
+    				var perCost=parseInt(num)*parseInt(v);//单个媒体的成本
+    				partCost[j]+=perCost;//区域成本
+    				//赋值给区域成本
+    				var td=2+j;
+    				$("#table1 tr:gt(0):eq("+partRow+") td:eq("+td+")").html(partCost[j]);
+    			}
+    		}
+    		//计算总成本
+    		for(var i=0;i<input.length;i++){
+    			totalCost+=partCost[i];
+    		}
+    		$("#table1 tr:gt(0):eq("+totalRow+") td:eq(1)").html(totalCost); 
+    	}
+    </script>
 <script>
 	function aa(){
 		

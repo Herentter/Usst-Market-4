@@ -30,18 +30,22 @@
 					<thead>
 						<tr>
 							<th>公司名称</th>
-							<th>销售人数</th>
-							<th>售后</th>
-							<th>人员总数</th>
+							<th>市场名称</th>
+							<th>市场类型</th>
+							<th>销售人员</th>
+							<th>售后人员</th>
+							<th>总数</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${companyNetSaleNumList }" var="item">
+						<c:forEach items="${saleNumList }" var="item">
 							<tr>
-								<td>${item.key }</td>
-								<td>${item.value.saler }</td>
-								<td>${item.value.aftersale }</td>
-								<td>${item.value.saler+item.value.aftersale }</td>
+								<td>${item.companyName }</td>
+								<td>${item.marketName }</td>
+								<td>${item.marketType }</td>
+								<td>${item.saleman }</td>
+								<td>${item.afterSale }</td>
+								<td>${item.saleman+item.afterSale }</td>
 							</tr>
 						</c:forEach>
 					</tbody>

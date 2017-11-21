@@ -15,6 +15,7 @@ import cn.usst.market.po.CompanyInvestment;
 import cn.usst.market.po.CompanyLoan;
 import cn.usst.market.po.CompanyMarketShare;
 import cn.usst.market.po.CompanyProduct;
+import cn.usst.market.po.CompanyProductVo2;
 import cn.usst.market.po.FinancialRatio;
 import cn.usst.market.po.FinancialRatioAvg;
 import cn.usst.market.po.FinancialRatioMax;
@@ -115,19 +116,38 @@ public class PerformanceReportServiceImpl implements PerformanceReportService {
 		double netProfit = incomeStatement.getYingyeIncome() + incomeStatement.getLixiIncome() + incomeStatement.getTechIncome()
 				+ incomeStatement.getQitaIncome() - incomeStatement.getYingyeCost() - incomeStatement.getSalerCost() - incomeStatement.getSalescenterCost()
 				- incomeStatement.getSalescenterWebCost() - incomeStatement.getNetmarketCost() - incomeStatement.getLixiCost();
-		List<CompanyProduct> productList = companyMapper.selectProductByCompanyId(companyId);
-		double productInventory = countProductInventory(productList, quarter);//成品库存
+		List<CompanyProductVo2> productList = companyMapper.selectInvertoryCountFinancialRatio(companyId, quarter);
+		double productInventory =0;
+		if(productList!=null){
+			//成品库存
+			for (CompanyProductVo2 companyProductVo2 : productList) {
+				productInventory += companyProductVo2.getInventory();
+			}
+		}
+		
 		List<CompanyCapacity> capacityList = companyMapper.showCapacityInfo1(companyId, quarter);
-		double fixedAsset = capacityList.get(0).getCapacityNow();//固定资产
+		double fixedAsset = 0;
+		if(capacityList!=null&&capacityList.size()>0){
+			fixedAsset = capacityList.get(0).getCapacityNow();//固定资产
+		}
 		List<BalanceSheet> listBSR = cashFlowMapper.selectBalanceSheetResult(companyId, quarter);
-		BalanceSheet balanceSheet = listBSR.get(0);//balanceSheetResult
+		BalanceSheet balanceSheet=new BalanceSheet();
+		if(listBSR!=null){
+			balanceSheet = listBSR.get(0);//balanceSheetResult
+		}
 		double cash = balanceSheet.getHuobi();//现金
 		double deposit = balanceSheet.getCunkuan();//三个月存款
 		//总资产
 		double totalAsset = balanceSheet.getCunhuo() + balanceSheet.getHuobi() + balanceSheet.getLixiCollection() +
 				balanceSheet.getZichan() + deposit;
 		//银行贷款
-		double loan = findCompanyLoanByCompanyIdQuarter(companyId, quarter).getLoanLast();
+		double loan=0;
+		CompanyLoan companyLoan = findCompanyLoanByCompanyIdQuarter(companyId, quarter);
+		if(companyLoan!=null){
+			if(companyLoan.getLoanLast() != null){
+				loan = companyLoan.getLoanLast();
+			}
+		}
 		//销货成本
 		double costOfSaleGood = incomeStatement.getYingyeCost();
 		//速动比率
@@ -168,19 +188,12 @@ public class PerformanceReportServiceImpl implements PerformanceReportService {
 		}
 	}
 	
-	public double countProductInventory(List<CompanyProduct> list, int quarter){
-		double sum = 0;
-		for (CompanyProduct companyProduct : list) {
-			if(quarter == 2){
-				sum += companyProduct.getInventoryMaxTwo();
-			}else if(quarter == 3){
-				sum += companyProduct.getInventoryMaxThree();
-			}else if(quarter == 4){
-				sum += companyProduct.getInventoryMaxFour();
-			}else{
-				sum += companyProduct.getInventoryMaxFive();
-			}
+	
+	public int isNullInventory(Integer inventory){
+		if(inventory == null){
+			return 0;
+		}else{
+			return inventory;
 		}
-		return sum;
 	}
 }

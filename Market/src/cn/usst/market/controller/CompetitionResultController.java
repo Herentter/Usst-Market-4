@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -310,64 +312,28 @@ public class CompetitionResultController {
 		return "jsp/competitionResult/detailedCompetitionResult/everyCompanyBalanceScore";	
 	}
 	
-	//损益表
+	//利润表
 	@RequestMapping("/competitionResult/incomeStatement.do")
 	public String incomeStatement(Model model,Integer competitionId,Integer currentQuarter) throws Exception{
 
 		Competition competition= competitionService.findCompetitionById(competitionId);
 		List<Company> companyList=companyService.showCompanyByCompetitionId(competitionId);
-		List<CompanyFinanceVo> companyFinanceVoList= new ArrayList<CompanyFinanceVo>();
-		//定义总和
-		List<Float> grossProfitList = new ArrayList<Float>();
-		List<Float> sumPayList = new ArrayList<Float>();
-		List<Float> sumProfitList = new ArrayList<Float>();
-		List<Float> netIncomeList = new ArrayList<Float>();
-		if(companyList!=null){
+		List<IncomeStatement> incomeStatementList=new ArrayList<>();
+		if(companyList!=null&&companyList.size()>0){
 			for(int i=0;i<companyList.size();i++){
-				//毛利
-				float grossProfit=0;
-				//支出
-				float sumPay=0;
-				//营业利润
-				float sumProfit=0;
-				//定义净收入
-				float netIncome=0;
-				
-				CompanyFinanceVo companyFinanceVo=new CompanyFinanceVo();
-				IdQuarter idQuarter=new IdQuarter();
-				idQuarter.setId(companyList.get(i).getId());
-				idQuarter.setQuarter(currentQuarter);
-				//现金流表
-				companyFinanceVo.setCompany(companyList.get(i));
-				IncomeStatement incomeStatement = competitionResultService.findIncomeStatementByIdAndQuarter(idQuarter);
-				if(incomeStatement!=null){
-					companyFinanceVo.setIncomeStatement(incomeStatement);
-					//求和
-					grossProfit=incomeStatement.getYingyeIncome()-incomeStatement.getYingyeCost()-incomeStatement.getFankuan();
-					sumPay=incomeStatement.getYanfa()+incomeStatement.getGuanggao()+incomeStatement.getSalerCost()+incomeStatement.getSalescenterCost()+
-								incomeStatement.getBaogao()+incomeStatement.getHuoyun()+incomeStatement.getKucun()+incomeStatement.getZhejiu()+
-								incomeStatement.getNetmarketCost();
-					sumProfit = grossProfit - sumPay;
-					netIncome=sumProfit+incomeStatement.getTechIncome()-incomeStatement.getTechCost()+incomeStatement.getQitaIncome()-incomeStatement.getQitaCost()+
-								incomeStatement.getLixiIncome()-incomeStatement.getLixiCost()-incomeStatement.getTaxCost();
+				IncomeStatement incomeStatement=new IncomeStatement();
+				//incomeStatement=competitionResultService.findIncomeStatementResultByCompanyIdQuarter(companyList.get(i).getId(), currentQuarter);
+				List<IncomeStatement> isList=companyService.selectIncomeStatementResult(companyList.get(i).getId(), currentQuarter);
+				if(isList!=null&&isList.size()>0){
+					incomeStatement=isList.get(0);
 				}
-				
-				companyFinanceVoList.add(companyFinanceVo);
-				grossProfitList.add(grossProfit);
-				sumPayList.add(sumPay);
-				sumProfitList.add(sumProfit);
-				netIncomeList.add(netIncome);
+				incomeStatementList.add(incomeStatement);
 			}
 		}
 		
 		model.addAttribute("competition", competition);
-		model.addAttribute("companyFinanceVoList", companyFinanceVoList);
-		//总和
-		model.addAttribute("grossProfitList", grossProfitList);
-		model.addAttribute("sumPayList", sumPayList);
-		model.addAttribute("sumProfitList", sumProfitList);
-		model.addAttribute("netIncomeList", netIncomeList);
-		
+		model.addAttribute("companyList", companyList);
+		model.addAttribute("incomeStatementList", incomeStatementList);
 		model.addAttribute("quarter", currentQuarter);
 		
 		return "jsp/competitionResult/detailedCompetitionResult/incomeStatement";	
@@ -379,96 +345,21 @@ public class CompetitionResultController {
 
 		Competition competition= competitionService.findCompetitionById(competitionId);
 		List<Company> companyList=companyService.showCompanyByCompetitionId(competitionId);
-		List<CompanyFinanceVo> companyFinanceVoList= new ArrayList<CompanyFinanceVo>();
-		//定义现金流总和、财务活动总和
-		List<Float> incomeSumList = new ArrayList<Float>();//经营收入小计
-		List<Float> paySumList = new ArrayList<Float>();//经营支出小计
-		List<Float> operatingCashSumList = new ArrayList<Float>();//净营业现金
-		List<Float> financingSumList = new ArrayList<Float>();//筹资活动小计
-		List<Float> investmentSumList = new ArrayList<Float>();//投资活动小计
-		List<Float> financeActiveSumList = new ArrayList<Float>();//筹资-投资
-		List<Float> yuEList = new ArrayList<Float>();//季末现金余额
-		List<Float> yuEPreList = new ArrayList<Float>();//上季度现金余额
-		if(companyList!=null){
+		List<CashFlow> cashFlowList=new ArrayList<>();
+		if(companyList!=null&&companyList.size()>0){
 			for(int i=0;i<companyList.size();i++){
-				//定义经营收入小计
-				float incomeSum=0;
-				//定义经营支出小计
-				float paySum=0;
-				//定义现金流总和
-				float operatingCashSum=0;
-				//定义筹资活动小计
-				float financingSum=0;
-				//定义投资活动小计
-				float investmentSum=0;
-				//定义财务活动总和
-				float financeActiveSum=0;
-				//定义季末现金余额
-				float yuE=0;
-				//定义上季度余额
-				float yuEPre=0;
-				
-				CompanyFinanceVo companyFinanceVo=new CompanyFinanceVo();
-				IdQuarter idQuarter=new IdQuarter();
-				idQuarter.setId(companyList.get(i).getId());
-				idQuarter.setQuarter(currentQuarter);
-				//现金流表
-				companyFinanceVo.setCompany(companyList.get(i));
-				CashFlow cashFlow = competitionResultService.findCashFlowByIdAndQuarter(idQuarter);
-				if(cashFlow!=null){
-					companyFinanceVo.setCashFlow(cashFlow);
-					//定义经营收入小计
-					incomeSum=cashFlow.getXiaoshouGet()+cashFlow.getLixiGet()+cashFlow.getJishuGet()+cashFlow.getQitaGet();
-					//定义经营支出小计
-					paySum=cashFlow.getFankuanPay()+cashFlow.getShengchanPay()+cashFlow.getYanfaPay()+cashFlow.getGuanggaoPay()+cashFlow.getSalerPay()+
-							cashFlow.getSalescenterPay()+cashFlow.getDiaoyanPay()+cashFlow.getHuoyunPay()+cashFlow.getNetmarketPay()+cashFlow.getTaxPay()+
-							cashFlow.getLixiPay()+cashFlow.getJishuPay()+cashFlow.getQitaPay();
-					//现金流总和
-					operatingCashSum=incomeSum-paySum;
-					//筹资现金
-					financingSum=cashFlow.getDaikuanNormalGet()+cashFlow.getDaikuanEmergyGet()+cashFlow.getCunkuanRegularGet();
-					//投资现金
-					investmentSum=cashFlow.getDaikuanNormalPay()+cashFlow.getDaikuanEmergyPay()+cashFlow.getCunkuanRegularPay();
-					//财务活动总和
-					financeActiveSum=financingSum-investmentSum;
-					//季末现金余额应该计算出来并存入当前季度的余额
-					IdQuarter idQuarterPre=new IdQuarter();
-					idQuarterPre.setId(companyList.get(i).getId());
-					idQuarterPre.setQuarter(currentQuarter-1);
-					CashFlow cashFlowPre = competitionResultService.findCashFlowByIdAndQuarter(idQuarterPre);
-					
-					if(cashFlowPre!=null){
-						yuEPre= cashFlowPre.getYuE();
-					}else{
-						yuEPre=0;
-					}
-					yuE= financeActiveSum+yuEPre+operatingCashSum-cashFlow.getGongchangPay();
-					//这里应该把余额存入数据库中，暂时没有实现。
+				CashFlow cashFlow= new CashFlow();
+				List<CashFlow> cfList=companyService.selectCashFlowResult(companyList.get(i).getId(), currentQuarter);
+				if(cfList!=null&&cfList.size()>0){
+					cashFlow = cfList.get(0);
 				}
-				companyFinanceVoList.add(companyFinanceVo);
-				
-				incomeSumList.add(incomeSum);
-				paySumList.add(paySum);
-				operatingCashSumList.add(operatingCashSum);
-				financingSumList.add(financingSum);
-				investmentSumList.add(investmentSum);
-				financeActiveSumList.add(financeActiveSum);
-				yuEList.add(yuE);
-				yuEPreList.add(yuEPre);
+				cashFlowList.add(cashFlow);
 			}
 		}
 		
 		model.addAttribute("competition", competition);
-		model.addAttribute("companyFinanceVoList", companyFinanceVoList);
-		//总和
-		model.addAttribute("incomeSumList", incomeSumList);
-		model.addAttribute("paySumList", paySumList);
-		model.addAttribute("operatingCashSumList", operatingCashSumList);
-		model.addAttribute("financingSumList", financingSumList);
-		model.addAttribute("investmentSumList", investmentSumList);
-		model.addAttribute("financeActiveSumList", financeActiveSumList);
-		model.addAttribute("yuEList", yuEList);
-		model.addAttribute("yuEPreList", yuEPreList);
+		model.addAttribute("companyList", companyList);
+		model.addAttribute("cashFlowList", cashFlowList);
 		
 		model.addAttribute("quarter", currentQuarter);
 		
@@ -481,82 +372,22 @@ public class CompetitionResultController {
 
 		Competition competition= competitionService.findCompetitionById(competitionId);
 		List<Company> companyList=companyService.showCompanyByCompetitionId(competitionId);
-		List<CompanyFinanceVo> companyFinanceVoList= new ArrayList<CompanyFinanceVo>();
-		//流动资产
-		List<Float> liquidAssetsSumList = new ArrayList<Float>();
-		//非流动资产
-		List<Float> unLiquidAssetsSumList = new ArrayList<Float>();
-		//资产合计
-		List<Float> assetSumList = new ArrayList<Float>();
-		//流动负债
-		List<Float> liquidDebtSumList = new ArrayList<Float>();
-		//非流动负债
-		List<Float> unLiquidDebtSumList = new ArrayList<Float>();
-		//负债合计
-		List<Float> debtSumList = new ArrayList<Float>();
-		//所有者权益合计
-		List<Float> ownerEquitySumList = new ArrayList<Float>();
-		//资产负债总计
-		List<Float> debtShareSumList = new ArrayList<Float>();
+		List<BalanceSheet> balanceSheetList=new ArrayList<>();
+
 		if(companyList!=null){
 			for(int i=0;i<companyList.size();i++){
-				float liquidAssetsSum=0;
-				float unLiquidAssetsSum=0;
-				float assetSum=0;
-				float liquidDebtSum=0;
-				float unLiquidDebtSum=0;
-				float debtSum=0;
-				float ownerEquitySum=0;
-				float debtShare=0;
-				CompanyFinanceVo companyFinanceVo=new CompanyFinanceVo();
-				IdQuarter idQuarter=new IdQuarter();
-				idQuarter.setId(companyList.get(i).getId());
-				idQuarter.setQuarter(currentQuarter);
-				//公司
-				companyFinanceVo.setCompany(companyList.get(i));
-				BalanceSheet balanceSheet = competitionResultService.findBalanceSheetByIdAndQuarter(idQuarter);
-				if(balanceSheet!=null){
-					companyFinanceVo.setBalanceSheet(balanceSheet);
-					//流动资产
-					liquidAssetsSum=balanceSheet.getHuobi()+balanceSheet.getCunkuan()+balanceSheet.getLixiCollection()+balanceSheet.getCunhuo();
-					//非流动资产
-					unLiquidAssetsSum=balanceSheet.getZichan();
-					//资产总计
-					assetSum=liquidAssetsSum+unLiquidAssetsSum;
-					//流动负债
-					liquidDebtSum=balanceSheet.getDaikuanEmergency()+balanceSheet.getLixiPay();
-					//非流动负债
-					unLiquidDebtSum=balanceSheet.getDaikuanEmergency();
-					//负债总计
-					debtSum=liquidDebtSum+unLiquidDebtSum;
-					//所有者权益合计
-					ownerEquitySum=balanceSheet.getGuben()+balanceSheet.getLiucun();
-					//资产负债合计
-					debtShare=balanceSheet.getDaikuanNormal()+balanceSheet.getDaikuanEmergency()+balanceSheet.getGuben()-balanceSheet.getLiucun();
-					//注意：这里的资产负债总计=上面的资产总计
+				BalanceSheet balanceSheet = new BalanceSheet();
+				List<BalanceSheet> bsList=companyService.selectBalanceSheetResult(companyList.get(i).getId(), currentQuarter);
+				if(bsList!=null&&bsList.size()>0){
+					balanceSheet = bsList.get(0);
 				}
-				companyFinanceVoList.add(companyFinanceVo);
-				liquidAssetsSumList.add(liquidAssetsSum);
-				unLiquidAssetsSumList.add(unLiquidAssetsSum);
-				assetSumList.add(assetSum);
-				liquidDebtSumList.add(liquidDebtSum);
-				unLiquidDebtSumList.add(unLiquidDebtSum);
-				debtSumList.add(debtSum);
-				ownerEquitySumList.add(ownerEquitySum);
-				debtShareSumList.add(debtShare);
+				balanceSheetList.add(balanceSheet);
 			}
 		}
 		
 		model.addAttribute("competition", competition);
-		model.addAttribute("companyFinanceVoList", companyFinanceVoList);
-		model.addAttribute("liquidAssetsSumList", liquidAssetsSumList);
-		model.addAttribute("unLiquidAssetsSumList", unLiquidAssetsSumList);
-		model.addAttribute("assetSumList", assetSumList);
-		model.addAttribute("liquidDebtSumList", liquidDebtSumList);
-		model.addAttribute("unLiquidDebtSumList", unLiquidDebtSumList);
-		model.addAttribute("debtSumList", debtSumList);
-		model.addAttribute("ownerEquitySumList", ownerEquitySumList);
-		model.addAttribute("debtShareSumList", debtShareSumList);
+		model.addAttribute("companyList", companyList);
+		model.addAttribute("balanceSheetList", balanceSheetList);
 		model.addAttribute("quarter", currentQuarter);
 		
 		return "jsp/competitionResult/detailedCompetitionResult/balanceSheet";	
@@ -702,15 +533,26 @@ public class CompetitionResultController {
 	public String everyCompanyNetSaleNum(Model model,Integer competitionId,Integer currentQuarter) throws Exception{
 		Competition competition= competitionService.findCompetitionById(competitionId);
 		List<Company> companyList=companyService.showCompanyByCompetitionId(competitionId);
-		HashMap<String, HirePeopleOnline> companyNetSaleNumList=new HashMap<String, HirePeopleOnline>();
+		List<MarketSaleNumVo> saleNumList=new ArrayList<MarketSaleNumVo>();
 		
 		if(companyList!=null&&companyList.size()>0){
 			for(int n=0;n<companyList.size();n++){
-				HirePeopleOnline netSaleNum=competitionResultService.findCompanyNetSalesNum(companyList.get(n).getId(), currentQuarter);
-				companyNetSaleNumList.put(companyList.get(n).getName(), netSaleNum);
+				List<HirePeopleOnline> netSaleNumList=competitionResultService.findCompanyNetSalesNum(companyList.get(n).getId(), currentQuarter);
+				if(netSaleNumList!=null&&netSaleNumList.size()>0){
+					for(int m=0;m<netSaleNumList.size();m++){
+						MarketInfo marketInfo=competitionResultService.findMarketInfoById(netSaleNumList.get(m).getMarketId());
+						MarketSaleNumVo saleNum=new MarketSaleNumVo();
+						saleNum.setCompanyName(companyList.get(n).getName());
+						saleNum.setMarketName(marketInfo.getCity());
+						saleNum.setMarketType("实体销售中心");
+						saleNum.setSaleman(netSaleNumList.get(m).getSaleman());
+						saleNum.setAfterSale(netSaleNumList.get(m).getAfterSale());
+						saleNumList.add(saleNum);
+					}
+				}
 			}
 			model.addAttribute("competition", competition);
-			model.addAttribute("companyNetSaleNumList", companyNetSaleNumList);
+			model.addAttribute("saleNumList", saleNumList);
 		}
 		return "jsp/competitionResult/detailedCompetitionResult/everyCompanyNetSaleNum";	
 	}
@@ -2436,6 +2278,7 @@ public class CompetitionResultController {
 	}
 	
 	//发布竞赛结果
+	@Transactional(propagation = Propagation.REQUIRED)
 	@RequestMapping("/competitionResult/releaseResult.do")
 	public String releaseResult(Model model,Integer competitionId,Integer currentQuarter) throws Exception{
 		Competition competition= competitionService.findCompetitionById(competitionId);
@@ -2445,655 +2288,663 @@ public class CompetitionResultController {
 		idQuarter.setQuarter(currentQuarter);
 		String message="";
 		List<CompanyQuarterTime> companyQT=new ArrayList<>();
-		//这里先进行判断每个公司是否都已经提交，如果已经提交则执行下面操作
-		if(currentQuarter<=competition.getQuarter()){
-			companyQT=competitionResultService.findNoSubmitCompanyByIdQuarter(idQuarter);
-			if(companyQT!=null&&companyQT.size()>0){
-				message="当前季度有团队没有提交！请通知团队进行提交！";
-			}else{//如果全部公司都提交，则进行一下操作
-				
-				//如果是第一季度，只算现有的直接财务数据
-				if(currentQuarter==1){
+		try{
+			//这里先进行判断每个公司是否都已经提交，如果已经提交则执行下面操作
+			if(currentQuarter<=competition.getQuarter()){
+				companyQT=competitionResultService.findNoSubmitCompanyByIdQuarter(idQuarter);
+				if(companyQT!=null&&companyQT.size()>0){
+					message="当前季度有团队没有提交！请通知团队进行提交！";
+				}else{//如果全部公司都提交，则进行一下操作
 					
-					
-				}else if(currentQuarter>=2&&currentQuarter<=competition.getQuarter()){
-					/*1.统计每个公司做出的关键性投资*/
-					for(int n=0;n<companyList.size();n++){
-						IdQuarter idQ=new IdQuarter();
-						idQ.setId(companyList.get(n).getId());
-						idQ.setQuarter(currentQuarter);
-						int productNum=0;
-						int productAvgPrice=0;
-						int adNum=0;
-						int adCost=0;
-						int phyMarketNum=0;
-						int phyMarketCost=0;
-						int netMarketNum=0;
-						int netMarketCost=0;
-						int phySalesNum=0;
-						int phySalesCost=0;
-						int netSalesNum=0;
-						int netSalesCost=0;
-						double workerEffi=0;
-						double salesEffi=0;
-						
-						//品牌数量
-						List<CompanyProduct> prods=policyDecisionService.findProductsByCompanyIdQuarter(idQ);
-						productNum=prods.size();
-						//产品平均价格
-						productAvgPrice=policyDecisionService.findAvgPriceProduct(idQ);
-						//广告数量
-						List<CompanyAdvertise> ads=policyDecisionService.findAdvertiseByCompanyIdQuarter(companyList.get(n).getId(),currentQuarter);
-						adNum=ads.size();
-						//广告的总投入，这里计算的是媒体的总投入资金
-						List<CompanyMedia> mediaList=new ArrayList<>();
-						mediaList=policyDecisionService.findMediabyCompanyIdQuarter(idQ);
-						if(mediaList!=null&&mediaList.size()>0){
-							for(int m=0;m<mediaList.size();m++){
-								MediaInfo mediaInfo=policyDecisionService.findMediaInfoById(mediaList.get(m).getMediaId());
-								adCost+=mediaList.get(m).getNum()*mediaInfo.getCost();
-							}
-						}
-						//开放实体市场数量
-						CompanyMarket companyMarket=new CompanyMarket();
-						companyMarket=competitionResultService.findCompanyMarket(companyList.get(n).getId(), currentQuarter, 1);
-						if(companyMarket!=null){
-							String phyMarketId=companyMarket.getMarketId();
-							String[] phyMarketIdArr=phyMarketId.split(",");
-							phyMarketNum=phyMarketIdArr.length;
-							//实体市场的总投入
-							for(int m=0;m<phyMarketIdArr.length;m++){
-								MarketInfo marketInfo=policyDecisionService.findMarketInfoById(Integer.parseInt(phyMarketIdArr[m]));
-								phyMarketCost+=marketInfo.getOpen();//这里3季度以后要改成租赁
-							}
-						}
-						
-						//开放网络市场的数量
-						CompanyMarket netCompanyMarket=new CompanyMarket();
-						netCompanyMarket=competitionResultService.findCompanyMarket(companyList.get(n).getId(), currentQuarter, 0);
-						if(netCompanyMarket!=null){
-							String netMarketId=netCompanyMarket.getMarketId();
-							String[] netMarketIdArr=netMarketId.split(",");
-							netMarketNum=netMarketIdArr.length;
-							//实体市场的总投入
-							for(int m=0;m<netMarketIdArr.length;m++){
-								MarketInfo marketInfo=policyDecisionService.findMarketInfoById(Integer.parseInt(netMarketIdArr[m]));
-								netMarketCost+=marketInfo.getOpen();//这里3季度以后要改成租赁
-							}
-						}
-						
-						//实体销售人数
-						List<HirePeople> hirePeopleList=new ArrayList<>();
-						hirePeopleList=competitionResultService.findCompanyPhySalesNum(companyList.get(n).getId(), currentQuarter);
-						if(hirePeopleList!=null&&hirePeopleList.size()>0){
-							for(int m=0;m<hirePeopleList.size();m++){
-								phySalesNum+=hirePeopleList.get(m).getSaleman()+hirePeopleList.get(m).getAfterSale();
-							}
-						}
-						//网络销售人数
-						List<HirePeopleOnline> hirePeopleOnlineList=new ArrayList<>();
-						hirePeopleOnlineList=policyDecisionService.findHirePeopleOnlineByCompanyIdQuarter(companyList.get(n).getId(), currentQuarter);
-						if(hirePeopleOnlineList!=null&&hirePeopleOnlineList.size()>0){
-							for(int m=0;m<hirePeopleOnlineList.size();m++){
-								netSalesNum+=hirePeopleOnlineList.get(m).getSaleman()+hirePeopleOnlineList.get(m).getAfterSale();
-							}
-						}
+					//如果是第一季度，只算现有的直接财务数据
+					if(currentQuarter==1){
 						
 						
-						//销售工人薪酬
-						SalesSalary salesSalary=competitionResultService.findSalesSalaryByCompanyIdQuar(companyList.get(n).getId(), currentQuarter);
-						WorkersSalary workersSalary=competitionResultService.findWorkerSalaryByCompanyIdQuar(companyList.get(n).getId(), currentQuarter);
-						//销售人数*薪酬就是网络和实体的销售人员投资
-						if(salesSalary!=null){
-							phySalesCost=phySalesNum*salesSalary.getSalaryTotal();
-							netSalesCost=netSalesNum*salesSalary.getSalaryTotal();
-							//销售人员效率
-							SalesSalary avgSSalary=competitionResultService.findAvgSalesSalaryByCompetIdQuarter(competitionId, currentQuarter);
-							if(avgSSalary!=null){
-								salesEffi=1-Math.pow(Math.E,-salesSalary.getSalaryTotal()/((double)avgSSalary.getSalaryTotal()));
-								salesEffi = (double)(Math.round(salesEffi*100))/100;
-							}
-						}
-						
-						
-						if(workersSalary!=null){
-							//工厂工人效率
-							WorkersSalary avgWSalary=competitionResultService.findAvgWorkersSalaryByCompetIdQuarter(competitionId, currentQuarter);
-							if(avgWSalary!=null){
-								workerEffi=1-Math.pow(Math.E,-workersSalary.getSalaryTotal()/((double)avgWSalary.getSalaryTotal()));
-								workerEffi = (double)(Math.round(workerEffi*100))/100;
-							}
-						}
-						
-						
-						CompanyInvestment companyInvestment=new CompanyInvestment();
-						companyInvestment.setCompetitionId(competitionId);
-						companyInvestment.setCompanyId(companyList.get(n).getId());
-						companyInvestment.setQuarter(currentQuarter);
-						companyInvestment.setProductNum(productNum);
-						companyInvestment.setProductAvgPrice(productAvgPrice);
-						companyInvestment.setAdNum(adNum);
-						companyInvestment.setAdCost(adCost);
-						companyInvestment.setPhyMarketNum(phyMarketNum);
-						companyInvestment.setPhyMarketCost(phyMarketCost);
-						companyInvestment.setNetMarketNum(netMarketNum);
-						companyInvestment.setNetMarketCost(netMarketCost);
-						companyInvestment.setPhySalesNum(phySalesNum);
-						companyInvestment.setPhySalesCost(phySalesCost);
-						companyInvestment.setNetSalesNum(netSalesNum);
-						companyInvestment.setNetSalesCost(netSalesCost);
-						companyInvestment.setWorkerEfficiency(workerEffi);
-						companyInvestment.setSalesEfficiency(salesEffi);
-						
-						//插入公司投资
-						competitionResultService.insertCompanyInvestment(companyInvestment);
-						//？？？？？？？？？？考虑第一季度是否插入这些值
-						//应该不要，因为第一季度没有显示
-					}
-					
-					//1:如果是第二季度，就要先算各种效率，再算市场份额等数据，然后存入财务表中，然后再计算财务
-					/* 注意：下面都是按照产品进行存储的 */	
-					List<CompanyProduct> productList=competitionResultService.findProductsByCompetIdAndQuarter(competitionId, currentQuarter);
-					if(productList!=null&&productList.size()>0){
-						for(int z=0;z<productList.size();z++){
-							int adWeight=0;
-							int designWeight=0;
-							int marketWeight=0;
-							int salemanNum=0;
-							int salemanSalary=0;
-							int price=0;
-							ProductEfficiency productEffi=new ProductEfficiency();
-							
-							//广告带来的各种类型效益
-							List<CompanyMedia> medias=competitionResultService.findMediaByProductIdAndQuarter(productList.get(z).getId(), currentQuarter);
-							if(medias!=null&&medias.size()>0){
-								if(productList.get(z).getType().equals("实用型")){
-									for(int m=0;m<medias.size();m++){
-										MediaInfo mediaInfo=competitionResultService.findMediaById(medias.get(m).getMediaId());
-										adWeight+=medias.get(m).getNum()*mediaInfo.getPractical();
-									}
-								}else if(productList.get(z).getType().equals("极致型")){
-									for(int m=0;m<medias.size();m++){
-										MediaInfo mediaInfo=competitionResultService.findMediaById(medias.get(m).getMediaId());
-										adWeight+=medias.get(m).getNum()*mediaInfo.getPerfect();
-									}
-								}else if(productList.get(z).getType().equals("商务型")){
-									for(int m=0;m<medias.size();m++){
-										MediaInfo mediaInfo=competitionResultService.findMediaById(medias.get(m).getMediaId());
-										adWeight+=medias.get(m).getNum()*mediaInfo.getBusiness();
-									}
-								}
-								
-							}
-							
-							//产品设计带来的各种类型中的效益
-							String productDetailId=productList.get(z).getDetail();
-							if(productDetailId!=null&&productDetailId.length()>0){
-								String[] detailIdArr=productDetailId.split(",");
-								if(productList.get(z).getType().equals("实用型")){
-									for(int y=0;y<detailIdArr.length;y++){
-										ProductInfo productInfo=competitionResultService.findProductInfoById(Integer.parseInt(detailIdArr[y]));
-										designWeight+=productInfo.getPractical();
-									}
-								}else if(productList.get(z).getType().equals("极致型")){
-									for(int y=0;y<detailIdArr.length;y++){
-										ProductInfo productInfo=competitionResultService.findProductInfoById(Integer.parseInt(detailIdArr[y]));
-										designWeight+=productInfo.getPerfect();
-									}
-								}else if(productList.get(z).getType().equals("商务型")){
-									for(int y=0;y<detailIdArr.length;y++){
-										ProductInfo productInfo=competitionResultService.findProductInfoById(Integer.parseInt(detailIdArr[y]));
-										designWeight+=productInfo.getBusiness();
-									}
-								}
-								
-							}
-							
-							//找市场数量带来的效益,这里先用市场的数量进行代替，
-							//以后要用市场投资资金
-							CompanyMarket companyPhyMarket=new CompanyMarket();
-							companyPhyMarket=competitionResultService.findCompanyMarket(productList.get(z).getCompanyId(), currentQuarter, 1);
+					}else if(currentQuarter>=2&&currentQuarter<=competition.getQuarter()){
+						/*1.统计每个公司做出的关键性投资*/
+						for(int n=0;n<companyList.size();n++){
+							IdQuarter idQ=new IdQuarter();
+							idQ.setId(companyList.get(n).getId());
+							idQ.setQuarter(currentQuarter);
+							int productNum=0;
+							int productAvgPrice=0;
+							int adNum=0;
+							int adCost=0;
 							int phyMarketNum=0;
+							int phyMarketCost=0;
 							int netMarketNum=0;
-							if(companyPhyMarket!=null){
-								String phyMarketId=companyPhyMarket.getMarketId();
+							int netMarketCost=0;
+							int phySalesNum=0;
+							int phySalesCost=0;
+							int netSalesNum=0;
+							int netSalesCost=0;
+							double workerEffi=0;
+							double salesEffi=0;
+							
+							//品牌数量
+							List<CompanyProduct> prods=policyDecisionService.findProductsByCompanyIdQuarter(idQ);
+							productNum=prods.size();
+							//产品平均价格
+							productAvgPrice=policyDecisionService.findAvgPriceProduct(idQ);
+							//广告数量
+							List<CompanyAdvertise> ads=policyDecisionService.findAdvertiseByCompanyIdQuarter(companyList.get(n).getId(),currentQuarter);
+							adNum=ads.size();
+							//广告的总投入，这里计算的是媒体的总投入资金
+							List<CompanyMedia> mediaList=new ArrayList<>();
+							mediaList=policyDecisionService.findMediabyCompanyIdQuarter(idQ);
+							if(mediaList!=null&&mediaList.size()>0){
+								for(int m=0;m<mediaList.size();m++){
+									MediaInfo mediaInfo=policyDecisionService.findMediaInfoById(mediaList.get(m).getMediaId());
+									adCost+=mediaList.get(m).getNum()*mediaInfo.getCost();
+								}
+							}
+							//开放实体市场数量
+							CompanyMarket companyMarket=new CompanyMarket();
+							companyMarket=competitionResultService.findCompanyMarket(companyList.get(n).getId(), currentQuarter, 1);
+							if(companyMarket!=null){
+								String phyMarketId=companyMarket.getMarketId();
 								String[] phyMarketIdArr=phyMarketId.split(",");
 								phyMarketNum=phyMarketIdArr.length;
+								//实体市场的总投入
+								for(int m=0;m<phyMarketIdArr.length;m++){
+									MarketInfo marketInfo=policyDecisionService.findMarketInfoById(Integer.parseInt(phyMarketIdArr[m]));
+									phyMarketCost+=marketInfo.getOpen();//这里3季度以后要改成租赁
+								}
 							}
-							//marketWeight=phyMarketIdArr.length;
 							
-							CompanyMarket companyNetMarket=competitionResultService.findCompanyMarket(productList.get(z).getCompanyId(), currentQuarter, 0);
-							if(companyNetMarket!=null){
-								String netMarketId=companyNetMarket.getMarketId();
+							//开放网络市场的数量
+							CompanyMarket netCompanyMarket=new CompanyMarket();
+							netCompanyMarket=competitionResultService.findCompanyMarket(companyList.get(n).getId(), currentQuarter, 0);
+							if(netCompanyMarket!=null){
+								String netMarketId=netCompanyMarket.getMarketId();
 								String[] netMarketIdArr=netMarketId.split(",");
 								netMarketNum=netMarketIdArr.length;
+								//实体市场的总投入
+								for(int m=0;m<netMarketIdArr.length;m++){
+									MarketInfo marketInfo=policyDecisionService.findMarketInfoById(Integer.parseInt(netMarketIdArr[m]));
+									netMarketCost+=marketInfo.getOpen();//这里3季度以后要改成租赁
+								}
 							}
 							
-							marketWeight=phyMarketNum+netMarketNum;
-							
-							//销售人数
-							//salemanNum=10;
-							CompanyInvestment companyInvest=competitionResultService.findCompanyInvestByCompanyIdQuarter(productList.get(z).getCompanyId(), currentQuarter);
-							salemanNum=companyInvest.getPhySalesNum()+companyInvest.getNetSalesNum();
-							//这里的除数应该不为0，所以不进行判断
-							salemanNum=salemanNum%companyInvest.getProductNum()==0?salemanNum/companyInvest.getProductNum():salemanNum/companyInvest.getProductNum()+1;
-							
-							//销售工人的工资
-							//SalesSalary avgSalary=competitionResultService.findAvgSalesSalaryByCompetIdQuarter(competitionId, currentQuarter);
-							SalesSalary companySalary=competitionResultService.findSalesSalaryByCompanyIdQuar(productList.get(z).getCompanyId(), currentQuarter);
-							if(companySalary!=null){
-								salemanSalary=companySalary.getSalaryTotal();
+							//实体销售人数
+							List<HirePeople> hirePeopleList=new ArrayList<>();
+							hirePeopleList=competitionResultService.findCompanyPhySalesNum(companyList.get(n).getId(), currentQuarter);
+							if(hirePeopleList!=null&&hirePeopleList.size()>0){
+								for(int m=0;m<hirePeopleList.size();m++){
+									phySalesNum+=hirePeopleList.get(m).getSaleman()+hirePeopleList.get(m).getAfterSale();
+								}
+							}
+							//网络销售人数
+							List<HirePeopleOnline> hirePeopleOnlineList=new ArrayList<>();
+							hirePeopleOnlineList=policyDecisionService.findHirePeopleOnlineByCompanyIdQuarter(companyList.get(n).getId(), currentQuarter);
+							if(hirePeopleOnlineList!=null&&hirePeopleOnlineList.size()>0){
+								for(int m=0;m<hirePeopleOnlineList.size();m++){
+									netSalesNum+=hirePeopleOnlineList.get(m).getSaleman()+hirePeopleOnlineList.get(m).getAfterSale();
+								}
 							}
 							
-							//产品定价
-							ProductPrice productPrice=competitionResultService.findProductPriceByIdQuarter(productList.get(z).getId(), currentQuarter);
-							if(productPrice!=null){
-								price=productPrice.getPrice();
+							
+							//销售工人薪酬
+							SalesSalary salesSalary=competitionResultService.findSalesSalaryByCompanyIdQuar(companyList.get(n).getId(), currentQuarter);
+							WorkersSalary workersSalary=competitionResultService.findWorkerSalaryByCompanyIdQuar(companyList.get(n).getId(), currentQuarter);
+							//销售人数*薪酬就是网络和实体的销售人员投资
+							if(salesSalary!=null){
+								phySalesCost=phySalesNum*salesSalary.getSalaryTotal();
+								netSalesCost=netSalesNum*salesSalary.getSalaryTotal();
+								//销售人员效率
+								SalesSalary avgSSalary=competitionResultService.findAvgSalesSalaryByCompetIdQuarter(competitionId, currentQuarter);
+								if(avgSSalary!=null){
+									salesEffi=1-Math.pow(Math.E,-salesSalary.getSalaryTotal()/((double)avgSSalary.getSalaryTotal()));
+									salesEffi = (double)(Math.round(salesEffi*100))/100;
+								}
 							}
 							
-							productEffi.setCompetitionId(competitionId);
-							productEffi.setCompanyId(productList.get(z).getCompanyId());
-							productEffi.setProductId(productList.get(z).getId());
-							productEffi.setProductType(productList.get(z).getType());
-							productEffi.setQuarter(currentQuarter);
-							productEffi.setAdWeight(adWeight);
-							productEffi.setDesignWeight(designWeight);
-							productEffi.setMarketWeight(marketWeight);
-							productEffi.setSalemanNum(salemanNum);
-							productEffi.setSalemanSalary(salemanSalary);
-							productEffi.setPrice(price);
-							competitionResultService.insertProductEfficiency(productEffi);
+							
+							if(workersSalary!=null){
+								//工厂工人效率
+								WorkersSalary avgWSalary=competitionResultService.findAvgWorkersSalaryByCompetIdQuarter(competitionId, currentQuarter);
+								if(avgWSalary!=null){
+									workerEffi=1-Math.pow(Math.E,-workersSalary.getSalaryTotal()/((double)avgWSalary.getSalaryTotal()));
+									workerEffi = (double)(Math.round(workerEffi*100))/100;
+								}
+							}
+							
+							
+							CompanyInvestment companyInvestment=new CompanyInvestment();
+							companyInvestment.setCompetitionId(competitionId);
+							companyInvestment.setCompanyId(companyList.get(n).getId());
+							companyInvestment.setQuarter(currentQuarter);
+							companyInvestment.setProductNum(productNum);
+							companyInvestment.setProductAvgPrice(productAvgPrice);
+							companyInvestment.setAdNum(adNum);
+							companyInvestment.setAdCost(adCost);
+							companyInvestment.setPhyMarketNum(phyMarketNum);
+							companyInvestment.setPhyMarketCost(phyMarketCost);
+							companyInvestment.setNetMarketNum(netMarketNum);
+							companyInvestment.setNetMarketCost(netMarketCost);
+							companyInvestment.setPhySalesNum(phySalesNum);
+							companyInvestment.setPhySalesCost(phySalesCost);
+							companyInvestment.setNetSalesNum(netSalesNum);
+							companyInvestment.setNetSalesCost(netSalesCost);
+							companyInvestment.setWorkerEfficiency(workerEffi);
+							companyInvestment.setSalesEfficiency(salesEffi);
+							
+							//插入公司投资
+							competitionResultService.insertCompanyInvestment(companyInvestment);
+							//？？？？？？？？？？考虑第一季度是否插入这些值
+							//应该不要，因为第一季度没有显示
 						}
-					}
-					
-					//2:统计产品的各种参数、市场份额存入数据库
-					//按类型统计，总共三种类型，这里用枚举
-					for (TypeEnum e : TypeEnum.values()) {  
-					    //System.out.println(e.toString());
-					    List<ProductEfficiency> prodEfficiencyList=competitionResultService.findProductEfficiency(competitionId, currentQuarter,e.toString());
-					    
-					    int adWeightSum=0;
-					    int designWeightSum=0;
-					    int marketWeightSum=0;
-						int salemanWeightSum=0;
-						int priceSum=0;
 						
-						if(prodEfficiencyList!=null&&prodEfficiencyList.size()>0){
-							//计算总的效益和，为了用公式求平均值
-							for(int i=0;i<prodEfficiencyList.size();i++){
-								adWeightSum+=prodEfficiencyList.get(i).getAdWeight();
-								designWeightSum+=prodEfficiencyList.get(i).getDesignWeight();
-								marketWeightSum+=prodEfficiencyList.get(i).getMarketWeight();
-								salemanWeightSum+=prodEfficiencyList.get(i).getSalemanNum()*prodEfficiencyList.get(i).getSalemanSalary();
-								priceSum+=prodEfficiencyList.get(i).getPrice();
-							}
-							//接下来计算每个产品的市场份额
-							for(int j=0;j<prodEfficiencyList.size();j++){
-								//例如：double x=Math.pow(Math.E, 2);
-								double adEffi=0;
-								double designEffi=0;
-								double marketEffi=0;
-								double salemanEffi=0;
-								double priceEffi=0;
-								//计算practical广告效用
-								if(prodEfficiencyList.get(j).getAdWeight()!=0){
-									adEffi=1-Math.pow(Math.E,-prodEfficiencyList.get(j).getAdWeight()/((double)adWeightSum/prodEfficiencyList.size()));
-									adEffi = (double)(Math.round(adEffi*100))/100;								
-								}else{
-									adEffi=0;
-								}
-								//计算设计效用
-								if(prodEfficiencyList.get(j).getDesignWeight()!=0){
-									designEffi=1-Math.pow(Math.E,-prodEfficiencyList.get(j).getDesignWeight()/((double)designWeightSum/prodEfficiencyList.size()));
-									designEffi = (double)(Math.round(designEffi*100))/100;
-								}else{
-									designEffi=0;
-								}
+						//1:如果是第二季度，就要先算各种效率，再算市场份额等数据，然后存入财务表中，然后再计算财务
+						/* 注意：下面都是按照产品进行存储的 */	
+						List<CompanyProduct> productList=competitionResultService.findProductsByCompetIdAndQuarter(competitionId, currentQuarter);
+						if(productList!=null&&productList.size()>0){
+							for(int z=0;z<productList.size();z++){
+								int adWeight=0;
+								int designWeight=0;
+								int marketWeight=0;
+								int salemanNum=0;
+								int salemanSalary=0;
+								int price=0;
+								ProductEfficiency productEffi=new ProductEfficiency();
 								
-								//计算市场数量带来的效率
-								if(prodEfficiencyList.get(j).getMarketWeight()!=0){
-									marketEffi=1-Math.pow(Math.E,-prodEfficiencyList.get(j).getMarketWeight()/((double)marketWeightSum/prodEfficiencyList.size()));
-									marketEffi = (double)(Math.round(marketEffi*100))/100;
-								}else{
-									marketEffi=0;
-								}
-								
-								
-								//计算销售人员数量带来的效率
-								if(prodEfficiencyList.get(j).getSalemanNum()!=0&&prodEfficiencyList.get(j).getSalemanSalary()!=0){
-									salemanEffi=1-Math.pow(Math.E,-prodEfficiencyList.get(j).getSalemanNum()*prodEfficiencyList.get(j).getSalemanSalary()/((double)salemanWeightSum/prodEfficiencyList.size()));
-									salemanEffi = (double)(Math.round(salemanEffi*100))/100;
-								}else{
-									salemanEffi=0;
-								}
-								
-								
-								//计算价格带来的效率
-								if(prodEfficiencyList.get(j).getPrice()!=0){
-									priceEffi=1-Math.pow(Math.E,-prodEfficiencyList.get(j).getPrice()/((double)priceSum/prodEfficiencyList.size()));
-									priceEffi = (double)(Math.round(priceEffi*100))/100;
-								}else{
-									priceEffi=0;
-								}
-								/*2：上面效率已经计算出来，现在可以求市场份额*/
-								MarketShareWeight marketSW=competitionResultService.findMaketShareWeightByType(e.toString());
-								double marketShare=0;
-								int need=0;
-								int sale=0;
-								int stockoun=0;				//脱销
-								int stockNum=0;				//剩余的产品
-								marketShare=(double)(marketSW.getAdWeight()*adEffi+
-										marketSW.getDesignWeight()*designEffi+
-										marketSW.getMarketWeight()*marketEffi+
-										marketSW.getSalemanWeight()*salemanEffi+
-										marketSW.getPriceWeight()*priceEffi);
-								need=(int)(marketShare*10000);
-								
-								//这里怎样算每个产品的生产数量？？？？？？？？？？？？？？？
-								//？？？？？？？？？？？？？？？？？？？？？？？？？？？？？
-								//用运行产能*65的到的生产量，有产品数量，平均分配到每个产品
-								CompanyInvestment companyInvest=competitionResultService.findCompanyInvestByCompanyIdQuarter(prodEfficiencyList.get(j).getCompanyId(), currentQuarter);
-								int productNum=0;
-								if(companyInvest!=null){
-									productNum=companyInvest.getProductNum();
-								}
-								
-								OperationCapacity operationCapa=policyDecisionService.findOpeartionCapacityByCompanyIdQuarter(prodEfficiencyList.get(j).getCompanyId(), currentQuarter);
-								int produceNum=0;
-								if(operationCapa!=null){
-									if(productNum!=0){
-										if(operationCapa.getOperateCapacity()*65%productNum==0){
-											produceNum=operationCapa.getOperateCapacity()*65/productNum;
-										}else{
-											produceNum=(operationCapa.getOperateCapacity()*65/productNum)+1;
+								//广告带来的各种类型效益
+								List<CompanyMedia> medias=competitionResultService.findMediaByProductIdAndQuarter(productList.get(z).getId(), currentQuarter);
+								if(medias!=null&&medias.size()>0){
+									if(productList.get(z).getType().equals("实用型")){
+										for(int m=0;m<medias.size();m++){
+											MediaInfo mediaInfo=competitionResultService.findMediaById(medias.get(m).getMediaId());
+											adWeight+=medias.get(m).getNum()*mediaInfo.getPractical();
+										}
+									}else if(productList.get(z).getType().equals("极致型")){
+										for(int m=0;m<medias.size();m++){
+											MediaInfo mediaInfo=competitionResultService.findMediaById(medias.get(m).getMediaId());
+											adWeight+=medias.get(m).getNum()*mediaInfo.getPerfect();
+										}
+									}else if(productList.get(z).getType().equals("商务型")){
+										for(int m=0;m<medias.size();m++){
+											MediaInfo mediaInfo=competitionResultService.findMediaById(medias.get(m).getMediaId());
+											adWeight+=medias.get(m).getNum()*mediaInfo.getBusiness();
 										}
 									}
+									
 								}
 								
-								if(need<=produceNum){
-									sale=need;			//需求量<产能，则需求多少卖多少
-									stockNum+=produceNum-need;	//剩余部分存入库存,这部分还需要和公司产品设置的库存比较
-								}else{
-									sale=produceNum;				//否则只能卖出产能这么多件
-									stockoun+=need-produceNum;
+								//产品设计带来的各种类型中的效益
+								String productDetailId=productList.get(z).getDetail();
+								if(productDetailId!=null&&productDetailId.length()>0){
+									String[] detailIdArr=productDetailId.split(",");
+									if(productList.get(z).getType().equals("实用型")){
+										for(int y=0;y<detailIdArr.length;y++){
+											ProductInfo productInfo=competitionResultService.findProductInfoById(Integer.parseInt(detailIdArr[y]));
+											designWeight+=productInfo.getPractical();
+										}
+									}else if(productList.get(z).getType().equals("极致型")){
+										for(int y=0;y<detailIdArr.length;y++){
+											ProductInfo productInfo=competitionResultService.findProductInfoById(Integer.parseInt(detailIdArr[y]));
+											designWeight+=productInfo.getPerfect();
+										}
+									}else if(productList.get(z).getType().equals("商务型")){
+										for(int y=0;y<detailIdArr.length;y++){
+											ProductInfo productInfo=competitionResultService.findProductInfoById(Integer.parseInt(detailIdArr[y]));
+											designWeight+=productInfo.getBusiness();
+										}
+									}
+									
 								}
 								
-								ProductMarketShare productMS=new ProductMarketShare();
-								productMS.setCompetitionId(competitionId);
-								productMS.setCompanyId(prodEfficiencyList.get(j).getCompanyId());
-								productMS.setProductId(prodEfficiencyList.get(j).getProductId());
-								productMS.setQuarter(currentQuarter);
-								productMS.setProductType(e.toString());
-								productMS.setMarketShare(marketShare);
-								productMS.setNeed(need);
-								productMS.setSale(sale);
-								productMS.setStockoun(stockoun);
-								productMS.setStock(stockNum);
-								competitionResultService.insertProductMarketShare(productMS);
+								//找市场数量带来的效益,这里先用市场的数量进行代替，
+								//以后要用市场投资资金
+								CompanyMarket companyPhyMarket=new CompanyMarket();
+								companyPhyMarket=competitionResultService.findCompanyMarket(productList.get(z).getCompanyId(), currentQuarter, 1);
+								int phyMarketNum=0;
+								int netMarketNum=0;
+								if(companyPhyMarket!=null){
+									String phyMarketId=companyPhyMarket.getMarketId();
+									String[] phyMarketIdArr=phyMarketId.split(",");
+									phyMarketNum=phyMarketIdArr.length;
+								}
+								//marketWeight=phyMarketIdArr.length;
 								
+								CompanyMarket companyNetMarket=competitionResultService.findCompanyMarket(productList.get(z).getCompanyId(), currentQuarter, 0);
+								if(companyNetMarket!=null){
+									String netMarketId=companyNetMarket.getMarketId();
+									String[] netMarketIdArr=netMarketId.split(",");
+									netMarketNum=netMarketIdArr.length;
+								}
 								
-								/*
-								 * //到此，市场份额计算完成
-									//3:将每种产品库存、如果没有卖完，则有库存，记录下来，并将当前季度的库存直接按70%的价格销售出去。
-									//库存=生产量-销售量，如果小于0，则没有库存，如果大于0，则判断库存量。
-								 */
+								marketWeight=phyMarketNum+netMarketNum;
 								
-							}//每个产品在该类型市场份额的for循环
+								//销售人数
+								//salemanNum=10;
+								CompanyInvestment companyInvest=competitionResultService.findCompanyInvestByCompanyIdQuarter(productList.get(z).getCompanyId(), currentQuarter);
+								salemanNum=companyInvest.getPhySalesNum()+companyInvest.getNetSalesNum();
+								//这里的除数应该不为0，所以不进行判断
+								salemanNum=salemanNum%companyInvest.getProductNum()==0?salemanNum/companyInvest.getProductNum():salemanNum/companyInvest.getProductNum()+1;
+								
+								//销售工人的工资
+								//SalesSalary avgSalary=competitionResultService.findAvgSalesSalaryByCompetIdQuarter(competitionId, currentQuarter);
+								SalesSalary companySalary=competitionResultService.findSalesSalaryByCompanyIdQuar(productList.get(z).getCompanyId(), currentQuarter);
+								if(companySalary!=null){
+									salemanSalary=companySalary.getSalaryTotal();
+								}
+								
+								//产品定价
+								ProductPrice productPrice=competitionResultService.findProductPriceByIdQuarter(productList.get(z).getId(), currentQuarter);
+								if(productPrice!=null){
+									price=productPrice.getPrice();
+								}
+								
+								productEffi.setCompetitionId(competitionId);
+								productEffi.setCompanyId(productList.get(z).getCompanyId());
+								productEffi.setProductId(productList.get(z).getId());
+								productEffi.setProductType(productList.get(z).getType());
+								productEffi.setQuarter(currentQuarter);
+								productEffi.setAdWeight(adWeight);
+								productEffi.setDesignWeight(designWeight);
+								productEffi.setMarketWeight(marketWeight);
+								productEffi.setSalemanNum(salemanNum);
+								productEffi.setSalemanSalary(salemanSalary);
+								productEffi.setPrice(price);
+								competitionResultService.insertProductEfficiency(productEffi);
+							}
+						}
+						
+						//2:统计产品的各种参数、市场份额存入数据库
+						//按类型统计，总共三种类型，这里用枚举
+						for (TypeEnum e : TypeEnum.values()) {  
+						    //System.out.println(e.toString());
+						    List<ProductEfficiency> prodEfficiencyList=competitionResultService.findProductEfficiency(competitionId, currentQuarter,e.toString());
+						    
+						    int adWeightSum=0;
+						    int designWeightSum=0;
+						    int marketWeightSum=0;
+							int salemanWeightSum=0;
+							int priceSum=0;
 							
-						}else{
-							//这个else没什么用，可以删掉
-						}//if判断结束，
-					}//枚举类型结束，到此将三种类型的产品都存入数据库中
-					
-					//上面产品中的marketshare只是市场效用，下面计算的是市场份额
-					//4.计算每个产品在该类型的市场份额
-					int practicalSumNum=competitionResultService.findProductMSNeedNumByCompetIdQuarterType(competitionId, currentQuarter, "实用型");
-					int perfectSumNum=competitionResultService.findProductMSNeedNumByCompetIdQuarterType(competitionId, currentQuarter, "极致型");
-					int businessSumNum=competitionResultService.findProductMSNeedNumByCompetIdQuarterType(competitionId, currentQuarter, "商务型");
-					
-					List<ProductMarketShare> productMSList=competitionResultService.findProductMSByCompetitionIdQuarter(competitionId, currentQuarter);
-					if(productMSList!=null&&productMSList.size()>0){
-						for(int a=0;a<productMSList.size();a++){
-							int needNum=productMSList.get(a).getNeed();
-							double itsMS=0;
-							if(productMSList.get(a).getProductType().equals("实用型")&&needNum!=0){
-								itsMS=(double)productMSList.get(a).getNeed()/practicalSumNum;
-							}else if(productMSList.get(a).getProductType().equals("极致型")&&needNum!=0){
-								itsMS=(double)productMSList.get(a).getNeed()/perfectSumNum;
-							}else if(productMSList.get(a).getProductType().equals("商务型")&&needNum!=0){
-								itsMS=(double)productMSList.get(a).getNeed()/businessSumNum;
+							if(prodEfficiencyList!=null&&prodEfficiencyList.size()>0){
+								//计算总的效益和，为了用公式求平均值
+								for(int i=0;i<prodEfficiencyList.size();i++){
+									adWeightSum+=prodEfficiencyList.get(i).getAdWeight();
+									designWeightSum+=prodEfficiencyList.get(i).getDesignWeight();
+									marketWeightSum+=prodEfficiencyList.get(i).getMarketWeight();
+									salemanWeightSum+=prodEfficiencyList.get(i).getSalemanNum()*prodEfficiencyList.get(i).getSalemanSalary();
+									priceSum+=prodEfficiencyList.get(i).getPrice();
+								}
+								//接下来计算每个产品的市场份额
+								for(int j=0;j<prodEfficiencyList.size();j++){
+									//例如：double x=Math.pow(Math.E, 2);
+									double adEffi=0;
+									double designEffi=0;
+									double marketEffi=0;
+									double salemanEffi=0;
+									double priceEffi=0;
+									//计算practical广告效用
+									if(prodEfficiencyList.get(j).getAdWeight()!=0){
+										adEffi=1-Math.pow(Math.E,-prodEfficiencyList.get(j).getAdWeight()/((double)adWeightSum/prodEfficiencyList.size()));
+										adEffi = (double)(Math.round(adEffi*100))/100;								
+									}else{
+										adEffi=0;
+									}
+									//计算设计效用
+									if(prodEfficiencyList.get(j).getDesignWeight()!=0){
+										designEffi=1-Math.pow(Math.E,-prodEfficiencyList.get(j).getDesignWeight()/((double)designWeightSum/prodEfficiencyList.size()));
+										designEffi = (double)(Math.round(designEffi*100))/100;
+									}else{
+										designEffi=0;
+									}
+									
+									//计算市场数量带来的效率
+									if(prodEfficiencyList.get(j).getMarketWeight()!=0){
+										marketEffi=1-Math.pow(Math.E,-prodEfficiencyList.get(j).getMarketWeight()/((double)marketWeightSum/prodEfficiencyList.size()));
+										marketEffi = (double)(Math.round(marketEffi*100))/100;
+									}else{
+										marketEffi=0;
+									}
+									
+									
+									//计算销售人员数量带来的效率
+									if(prodEfficiencyList.get(j).getSalemanNum()!=0&&prodEfficiencyList.get(j).getSalemanSalary()!=0){
+										salemanEffi=1-Math.pow(Math.E,-prodEfficiencyList.get(j).getSalemanNum()*prodEfficiencyList.get(j).getSalemanSalary()/((double)salemanWeightSum/prodEfficiencyList.size()));
+										salemanEffi = (double)(Math.round(salemanEffi*100))/100;
+									}else{
+										salemanEffi=0;
+									}
+									
+									
+									//计算价格带来的效率
+									if(prodEfficiencyList.get(j).getPrice()!=0){
+										priceEffi=1-Math.pow(Math.E,-prodEfficiencyList.get(j).getPrice()/((double)priceSum/prodEfficiencyList.size()));
+										priceEffi = (double)(Math.round(priceEffi*100))/100;
+									}else{
+										priceEffi=0;
+									}
+									/*2：上面效率已经计算出来，现在可以求市场份额*/
+									MarketShareWeight marketSW=competitionResultService.findMaketShareWeightByType(e.toString());
+									double marketShare=0;
+									int need=0;
+									int sale=0;
+									int stockoun=0;				//脱销
+									int stockNum=0;				//剩余的产品
+									marketShare=(double)(marketSW.getAdWeight()*adEffi+
+											marketSW.getDesignWeight()*designEffi+
+											marketSW.getMarketWeight()*marketEffi+
+											marketSW.getSalemanWeight()*salemanEffi+
+											marketSW.getPriceWeight()*priceEffi);
+									need=(int)(marketShare*10000);
+									
+									//这里怎样算每个产品的生产数量？？？？？？？？？？？？？？？
+									//？？？？？？？？？？？？？？？？？？？？？？？？？？？？？
+									//用运行产能*65的到的生产量，有产品数量，平均分配到每个产品
+									CompanyInvestment companyInvest=competitionResultService.findCompanyInvestByCompanyIdQuarter(prodEfficiencyList.get(j).getCompanyId(), currentQuarter);
+									int productNum=0;
+									if(companyInvest!=null){
+										productNum=companyInvest.getProductNum();
+									}
+									
+									OperationCapacity operationCapa=policyDecisionService.findOpeartionCapacityByCompanyIdQuarter(prodEfficiencyList.get(j).getCompanyId(), currentQuarter);
+									int produceNum=0;
+									if(operationCapa!=null){
+										if(productNum!=0){
+											if(operationCapa.getOperateCapacity()*65%productNum==0){
+												produceNum=operationCapa.getOperateCapacity()*65/productNum;
+											}else{
+												produceNum=(operationCapa.getOperateCapacity()*65/productNum)+1;
+											}
+										}
+									}
+									
+									if(need<=produceNum){
+										sale=need;			//需求量<产能，则需求多少卖多少
+										stockNum+=produceNum-need;	//剩余部分存入库存,这部分还需要和公司产品设置的库存比较
+									}else{
+										sale=produceNum;				//否则只能卖出产能这么多件
+										stockoun+=need-produceNum;
+									}
+									
+									ProductMarketShare productMS=new ProductMarketShare();
+									productMS.setCompetitionId(competitionId);
+									productMS.setCompanyId(prodEfficiencyList.get(j).getCompanyId());
+									productMS.setProductId(prodEfficiencyList.get(j).getProductId());
+									productMS.setQuarter(currentQuarter);
+									productMS.setProductType(e.toString());
+									productMS.setMarketShare(marketShare);
+									productMS.setNeed(need);
+									productMS.setSale(sale);
+									productMS.setStockoun(stockoun);
+									productMS.setStock(stockNum);
+									competitionResultService.insertProductMarketShare(productMS);
+									
+									
+									/*
+									 * //到此，市场份额计算完成
+										//3:将每种产品库存、如果没有卖完，则有库存，记录下来，并将当前季度的库存直接按70%的价格销售出去。
+										//库存=生产量-销售量，如果小于0，则没有库存，如果大于0，则判断库存量。
+									 */
+									
+								}//每个产品在该类型市场份额的for循环
+								
+							}else{
+								//这个else没什么用，可以删掉
+							}//if判断结束，
+						}//枚举类型结束，到此将三种类型的产品都存入数据库中
+						
+						//上面产品中的marketshare只是市场效用，下面计算的是市场份额
+						//4.计算每个产品在该类型的市场份额
+						int practicalSumNum=competitionResultService.findProductMSNeedNumByCompetIdQuarterType(competitionId, currentQuarter, "实用型");
+						int perfectSumNum=competitionResultService.findProductMSNeedNumByCompetIdQuarterType(competitionId, currentQuarter, "极致型");
+						int businessSumNum=competitionResultService.findProductMSNeedNumByCompetIdQuarterType(competitionId, currentQuarter, "商务型");
+						
+						List<ProductMarketShare> productMSList=competitionResultService.findProductMSByCompetitionIdQuarter(competitionId, currentQuarter);
+						if(productMSList!=null&&productMSList.size()>0){
+							for(int a=0;a<productMSList.size();a++){
+								int needNum=productMSList.get(a).getNeed();
+								double itsMS=0;
+								if(productMSList.get(a).getProductType().equals("实用型")&&needNum!=0){
+									itsMS=(double)productMSList.get(a).getNeed()/practicalSumNum;
+								}else if(productMSList.get(a).getProductType().equals("极致型")&&needNum!=0){
+									itsMS=(double)productMSList.get(a).getNeed()/perfectSumNum;
+								}else if(productMSList.get(a).getProductType().equals("商务型")&&needNum!=0){
+									itsMS=(double)productMSList.get(a).getNeed()/businessSumNum;
+								}
+								
+								competitionResultService.updateProductMSByProductIdQuarter(productMSList.get(a).getProductId(), currentQuarter, itsMS);
+							}
+						}
+						
+						
+						/*3.将产品市场份额统计到公司市场份额中*/
+						for(int n=0;n<companyList.size();n++){
+							double practicalShare=0;
+							int practicalNeed=0;
+							int practicalSale=0;
+							int practicalStockoun=0;
+							int practicalStock=0;
+							double perfectShare=0;
+							int perfectNeed=0;
+							int perfectSale=0;
+							int perfectStockoun=0;
+							int perfectStock=0;
+							double businessShare=0;
+							int businessNeed=0;
+							int businessSale=0;
+							int businessStockoun=0;
+							int businessStock=0;
+							//找公司中实用型产品占的份额
+							List<ProductMarketShare> productMSPracticalList=competitionResultService.findProductMSByCompanyIdQuarterType(companyList.get(n).getId(), currentQuarter, "实用型");
+							if(productMSPracticalList!=null){
+								for(int m=0;m<productMSPracticalList.size();m++){
+									practicalShare+=productMSPracticalList.get(m).getMarketShare();
+									practicalNeed+=productMSPracticalList.get(m).getNeed();
+									practicalSale+=productMSPracticalList.get(m).getSale();
+									practicalStockoun+=productMSPracticalList.get(m).getStockoun();
+									practicalStock+=productMSPracticalList.get(m).getStock();
+								}
+							}
+							List<ProductMarketShare> productMSPerfectList=competitionResultService.findProductMSByCompanyIdQuarterType(companyList.get(n).getId(), currentQuarter, "极致型");
+							if(productMSPerfectList!=null){
+								for(int m=0;m<productMSPerfectList.size();m++){
+									perfectShare+=productMSPerfectList.get(m).getMarketShare();
+									perfectNeed+=productMSPerfectList.get(m).getNeed();
+									perfectSale+=productMSPerfectList.get(m).getSale();
+									perfectStockoun+=productMSPerfectList.get(m).getStockoun();
+									perfectStock+=productMSPerfectList.get(m).getStock();
+								}
+							}
+							List<ProductMarketShare> productMSBusinessList=competitionResultService.findProductMSByCompanyIdQuarterType(companyList.get(n).getId(), currentQuarter, "商务型");
+							if(productMSBusinessList!=null){
+								for(int m=0;m<productMSBusinessList.size();m++){
+									businessShare+=productMSBusinessList.get(m).getMarketShare();
+									businessNeed+=productMSBusinessList.get(m).getNeed();
+									businessSale+=productMSBusinessList.get(m).getSale();
+									businessStockoun+=productMSBusinessList.get(m).getStockoun();
+									businessStock+=productMSBusinessList.get(m).getStock();
+								}
+							}
+							CompanyMarketShare companyMS=new CompanyMarketShare();
+							companyMS.setPracticalShare(practicalShare);
+							companyMS.setPracticalNeed(practicalNeed);
+							companyMS.setPracticalSale(practicalSale);
+							companyMS.setPracticalStockoun(practicalStockoun);
+							companyMS.setPracticalStock(practicalStock);
+							companyMS.setPerfectShare(perfectShare);
+							companyMS.setPerfectNeed(perfectNeed);
+							companyMS.setPerfectSale(perfectSale);
+							companyMS.setPerfectStockOun(perfectStockoun);
+							companyMS.setPerfectStock(perfectStock);
+							companyMS.setBusinessShare(businessShare);
+							companyMS.setBusinessNeed(businessNeed);
+							companyMS.setBusinessSale(businessSale);
+							companyMS.setBusinessStockoun(businessStockoun);
+							companyMS.setBusinessStock(businessStock);
+							companyMS.setCompanyId(companyList.get(n).getId());
+							companyMS.setQuarter(currentQuarter);
+							competitionResultService.insertCompanyMarketShare(companyMS);
+							
+							
+						}//到这里公司市场份额插入结束
+						
+						//4.插入财务等数据
+						for(int c=0;c<companyList.size();c++){
+							int company_id=companyList.get(c).getId();
+							int quarter=currentQuarter;
+							
+							//计算现金流表
+							List<CashFlow> selectCashFlowResult = companyService.selectCashFlowResult(company_id, quarter);
+							if(selectCashFlowResult.size()==0){//没找到，则插入
+								companyService.insertCashFlowResult(company_id, quarter);
+							}
+							//更新固定费用到结果表
+							CashFlow cashFlow=companyService.selectCashFlow(company_id, quarter);
+							float lixi=cashFlow.getLixiGet();
+							float yanfa=cashFlow.getYanfaPay();
+							float guanggao=cashFlow.getGuanggaoPay();
+							float saler=cashFlow.getSalerPay();
+							float salesCenter=cashFlow.getSalescenterPay();
+							float salesCenterWeb=cashFlow.getSalescenterWebPay();
+							float diaoyan=cashFlow.getDiaoyanPay();
+							float gongchang=cashFlow.getGongchangPay();
+							float tiqu=cashFlow.getCunkuanRegularGet();
+							float cunkuan=cashFlow.getCunkuanRegularPay();
+							companyService.updateCashFlowResult(lixi, yanfa, guanggao, saler, salesCenter, salesCenterWeb, diaoyan, gongchang, tiqu, cunkuan, companyList.get(c).getId(),currentQuarter);
+							if(currentQuarter!=1){
+								List<CompanyProduct> companyProducts=companyService.selectProductByCompanyIdAndQuarter(company_id, 1);
+								for(int i=2;i<=currentQuarter;i++){
+									companyProducts.addAll(companyService.selectProductByCompanyIdAndQuarter(company_id, i));
+								}
+								//计算收入,邮寄，生产，货运，库存
+								float incomeSum=0;
+								float youjiSum=0;
+								float shengchanSum=0;
+								float kucunSum=0;
+								float huoyunSum=0;
+								for(int i=0;i<companyProducts.size();i++){
+									int productId=companyProducts.get(i).getId();
+									int productCost=companyService.selectProductCost(productId);
+									int productPrice=0;
+									int youji=0;
+									ProductPrice price=companyService.showPrice(productId, quarter);
+									if(price!=null){
+										youji=price.getYouji();
+										productPrice=price.getPrice();
+									}
+									int saleNum=companyService.selectSaleResult(productId, quarter);
+									int kucunNum=companyService.selectKuCunResult(productId, quarter);
+									int shengchanCost=companyProducts.get(i).getShengChanCost((saleNum+kucunNum), productCost);//生产成本
+									
+									shengchanSum+=shengchanCost*(saleNum+kucunNum);//总生产
+									kucunSum+=shengchanCost*kucunNum/10;//库存费用
+									incomeSum+=productPrice*saleNum;//总收入
+									youjiSum+=youji*saleNum;//总邮寄费用
+									huoyunSum+=saleNum*100;//货运
+								}
+								companyService.updateCashFlowResult2(incomeSum, youjiSum, shengchanSum, huoyunSum, kucunSum, company_id, quarter);
 							}
 							
-							competitionResultService.updateProductMSByProductIdQuarter(productMSList.get(a).getProductId(), currentQuarter, itsMS);
+							//计算IncomeResult，变量名，后缀2
+							List<IncomeStatement> selectIncomeStatementResult = companyService.selectIncomeStatementResult(company_id, quarter);
+							if(selectIncomeStatementResult.size()==0){//没找到，则插入记录
+								companyService.insertIncomeResult(company_id, quarter);
+							}
+							List<CashFlow> cashFlow2 = companyService.selectCashFlowResult(company_id, quarter);
+							float lixi2=cashFlow2.get(0).getLixiGet();
+							float yanfa2=cashFlow2.get(0).getYanfaPay();
+							float guanggao2=cashFlow2.get(0).getGuanggaoPay();
+							float diaoyan2=cashFlow2.get(0).getDiaoyanPay();
+							float saler2=cashFlow2.get(0).getSalerPay();
+							float salesCenter2=cashFlow2.get(0).getSalescenterPay();
+							float salesCenterWeb2=cashFlow2.get(0).getSalescenterWebPay();
+							companyService.updateIncomeResult(lixi2, yanfa2, guanggao2, saler2, salesCenter2, salesCenterWeb2, diaoyan2, company_id, quarter);
+							
+							float incomeSum2=cashFlow2.get(0).getXiaoshouGet();
+							float yingyeSum2=cashFlow2.get(0).getShengchanPay();
+							float youjiSum2=cashFlow2.get(0).getFankuanPay();
+							float huoyunSum2=cashFlow2.get(0).getHuoyunPay();
+							float kucunSum2=cashFlow2.get(0).getKucunPay();
+							companyService.updateIncomeResult2(incomeSum2, yingyeSum2, youjiSum2, huoyunSum2, kucunSum2, company_id, quarter);
+							
+							//计算BalanceSheetResult,变量名后缀都加3
+							List<BalanceSheet> balanceResult=companyService.selectBalanceSheetResult(company_id, quarter);
+							if(balanceResult.size()==0){
+								companyService.insertBalanceResult(company_id, quarter);
+							}
+							BalanceSheet balanceSheet=companyService.selectBalanceSheet(company_id, quarter);
+							float cunkuan3=balanceSheet.getCunkuan();
+							float zichan3=balanceSheet.getZichan();
+							float guben3=balanceSheet.getGuben();
+							//货币，留存，存货
+							int cunru3=companyService.selectCunru(company_id, quarter);
+							int tiqu3=companyService.selectTiQu(company_id, quarter);
+							int cunkuanLast3=companyService.selectCunKuanLast(company_id, quarter);
+							List<CashFlow> cashFlow3 = companyService.selectCashFlowResult(company_id, quarter);
+							int cunhuo3=(int)(cashFlow3.get(0).getKucunPay()*10);
+							float xianjinGet3=cashFlow3.get(0).getXianJinGet();
+							float xianjinPay3=cashFlow3.get(0).getXianJinPay();
+							float lirun3=xianjinGet3-xianjinPay3;
+							float gongchang3=cashFlow3.get(0).getGongchangPay();
+							float huobi3=0;
+							float liucun3=0; 
+							if(quarter==1){
+								huobi3=2000000+lirun3-gongchang-cunru3+tiqu-cunhuo3;
+								liucun3=lirun3;
+							}else{
+								BalanceSheet balanceSheet2=companyService.selectHuoBiLast(company_id, quarter-1);
+								if(balanceSheet2!=null){
+									float huobiLast3=balanceSheet2.getHuobi();
+									huobi3=huobiLast3+1000000+lirun3-gongchang3-cunru3+tiqu3-cunhuo3-(float)(cunkuanLast3*1.5/100);
+									float liucunLast3=balanceSheet2.getLiucun();
+									liucun3=liucunLast3+lirun3;
+								}
+								
+							}
+							companyService.updateBalanceSheetResult(cunkuan3, zichan3, guben3, company_id, quarter);
+							companyService.updateBalanceSheetResult2(huobi3, liucun3, cunhuo3, company_id, quarter);
+							
 						}
-					}
+						
+						
+						//5.插入平衡计分卡等数据
+						for(int b=0;b<companyList.size();b++){
+							balanceScoreService.insertTotleBalanceScore(companyList.get(b).getId(), currentQuarter);
+						}
+						for(int b=0;b<companyList.size();b++){
+							//BalanceScoreController balanceScoreController=new BalanceScoreController();
+							//balanceScoreController.insertBalanceScore(competitionId, companyList.get(b).getId(),currentQuarter);
+							performanceReportService.processFinancialRatio(companyList.get(b).getId(), currentQuarter);
+							
+						}
+						
+						
+					}//第二季度结果计算结束
 					
 					
-					/*3.将产品市场份额统计到公司市场份额中*/
+					//任何季度都要做的，就放在这里
+					message="当前季度竞赛结果已经发布";
+					competitionResultService.updateCompetitionCurrentQuarter(competitionId, currentQuarter+1);
+	
+					//将起止时间存入表中
 					for(int n=0;n<companyList.size();n++){
-						double practicalShare=0;
-						int practicalNeed=0;
-						int practicalSale=0;
-						int practicalStockoun=0;
-						int practicalStock=0;
-						double perfectShare=0;
-						int perfectNeed=0;
-						int perfectSale=0;
-						int perfectStockoun=0;
-						int perfectStock=0;
-						double businessShare=0;
-						int businessNeed=0;
-						int businessSale=0;
-						int businessStockoun=0;
-						int businessStock=0;
-						//找公司中实用型产品占的份额
-						List<ProductMarketShare> productMSPracticalList=competitionResultService.findProductMSByCompanyIdQuarterType(companyList.get(n).getId(), currentQuarter, "实用型");
-						if(productMSPracticalList!=null){
-							for(int m=0;m<productMSPracticalList.size();m++){
-								practicalShare+=productMSPracticalList.get(m).getMarketShare();
-								practicalNeed+=productMSPracticalList.get(m).getNeed();
-								practicalSale+=productMSPracticalList.get(m).getSale();
-								practicalStockoun+=productMSPracticalList.get(m).getStockoun();
-								practicalStock+=productMSPracticalList.get(m).getStock();
-							}
-						}
-						List<ProductMarketShare> productMSPerfectList=competitionResultService.findProductMSByCompanyIdQuarterType(companyList.get(n).getId(), currentQuarter, "极致型");
-						if(productMSPerfectList!=null){
-							for(int m=0;m<productMSPerfectList.size();m++){
-								perfectShare+=productMSPerfectList.get(m).getMarketShare();
-								perfectNeed+=productMSPerfectList.get(m).getNeed();
-								perfectSale+=productMSPerfectList.get(m).getSale();
-								perfectStockoun+=productMSPerfectList.get(m).getStockoun();
-								perfectStock+=productMSPerfectList.get(m).getStock();
-							}
-						}
-						List<ProductMarketShare> productMSBusinessList=competitionResultService.findProductMSByCompanyIdQuarterType(companyList.get(n).getId(), currentQuarter, "商务型");
-						if(productMSBusinessList!=null){
-							for(int m=0;m<productMSBusinessList.size();m++){
-								businessShare+=productMSBusinessList.get(m).getMarketShare();
-								businessNeed+=productMSBusinessList.get(m).getNeed();
-								businessSale+=productMSBusinessList.get(m).getSale();
-								businessStockoun+=productMSBusinessList.get(m).getStockoun();
-								businessStock+=productMSBusinessList.get(m).getStock();
-							}
-						}
-						CompanyMarketShare companyMS=new CompanyMarketShare();
-						companyMS.setPracticalShare(practicalShare);
-						companyMS.setPracticalNeed(practicalNeed);
-						companyMS.setPracticalSale(practicalSale);
-						companyMS.setPracticalStockoun(practicalStockoun);
-						companyMS.setPracticalStock(practicalStock);
-						companyMS.setPerfectShare(perfectShare);
-						companyMS.setPerfectNeed(perfectNeed);
-						companyMS.setPerfectSale(perfectSale);
-						companyMS.setPerfectStockOun(perfectStockoun);
-						companyMS.setPerfectStock(perfectStock);
-						companyMS.setBusinessShare(businessShare);
-						companyMS.setBusinessNeed(businessNeed);
-						companyMS.setBusinessSale(businessSale);
-						companyMS.setBusinessStockoun(businessStockoun);
-						companyMS.setBusinessStock(businessStock);
-						companyMS.setCompanyId(companyList.get(n).getId());
-						companyMS.setQuarter(currentQuarter);
-						competitionResultService.insertCompanyMarketShare(companyMS);
-						
-						
-					}//到这里公司市场份额插入结束
+						CompanyQuarterTime comQT=new CompanyQuarterTime();
+						comQT.setCompanyId(companyList.get(n).getId());
+						comQT.setQuarter(currentQuarter+1);
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+						//System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
+						String startTime=df.format(new Date());
+						comQT.setStartTime(startTime);
+						comQT.setIsSubmit(0);
+						comQT.setCompetitionId(competitionId);
+						competitionResultService.insertCompanyQuarterTime(comQT);
+					}//companyQuarterTime表的for循环
 					
-					//4.插入财务等数据
-					for(int c=0;c<companyList.size();c++){
-						int company_id=companyList.get(c).getId();
-						int quarter=currentQuarter;
-						
-						//计算现金流表
-						List<CashFlow> selectCashFlowResult = companyService.selectCashFlowResult(company_id, quarter);
-						if(selectCashFlowResult.size()==0){//没找到，则插入
-							companyService.insertCashFlowResult(company_id, quarter);
-						}
-						//更新固定费用到结果表
-						CashFlow cashFlow=companyService.selectCashFlow(company_id, quarter);
-						float lixi=cashFlow.getLixiGet();
-						float yanfa=cashFlow.getYanfaPay();
-						float guanggao=cashFlow.getGuanggaoPay();
-						float saler=cashFlow.getSalerPay();
-						float salesCenter=cashFlow.getSalescenterPay();
-						float salesCenterWeb=cashFlow.getSalescenterWebPay();
-						float diaoyan=cashFlow.getDiaoyanPay();
-						float gongchang=cashFlow.getGongchangPay();
-						float tiqu=cashFlow.getCunkuanRegularGet();
-						float cunkuan=cashFlow.getCunkuanRegularPay();
-						companyService.updateCashFlowResult(lixi, yanfa, guanggao, saler, salesCenter, salesCenterWeb, diaoyan, gongchang, tiqu, cunkuan, companyList.get(c).getId(),currentQuarter);
-						if(currentQuarter!=1){
-							List<CompanyProduct> companyProducts=companyService.selectProductByCompanyIdAndQuarter(company_id, 1);
-							for(int i=2;i<=currentQuarter;i++){
-								companyProducts.addAll(companyService.selectProductByCompanyIdAndQuarter(company_id, i));
-							}
-							//计算收入,邮寄，生产，货运，库存
-							float incomeSum=0;
-							float youjiSum=0;
-							float shengchanSum=0;
-							float kucunSum=0;
-							float huoyunSum=0;
-							for(int i=0;i<companyProducts.size();i++){
-								int productId=companyProducts.get(i).getId();
-								int productCost=companyService.selectProductCost(productId);
-								int productPrice=0;
-								int youji=0;
-								ProductPrice price=companyService.showPrice(productId, quarter);
-								if(price!=null){
-									youji=price.getYouji();
-									productPrice=price.getPrice();
-								}
-								int saleNum=companyService.selectSaleResult(productId, quarter);
-								int kucunNum=companyService.selectKuCunResult(productId, quarter);
-								int shengchanCost=companyProducts.get(i).getShengChanCost((saleNum+kucunNum), productCost);//生产成本
-								
-								shengchanSum+=shengchanCost*(saleNum+kucunNum);//总生产
-								kucunSum+=shengchanCost*kucunNum/10;//库存费用
-								incomeSum+=productPrice*saleNum;//总收入
-								youjiSum+=youji*saleNum;//总邮寄费用
-								huoyunSum+=saleNum*100;//货运
-							}
-							companyService.updateCashFlowResult2(incomeSum, youjiSum, shengchanSum, huoyunSum, kucunSum, company_id, quarter);
-						}
-						
-						//计算IncomeResult，变量名，后缀2
-						List<IncomeStatement> selectIncomeStatementResult = companyService.selectIncomeStatementResult(company_id, quarter);
-						if(selectIncomeStatementResult.size()==0){//没找到，则插入记录
-							companyService.insertIncomeResult(company_id, quarter);
-						}
-						List<CashFlow> cashFlow2 = companyService.selectCashFlowResult(company_id, quarter);
-						float lixi2=cashFlow2.get(0).getLixiGet();
-						float yanfa2=cashFlow2.get(0).getYanfaPay();
-						float guanggao2=cashFlow2.get(0).getGuanggaoPay();
-						float diaoyan2=cashFlow2.get(0).getDiaoyanPay();
-						float saler2=cashFlow2.get(0).getSalerPay();
-						float salesCenter2=cashFlow2.get(0).getSalescenterPay();
-						float salesCenterWeb2=cashFlow2.get(0).getSalescenterWebPay();
-						companyService.updateIncomeResult(lixi2, yanfa2, guanggao2, saler2, salesCenter2, salesCenterWeb2, diaoyan2, company_id, quarter);
-						
-						float incomeSum2=cashFlow2.get(0).getXiaoshouGet();
-						float yingyeSum2=cashFlow2.get(0).getShengchanPay();
-						float youjiSum2=cashFlow2.get(0).getFankuanPay();
-						float huoyunSum2=cashFlow2.get(0).getHuoyunPay();
-						float kucunSum2=cashFlow2.get(0).getKucunPay();
-						companyService.updateIncomeResult2(incomeSum2, yingyeSum2, youjiSum2, huoyunSum2, kucunSum2, company_id, quarter);
-						
-						//计算BalanceSheetResult,变量名后缀都加3
-						List<BalanceSheet> balanceResult=companyService.selectBalanceSheetResult(company_id, quarter);
-						if(balanceResult.size()==0){
-							companyService.insertBalanceResult(company_id, quarter);
-						}
-						BalanceSheet balanceSheet=companyService.selectBalanceSheet(company_id, quarter);
-						float cunkuan3=balanceSheet.getCunkuan();
-						float zichan3=balanceSheet.getZichan();
-						float guben3=balanceSheet.getGuben();
-						//货币，留存，存货
-						int cunru3=companyService.selectCunru(company_id, quarter);
-						int tiqu3=companyService.selectTiQu(company_id, quarter);
-						int cunkuanLast3=companyService.selectCunKuanLast(company_id, quarter);
-						List<CashFlow> cashFlow3 = companyService.selectCashFlowResult(company_id, quarter);
-						int cunhuo3=(int)(cashFlow3.get(0).getKucunPay()*10);
-						float xianjinGet3=cashFlow3.get(0).getXianJinGet();
-						float xianjinPay3=cashFlow3.get(0).getXianJinPay();
-						float lirun3=xianjinGet3-xianjinPay3;
-						float gongchang3=cashFlow3.get(0).getGongchangPay();
-						float huobi3=0;
-						float liucun3=0; 
-						if(quarter==1){
-							huobi3=2000000+lirun3-gongchang-cunru3+tiqu-cunhuo3;
-							liucun3=lirun3;
-						}else{
-							BalanceSheet balanceSheet2=companyService.selectHuoBiLast(company_id, quarter-1);
-							if(balanceSheet2!=null){
-								float huobiLast3=balanceSheet2.getHuobi();
-								huobi3=huobiLast3+1000000+lirun3-gongchang3-cunru3+tiqu3-cunhuo3-(float)(cunkuanLast3*1.5/100);
-								float liucunLast3=balanceSheet2.getLiucun();
-								liucun3=liucunLast3+lirun3;
-							}
-							
-						}
-						companyService.updateBalanceSheetResult(cunkuan3, zichan3, guben3, company_id, quarter);
-						companyService.updateBalanceSheetResult2(huobi3, liucun3, cunhuo3, company_id, quarter);
-						
-					}
-					
-					
-					//5.插入平衡计分卡等数据
-					for(int b=0;b<companyList.size();b++){
-						balanceScoreService.insertTotleBalanceScore(companyList.get(b).getId(), currentQuarter);
-						//BalanceScoreController balanceScoreController=new BalanceScoreController();
-						//balanceScoreController.insertBalanceScore(competitionId, companyList.get(b).getId(),currentQuarter);
-						performanceReportService.processFinancialRatio(companyList.get(b).getId(), currentQuarter);
-						
-					}
-					
-					
-				}//第二季度结果计算结束
+				}
 				
-				
-				//任何季度都要做的，就放在这里
-				message="当前季度竞赛结果已经发布";
-				competitionResultService.updateCompetitionCurrentQuarter(competitionId, currentQuarter+1);
-
-				//将起止时间存入表中
-				for(int n=0;n<companyList.size();n++){
-					CompanyQuarterTime comQT=new CompanyQuarterTime();
-					comQT.setCompanyId(companyList.get(n).getId());
-					comQT.setQuarter(currentQuarter+1);
-					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-					//System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
-					String startTime=df.format(new Date());
-					comQT.setStartTime(startTime);
-					comQT.setIsSubmit(0);
-					comQT.setCompetitionId(competitionId);
-					competitionResultService.insertCompanyQuarterTime(comQT);
-				}//companyQuarterTime表的for循环
-				
+			}else if(currentQuarter>competition.getQuarter()){
+				message="本次竞赛已经结束！";
 			}
-			
-		}else if(currentQuarter>competition.getQuarter()){
-			message="本次竞赛已经结束！";
+		
+		}catch(Exception e){
+			e.printStackTrace();
+			throw e;
 		}
 		
 		model.addAttribute("message", message);

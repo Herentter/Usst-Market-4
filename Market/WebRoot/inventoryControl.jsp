@@ -122,11 +122,13 @@ td, th {
 .tab-content {
 	margin-top: 10px;
 }
+#notice2{
+	min-height:450px;
+}
 </style>
 <script type="text/javascript">
 	function init() {
 		alert("提交成功");
-		document.getElementById("form").action = "showInventoryControl1.do";
 		document.getElementById("form").submit();
 	}
 </script>
@@ -136,12 +138,12 @@ td, th {
 		<div class="panel-heading">库存控制</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#notice1" data-toggle="tab">
+				<li ><a href="#notice1" data-toggle="tab">
 						课程介绍</a></li>
-				<li><a href="#notice2" data-toggle="tab">决策界面</a></li>
+				<li class="active"><a href="#notice2" data-toggle="tab">决策界面</a></li>
 			</ul>
 			<div class="tab-content">
-				<div class="tab-pane fade in active" id="notice1">
+				<div class="tab-pane fade" id="notice1">
 					<div class="course_content">
 						<div class="text1">生产经理需要知道各个季度所要生产的品牌，以及季末的库存量。
 							是否要生产某款品牌取决于营销部门的决定。 如果营销部门决定销售某款品牌，那生产部门就必须安排其生产。
@@ -160,8 +162,8 @@ td, th {
 							如果要停产某品牌，请务必反选该品牌。 接下来，您需要决定季末的最大库存量。</div>
 					</div>
 				</div>
-				<div class="tab-pane fade" id="notice2">
-					<form class="form-horizontal" id="form" name="" action="">
+				<div class="tab-pane fade in active" id="notice2">
+					<form class="form-horizontal" method="post" id="form" name="" action="updateInventoryControl.do?quarter=${quarter }">
 						<table class="table table-bordered">
 							<thead>
 								<tr>
@@ -171,17 +173,13 @@ td, th {
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${companyProducts}" var="item">
-								
+								<c:forEach items="${inventoryControl}" var="item" varStatus="status">
+									<input type="hidden" name="companyProductVo2List[${status.index }].id" value="${item.id }">
 									<tr>
 										<td>${item.name}</td>
 
-										<td><input
-											onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
-											onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
-											class="form-control" class="form-control" type="text"
-											name="inventory_max_two" value="${item.inventoryMaxTwo}">
-											<input type="hidden" name="ids" value="${item.id}"> 
+										<td>
+											<input class="form-control" type="text" name="companyProductVo2List[${status.index }].inventory" value="${item.inventory}">
 										</td>
 									</tr>
 								</c:forEach>

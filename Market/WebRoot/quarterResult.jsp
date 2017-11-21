@@ -121,12 +121,12 @@ td, th {
 		<div class="panel-heading">上季度结果</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#notice1" data-toggle="tab">
+				<li ><a href="#notice1" data-toggle="tab">
 						课程介绍</a></li>
-				<li><a href="#notice2" data-toggle="tab">决策界面</a></li>
+				<li class="active"><a href="#notice2" data-toggle="tab">决策界面</a></li>
 			</ul>
 			<div class="tab-content">
-				<div class="tab-pane fade in active" id="notice1">
+				<div class="tab-pane fade" id="notice1">
 					<div class="course_content">
 						<div class="text1">也许您会惊讶地发现，工厂的实际产量比计划产量要小。
 							工厂的生产率在很大程度上由工人的积极性所决定。 而工人积极性，反过来，又由您提供的薪酬组合决定。
@@ -142,7 +142,7 @@ td, th {
 							请注意产品脱销及季末库存。 同样，您还需要分析各个品牌的成本构成以及工厂工人的生产效率。</div>
 					</div>
 				</div>
-				<div class="tab-pane fade" id="notice2">
+				<div class="tab-pane fade  in active" id="notice2">
 					<form class="form-horizontal" id="form" method="post" action="">
 						<table class="table table-bordered">
 							<tr>

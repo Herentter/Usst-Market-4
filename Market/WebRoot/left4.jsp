@@ -181,7 +181,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <a href="#none">财会<i></i></a>
         <ul>
             <li><a href="cashTable.jsp" target="main">风险投资者股权</a></li>
-            <li><a href="lossTable.jsp" target="main">常规银行贷款</a></li>
+            <li><a href="showEmergencyLoan.do?quarter=4" target="main">紧急银行贷款</a></li>
             <li><a href="assertTable" target="main">定期存款</a></li>
         </ul>
     </li>

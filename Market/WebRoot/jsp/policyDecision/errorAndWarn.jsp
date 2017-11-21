@@ -41,20 +41,16 @@ $(function(){
 			<div class="panel-body">
 				<div>
 					<input type="hidden" id="currentQuarter" value="${currentQuarter }"/>
-					<h3>错误及警告</h3>
+					<label><h4>错误及警告</h4></label>
 					<table>
-						<tr>
-							<th>公司</th>
-							<th>重大错误</th>
-							<th>重要警告</th>
-							<th>注意事项</th>
-						</tr>
+<!-- 						<ul> -->
 						<c:forEach items="${companyList }" var="item">
 							<li>
 								<input type="hidden" value="${item.id }"/>
 								<a href="javascript:void(0)">${item.name }</a>
 							</li>
 						</c:forEach>
+						</ul>
 					</table>
 				</div>
 			</div>

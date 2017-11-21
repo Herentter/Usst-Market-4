@@ -36,10 +36,9 @@ public class InforController {
 	
 		//获取公司ID
 		int company_id=(int)request.getSession().getAttribute("companyId");
-		//int quater = (int) request.getAttribute("quater");
-		int quater = 2;
+		int quarter = Integer.parseInt(request.getParameter("quarter"))-1;
 				
-		List<SallSituationVo> ListSSV = SS.selectSaleSituationbyCompanyID(company_id,quater);
+		List<SallSituationVo> ListSSV = SS.selectSaleSituationbyCompanyID(company_id,quarter);
 		
 		System.out.println("ListSSV");
 		System.out.println("ListSSV.get(0).getSaleIncom() : "+ListSSV.get(0).getSaleIncom());
@@ -61,10 +60,8 @@ public class InforController {
 	private ModelAndView SaleAbilityInfor(HttpServletRequest request) throws Exception{
 		//获取公司ID
 		int company_id=(int)request.getSession().getAttribute("companyId");
-		//int quater = (int) request.getAttribute("quater");
-		int quater = 2;
-		
-		List<SaleIncomVo> ListSSV = SS.selectPathAbilitybyCompanyID(company_id, quater);
+		int quarter = Integer.parseInt(request.getParameter("quarter"))-1;
+		List<SaleIncomVo> ListSSV = SS.selectPathAbilitybyCompanyID(company_id, quarter);
 		SaleIncomVo vo = new SaleIncomVo();
 		for(SaleIncomVo v:ListSSV){
 			vo.setSaleIncomSum(vo.getSaleIncomSum()+v.getSaleIncomSum());
@@ -72,7 +69,7 @@ public class InforController {
 			vo.setSaleCostSum(vo.getSaleCostSum()+v.getSaleCostSum());
 		}
 		
-		int[] physalary = PPS.salary(company_id, quater);
+		int[] physalary = PPS.salary(company_id, quarter);
 		int salary_sum = 0;
 		for(int i = 0;i<4;i++)
 			salary_sum += physalary[i];
@@ -107,10 +104,10 @@ public class InforController {
 	private ModelAndView GlobalPathNeeds(HttpServletRequest request) throws Exception{
 		//获取公司ID
 		int company_id=(int)request.getSession().getAttribute("companyId");
-		//int quater = (int) request.getAttribute("quater");
-		int quater = 2;
+		int quarter = Integer.parseInt(request.getParameter("quarter"))-1;
 		
-		List<GlobalPathNeedsVo> ListGPNV = SS.selectGlobalPathSharebycompanyid(company_id,quater);
+		
+		List<GlobalPathNeedsVo> ListGPNV = SS.selectGlobalPathSharebycompanyid(company_id,quarter);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("ListGPNV",ListGPNV);
@@ -126,10 +123,8 @@ public class InforController {
 	private ModelAndView StoreInfor(HttpServletRequest request) throws Exception{
 		//获取公司ID
 		int company_id=(int)request.getSession().getAttribute("companyId");
-		//int quater = (int) request.getAttribute("quater");
-		int quater = 1;
-		
-		List<StoreInforVo> ListSIV = SS.selectStoreInforbycompanyid(company_id,quater);
+		int quarter = Integer.parseInt(request.getParameter("quarter"))-1;		
+		List<StoreInforVo> ListSIV = SS.selectStoreInforbycompanyid(company_id,quarter);
 		
 		/**
 		 * 1~4分别为印俄中新
