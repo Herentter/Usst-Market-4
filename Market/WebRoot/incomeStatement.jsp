@@ -100,12 +100,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript">
 	$(function(){
+		var result=$("#result").val();
 		var quarter=$("#quarterFlag").attr("value");
-		if(quarter==1){
-			$(".quarter2").hide();
-			$(".quarter3").hide();
-		}else if(quarter==2){
-			$(".quarter3").hide();
+		if(result==1){
+			if(quarter==1){
+				$(".quarter2").hide();
+				$(".quarter3").hide();
+			}else if(quarter==2){
+				$(".quarter3").hide();
+			}
+		}else{
+			if(quarter==1){
+				$("#quarter1").text("季度1(预估)");
+				$(".quarter2").hide();
+				$(".quarter3").hide();
+			}else if(quarter==2){
+				$("#quarter2").text("季度2(预估)");
+				$(".quarter3").hide();
+			}else if(quarter==3){
+				$("#quarter3").text("季度3(预估)");
+			}
 		}
 	})
 </script>
@@ -113,8 +127,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <body>
        <div class="panel panel-info">
-	    <div class="panel-heading">
-	        <h3 class="panel-title">利润表</h3>
+	    <div class="panel-heading">利润表
+	        <!-- <h3 class="panel-title">利润表</h3> -->
 	    </div>
 	    <div class="panel-body">
 	    	<ul class="nav nav-tabs">
@@ -140,14 +154,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </div>
                 <div class="tab-pane fade  in active" id="notice2">
                 <label id="quarterFlag" value="${quarter }"></label>
+                <input type="hidden" id="result" value="${result }"/>
                 	<table class="table table-bordered table-hover table-striped">
 		<!--悬停表格布局-->
 						<thead>
 						  <tr>
 						    <th >项目</th>
-						    <th>季度1</th>
-						   	<th class="quarter2">季度2</th>
-						   	<th class="quarter3">季度3</th>
+						    <th><span id="quarter1">季度1</span></th>
+						   	<th class="quarter2"><span id="quarter2">季度2</span></th>
+						   	<th class="quarter3"><span id="quarter3">季度3</span></th>
 						  </tr>
 						</thead>
 						<tbody>
@@ -178,7 +193,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  </tr>
 						   <tr class="secondnav">
 						    <td style="padding-left:50px;">营业成本</td>
-						    <td><fmt:formatNumber value="${incomeStatementList[0].getYingyeCost()} " pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td><fmt:formatNumber value="${incomeStatementList[0].getYingyeCost()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${incomeStatementList[1].getYingyeCost()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter3"><fmt:formatNumber value="${incomeStatementList[2].getYingyeCost()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
@@ -190,7 +205,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  </tr>
 						  <tr class="secondnav">
 						    <td style="padding-left:50px;">研发投入</td>
-						    <td><fmt:formatNumber value="${incomeStatementList[0].getYanfa()} " pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td><fmt:formatNumber value="${incomeStatementList[0].getYanfa()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${incomeStatementList[1].getYanfa()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter3"><fmt:formatNumber value="${incomeStatementList[2].getYanfa()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
@@ -202,7 +217,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  </tr>
 						   <tr class="secondnav">
 						    <td style="padding-left:50px;">销售人员费用</td>
-						    <td><fmt:formatNumber value="${incomeStatementList[0].getSalerCost()} " pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td><fmt:formatNumber value="${incomeStatementList[0].getSalerCost()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${incomeStatementList[1].getSalerCost()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter3"><fmt:formatNumber value="${incomeStatementList[2].getSalerCost()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
@@ -220,13 +235,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  </tr>
 						   <tr class="secondnav">
 						    <td style="padding-left:50px;">货运</td>
-						    <td><fmt:formatNumber value="${incomeStatementList[0].getHuoyun()} " pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td><fmt:formatNumber value="${incomeStatementList[0].getHuoyun()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${incomeStatementList[1].getHuoyun()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter3"><fmt:formatNumber value="${incomeStatementList[2].getHuoyun()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						   <tr class="secondnav">
 						    <td style="padding-left:50px;">库存持有成本</td>
-						    <td><fmt:formatNumber value="${incomeStatementList[0].getKucun()} " pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td><fmt:formatNumber value="${incomeStatementList[0].getKucun()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${incomeStatementList[1].getKucun()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter3"><fmt:formatNumber value="${incomeStatementList[2].getKucun()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
@@ -244,7 +259,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  </tr>
 						   <tr class="secondnav">
 						    <td style="padding-left:50px;">网络营销费用</td>
-						    <td><fmt:formatNumber value="${incomeStatementList[0].getNetmarketCost()} " pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td><fmt:formatNumber value="${incomeStatementList[0].getNetmarketCost()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${incomeStatementList[1].getNetmarketCost()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter3"><fmt:formatNumber value="${incomeStatementList[2].getNetmarketCost()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
@@ -293,8 +308,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						    <tr class="secondnav">
 						    <td style="padding-left:10px;">-： &nbsp;&nbsp;&nbsp; 所得税费用</td>
 						    <td> ${incomeStatementList[0].getTaxCost()} </td>
-						    <td class="quarter2"><fmt:formatNumber value=" ${incomeStatementList1[1].getTaxCost()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						    <td class="quarter3"><fmt:formatNumber value=" ${incomeStatementList1[2].getTaxCost()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter2"><fmt:formatNumber value="${incomeStatementList[1].getTaxCost()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter3"><fmt:formatNumber value="${incomeStatementList[2].getTaxCost()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						 
 						  </tr>
 						   <tr class="firstnav">
@@ -305,8 +320,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						       </tr>
 						        <tr class="firstnav">
 						      	<td>四、每股收益</td>
-						      	<td></td>
-					       		<td class="quarter2"></td>
+						      	<td><fmt:formatNumber value="${incomeStatementList[0].getJingLiRun()/10000}" pattern="#,#00.0"></fmt:formatNumber></td>
+					       		<td class="quarter2"><fmt:formatNumber value="${incomeStatementList[1].getJingLiRun()/15000}" pattern="#,#00.0"></fmt:formatNumber></td>
+					       		<td class="quarter3"><fmt:formatNumber value="${incomeStatementList[2].getJingLiRun()/20000}" pattern="#,#00.0"></fmt:formatNumber></td>
 						       </tr>
 						  </tbody>
 						</table>

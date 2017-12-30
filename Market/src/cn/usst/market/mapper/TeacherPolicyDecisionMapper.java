@@ -52,7 +52,7 @@ public interface TeacherPolicyDecisionMapper {
 	
 	//查找设计的品牌
 	public ProductInfo findProductInfoById(Integer id);
-	public List<CompanyProduct> findProductsByCompanyIdQuarter(IdQuarter idQuarter);
+	public List<CompanyProduct> findProductsByCompanyIdQuarter(int companyId,int quarter);
 	
 	//找最低价、最高价、平均价格
 	public int findMinPriceProduct(IdQuarter idQuarter);
@@ -118,5 +118,11 @@ public interface TeacherPolicyDecisionMapper {
 	
 	//查找公司定期存款
 	public FixedDeposit findCompanyFixedDepositByIdQuarter(IdQuarter idQuarter);
+	
+	//产品预测需求量
+	public int findForecastDemandByProductIdQuarter(int productId,int quarter);
+	
+	//产品库存量
+	public int findProductInventoryByProductIdQuarter(int productId,int quarter);
 	
 }

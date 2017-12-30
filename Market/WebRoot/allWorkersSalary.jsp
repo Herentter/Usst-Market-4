@@ -16,7 +16,7 @@
 <style type="text/css">
 body {
 	width: 99%;
-	margin: 4px;
+	margin: 5px;
 	height: 1000px;
 }
 
@@ -163,7 +163,7 @@ td, th {
 							<c:forEach items="${allVoList}" var="items">
 								<tr>
 									<td>${items.company.name}</td>
-									<td>${items.productivity}</td>
+									<td>${items.workerEfficiency}</td>
 									<td>${items.workersSalary.salary}元</td>
 									<td>${items.workersSalary.welfare}%</td>
 									<td>${items.workersSalary.holiday}天</td>

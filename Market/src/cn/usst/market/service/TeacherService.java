@@ -96,7 +96,6 @@ public interface TeacherService {
 
 	public ProductInfo findProductInfoById(Integer id);
 
-	public List<CompanyProduct> findProductsByCompanyIdQuarter(IdQuarter idQuarter);
 
 	public CompanyMarket findCompanyPhyMarketByIdQuarter(IdQuarter idQuarter);
 

@@ -142,7 +142,7 @@ $(function(){
 						<div class="row">
 							<div class="col-md-2"><label>职位分配</label></div>
 							<div class="col-md-6">
-								<table class="table table-bordered">
+								<table class="table table-bordered table-hover">
 									<thead>
 										<tr>
 											<th>管理者姓名</th>
@@ -226,8 +226,8 @@ $(function(){
 					<!-- 区域媒体 -->
 					<div class="position">
 						<div class="row">
-							<div class="col-md-2"><label>媒体投放</label></div>
-							<table>
+							<div class="col-md-2"><label>媒体投放（数量）</label></div>
+							<table class="table table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>媒体</th>
@@ -238,7 +238,7 @@ $(function(){
 								</thead>
 								<tbody>
 									<tr>
-										<td>成本</td>
+										<td><strong>成本</strong></td>
 										<c:forEach items="${mediaInfoList }" var="item">
 										<td>${item.cost }</td>
 										</c:forEach>			
@@ -261,7 +261,7 @@ $(function(){
 					<div class="position">
 						<div class="row">
 							<div class="col-md-2"><label>产品定价</label></div>
-							<table>
+							<table class="table table-bordered table-hover">
 								<thead>
 									<tr>
 									<th>品牌</th>
@@ -272,6 +272,7 @@ $(function(){
 								<tbody>
 									<c:forEach items="${productPriceList }" var="item">
 										<tr>
+											<td>${item.key }</td>
 											<td>${item.value.price }</td>
 											<td>${item.value.youji }</td>
 										</tr>
@@ -297,7 +298,7 @@ $(function(){
 					<div class="position">
 						<div class="row">
 							<div class="col-md-2"><label>员工薪酬</label></div>
-							<table>
+							<table class="table table-bordered table-hover">
 								<thead>
 									<tr>
 									<th>员工</th>
@@ -335,7 +336,7 @@ $(function(){
 							</table>
 							
 							<div class="col-md-2"><label>实体销售人员人数</label></div>
-							<table>
+							<table class="table table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>市场名称</th>
@@ -354,7 +355,7 @@ $(function(){
 								</tbody>
 							</table>
 							<div class="col-md-2"><label>网络销售人员人数</label></div>
-							<table>
+							<table class="table table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>市场名称</th>
@@ -458,6 +459,52 @@ $(function(){
 							</ul>
 						</div>
 					</div>
+					
+					<div class="row">
+						<div class="col-md-2"><label>品牌预测需求量</label></div>
+						<div class="col-md-10">
+							<table class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>品牌名称</th>
+										<th>预测需求量</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${forecastDemandList }" var="item">
+									<tr>
+										<td>${item.key}</td>
+										<td>${item.value}</td>
+									</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-2"><label>品牌库存控制</label></div>
+						<div class="col-md-10">
+							<table class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>品牌名称</th>
+										<th>库存量</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${inventoryList }" var="item">
+									<tr>
+										<td>${item.key}</td>
+										<td>${item.value}</td>
+									</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+					
 				</div>
 				<div class="finace">
 					<div><label>财务</label></div>
@@ -466,7 +513,7 @@ $(function(){
 							<label>公司持股</label>
 						</div>
 						<div class="col-md-10">
-							<table class="table table-bordered">
+							<table class="table table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>股票类型</th>
@@ -500,7 +547,7 @@ $(function(){
 							<ul>
 								<li>当前季度存款：${fixedDeposit.cunru }</li>
 								<li>季度利率：${fixedDeposit.lilv }</li>
-								<li>预计利息收入：${fixedDeposit.cunru*fixedDeposit.lilv }</li>
+								<li>预计利息收入：${fixedDeposit.cunru*fixedDeposit.lilv/100 }</li>
 							</ul>
 						</div>
 					</div>

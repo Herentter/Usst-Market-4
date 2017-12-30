@@ -99,8 +99,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="panel panel-info">
         <div class="panel-heading">设计品牌</div>
         <div class="panel-body">
-        	<input type="text" id="quarter" value="${quarter}">
-        	<input type="text" value="${currentQuarter}">
+        	<input type="hidden" id="quarter" value="${quarter}">
+        	<input type="hidden" value="${currentQuarter}">
         	<form  id="form1" class="form-horizontal" role="form" method="post" action="">
 		        <div id="decisionTitle" class="row">
 		        	<div class="col-md-4">
@@ -224,7 +224,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script type="text/javascript">
 		var quarter=$("#quarter").val();
-		alert(quarter);
 		document.getElementById("baocun").onclick = function () {
 			//判断产品名字
 			var name=$("#Brand_name").val();

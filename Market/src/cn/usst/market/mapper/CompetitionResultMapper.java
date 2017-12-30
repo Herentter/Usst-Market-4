@@ -89,19 +89,22 @@ public interface CompetitionResultMapper {
     public List<ProductPrice> findProductPriceByCompanyIdQuarter(int companyId,int quarter);
     
     //查找本次竞赛本季度产品各种效用
-    public List<ProductEfficiency> findProductEfficiency(int competitionId,int quarter,String type);
+    public List<ProductEfficiency> findProductEfficiency(int competitionId,int quarter,String type,int marketId);
     
     //添加各种产品的市场份额
-    public void insertProductMarketShare(ProductMarketShare productMarketShare);
+    public void insertOrUpdateProductMarketShare(ProductMarketShare productMarketShare);
     
     //查找每个产品的市场份额
     public List<ProductMarketShare> findProductMSByCompanyIdQuarterType(int companyId,int quarter,String type);
     public List<ProductMarketShare> findProductMSByCompanyIdQuarter(int companyId,int quarter);
-    public int findProductMSNeedNumByCompetIdQuarterType(int competitionId,int quarter,String type);
+    public List<ProductMarketShare> findProductMSByCompetIdQuarterType(int competitionId,int quarter,String type);
     //找本次竞赛该季度的所有产品市场份额
     public List<ProductMarketShare> findProductMSByCompetitionIdQuarter(int competitionId,int quarter);
     
-    public void updateProductMSByProductIdQuarter(int productId,int quarter,double marketshare);
+    //更新产品市场份额数据
+    //public void updateProductMSByProductIdQuarter(int productId,int quarter,double marketshare);
+    public void updateProductMSByProductIdQuarter(ProductMarketShare productMarketShare);
+    
     
     //插入公司市场份额
     public void insertCompanyMarketShare(CompanyMarketShare companyMarketShare);
@@ -122,6 +125,12 @@ public interface CompetitionResultMapper {
     //找公司的平衡记分卡
     public BalanceScore findBalanceScoreByCompanyIdQuarter(int companyId,int quarter);
     
-    //
+    //这个应该没有用到，可以删掉
     public IncomeStatement findIncomeStatementResultByCompanyIdQuarter(int companyId,int quarter);
+    
+    //找市场需求量
+    public List<MarketInfo> findAllMarketInfo();
+    
+    //找公司开放的市场
+    public CompanyMarket findCompanyMarketByCompanyIdQuarter(int companyId,int quarter,int isPhy);
 }

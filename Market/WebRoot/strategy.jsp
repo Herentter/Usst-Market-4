@@ -162,7 +162,7 @@ function init(){
 	                   	</div>
                 	</div>
                 	<div class="tab-pane fade in active" id="notice2">
-                		<input type="text" value="${quarter }">
+                		<input type="hidden" value="${quarter }">
                 		<form  id="form1" class="form-horizontal" role="form" method="post" action="updateCompanyStrategy.do?quarter=${quarter }" >
 		                    <div class="form-group">
 		                        <label class="col-md-2 col-xs-2 control-label">主要产品类型：</label>

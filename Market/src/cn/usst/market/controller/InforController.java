@@ -37,12 +37,15 @@ public class InforController {
 		//获取公司ID
 		int company_id=(int)request.getSession().getAttribute("companyId");
 		int quarter = Integer.parseInt(request.getParameter("quarter"))-1;
-				
+		
+		System.out.println("company_id ："+company_id);
+		System.out.println("quarter ："+quarter);
+		System.out.println("DataBaseCalled");
 		List<SallSituationVo> ListSSV = SS.selectSaleSituationbyCompanyID(company_id,quarter);
 		
-		System.out.println("ListSSV");
+		/*System.out.println("ListSSV");
 		System.out.println("ListSSV.get(0).getSaleIncom() : "+ListSSV.get(0).getSaleIncom());
-		System.out.println("ListSSV.get(0).getPMS().getNeed() : "+ListSSV.get(0).getPMS().getNeed());
+		System.out.println("ListSSV.get(0).getPMS().getNeed() : "+ListSSV.get(0).getPMS().getNeed());*/
 		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("listssv",ListSSV);
@@ -61,6 +64,7 @@ public class InforController {
 		//获取公司ID
 		int company_id=(int)request.getSession().getAttribute("companyId");
 		int quarter = Integer.parseInt(request.getParameter("quarter"))-1;
+		
 		List<SaleIncomVo> ListSSV = SS.selectPathAbilitybyCompanyID(company_id, quarter);
 		SaleIncomVo vo = new SaleIncomVo();
 		for(SaleIncomVo v:ListSSV){
@@ -71,14 +75,17 @@ public class InforController {
 		
 		int[] physalary = PPS.salary(company_id, quarter);
 		int salary_sum = 0;
-		for(int i = 0;i<4;i++)
+		for(int i = 0;i<4;i++){
 			salary_sum += physalary[i];
+			System.out.println("physalary[i] : "+physalary[i]);
+		}
 		
 		int fuzzyincom = vo.getSaleIncomSum()-vo.getSaleCostSum();
 		int income = fuzzyincom - salary_sum;
 		int sa = vo.getSaleIncomSum();
 		double rate = income*100/sa;
 		System.out.println("income : "+income);
+		System.out.println("salary_sum : "+salary_sum);
 		System.out.println("vo.getSaleIncomSum() : "+vo.getSaleIncomSum());
 		System.out.println("rate : "+rate);
 		String ra = rate+"%";

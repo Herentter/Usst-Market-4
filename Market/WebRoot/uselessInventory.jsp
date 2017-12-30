@@ -16,7 +16,7 @@
 <style type="text/css">
 body {
 	width: 99%;
-	margin: 4px;
+	margin: 5px;
 	height: 1000px;
 }
 
@@ -145,7 +145,7 @@ td, th {
 								<td><B>品牌</B></td>
 								<td><B>库存产品数</B></td>
 								<td><B>清仓价格</B></td>
-								<td><B>销售件数</B></td>
+								
 								<td><B>价格</B></td>
 							</tr>
 							<c:forEach items="${SLVoList}" var="items">
@@ -153,7 +153,7 @@ td, th {
 									<td><B>${items.companyProducts.name}</B></td>
 									<td>${items.stock}</td>
 									<td>${items.companyProducts.cost}</td>
-									<td>${items.sale}</td>
+									
 									<td>${items.stock*items.companyProducts.cost}</td>
 								</tr>
 							</c:forEach>

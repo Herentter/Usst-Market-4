@@ -177,7 +177,7 @@
                 </div>
             </div>
             <div class="tab-pane fade in active" id="notice2">
-            	<input type="text" value="${quarter }">
+                <input type="text" value="${quarter }">
                 <div id="toubu">
                     <label class="chanpin">广告信息</label>
                     <input type="button"
@@ -186,6 +186,7 @@
                 </div>
                 <hr style=" height:2px;border:none;border-top:2px dotted #0fad84;"/>
                 <form id="operate" action="" method="post">
+                    <input class="hidden" type="text" name="quarter" value="${quarter }">
                     <table class="table table-bordered table-hover">
                         <thead>
                         <tr class="success">
@@ -236,8 +237,6 @@
                     var tr = $(this).parents("td").parents("tr");
                     var productId = $(tr).attr("id");
                     var adName = $(tr).children("td").eq(0).text();
-                    alert(productId);
-                    alert(adName);
                     $("#operate").attr(
                         "action",
                         "showAdDetail.do?productId=" + productId + "&adName=" + adName);
@@ -256,7 +255,7 @@
                         var adName = $(tr).children("td").eq(0).text();
                         $("#operate").attr(
                             "action",
-                            "deleteAd.do&productId=" + productId + "&adName=" + adName + "&method=" + method);
+                            "adDesign.do?productId=" + productId + "&adName=" + adName);
                         $("#operate").submit();
                     }
                 }

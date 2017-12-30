@@ -11,11 +11,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="css/score.css">
 <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
 <style>
 	body{
-		padding:50px;
+		width: 99%;
+		margin: 5px;
 	}
 	.container{
 		
@@ -23,6 +23,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	.pabel-body{
 		padding:5px;
 	}
+	
+	.panel {
+		margin: 0px;
+	}
+
+	.panel-body {
+		background-size: cover;
+	}
+	
 </style>
 <script type="text/javascript" src="js/jquery-2.2.4.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
@@ -49,68 +58,74 @@ $(function(){
 </script>
 </head>
 <body>
-	<div class="container">
-		<div class="row" id="row2">
-			<div class="col-md-9">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<label>市场需求</label>
+	<div class="panel panel-info">
+		<div class="panel-heading">市场份额</div>
+		<div class="panel-body">
+			<div class="container">
+				<div class="row" id="row2">
+					<div class="col-md-9">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<label>市场需求</label>
+							</div>
+							<div class="panel-body">
+								<table class="table table-bordered" id="tab_demand">
+									<thead>
+										<tr>
+											<td>公司</td>
+											<td>实用型</td>
+											<td>极致型</td>
+											<td>商务型</td>
+											<td>总份额</td>
+										</tr>
+									</thead>
+									<c:forEach var = "item" items="${companyMarketShare }">
+											<tr>
+												<td>${item.company.name }</td>
+												<td>${item.companyMarketShare.practicalNeed }</td>
+												<td>${item.companyMarketShare.perfectNeed }</td>
+												<td>${item.companyMarketShare.businessNeed }</td>
+												<td></td>								
+											</tr>
+									</c:forEach>
+								</table>
+							</div>
+						</div>
 					</div>
-					<div class="panel-body">
-						<table class="table table-bordered" id="tab_demand">
-							<thead>
-								<tr>
-									<td>公司</td>
-									<td>实用型</td>
-									<td>极致型</td>
-									<td>商务型</td>
-									<td>总份额</td>
-								</tr>
-							</thead>
-							<c:forEach var = "item" items="${companyMarketShare }">
-									<tr>
-										<td>${item.company.name }</td>
-										<td>${item.companyMarketShare.practicalNeed }</td>
-										<td>${item.companyMarketShare.perfectNeed }</td>
-										<td>${item.companyMarketShare.businessNeed }</td>
-										<td></td>								
-									</tr>
-							</c:forEach>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-9">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<label>市场份额</label>
-					</div>
-					<div class="panel-body">
-						<table class="table table-bordered" id="tab_share">
-							<thead>
-								<tr>
-									<td>公司</td>
-									<td>实用型</td>
-									<td>极致型</td>
-									<td>商务型</td>
-									<td>总需求量</td>
-								</tr>
-							</thead>
-							<c:forEach var = "item" items="${companyMarketShare }">
-								<tr>
-									<td>${item.company.name }</td>
-									<td>${item.companyMarketShare.practicalShare }</td>
-									<td>${item.companyMarketShare.perfectShare }</td>
-									<td>${item.companyMarketShare.businessShare }</td>
-									<td></td>
-								</tr>
-							</c:forEach>
-						</table>
+					<div class="col-md-9">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<label>市场份额</label>
+							</div>
+							<div class="panel-body">
+								<table class="table table-bordered" id="tab_share">
+									<thead>
+										<tr>
+											<td>公司</td>
+											<td>实用型</td>
+											<td>极致型</td>
+											<td>商务型</td>
+											<td>总需求量</td>
+										</tr>
+									</thead>
+									<c:forEach var = "item" items="${companyMarketShare }">
+										<tr>
+											<td>${item.company.name }</td>
+											<td>${item.companyMarketShare.practicalShare }</td>
+											<td>${item.companyMarketShare.perfectShare }</td>
+											<td>${item.companyMarketShare.businessShare }</td>
+											<td></td>
+										</tr>
+									</c:forEach>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<div class="panel-footer">
+		</div>
 	</div>
-
 </body>
 </html>

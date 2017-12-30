@@ -2,6 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.usst.market.mapper.SallSituationMapper">
 
+
+
+  <resultMap type="cn.usst.market.po.SaleIncomVo" id="PathAbilityMap">
+  	<result column="cost" property="CP.cost"/>
+  	<result column="company_id" property="PMS.companyId"/>
+  	<result column="product_id" property="PMS.productId"/>
+  	<result column="youji" property="PP.youji"/>
+  	<result column="price" property="PP.price"/>
+  	<result column="sale" property="PMS.sale"/>
+  </resultMap>
+
   <resultMap type="cn.usst.market.po.SallSituationVo" id="saleSituationMap">
     <result column="product_id" property="PP.productId"/>
     <result column="company_id" property="PP.companyId"/>
@@ -13,15 +24,6 @@
     <result column="sale" property="PMS.sale"/>
     <result column="stockoun" property="PMS.stockoun"/>
     <result column="stock" property="PMS.stock"/>
-  </resultMap>
-
-  <resultMap type="cn.usst.market.po.SaleIncomVo" id="PathAbilityMap">
-  	<result column="cost" property="CP.cost"/>
-  	<result column="company_id" property="PMS.companyId"/>
-  	<result column="product_id" property="PMS.productId"/>
-  	<result column="youji" property="PP.youji"/>
-  	<result column="price" property="PP.price"/>
-  	<result column="sale" property="PMS.sale"/>
   </resultMap>
 
   <!--  输入公式ID和季度编号，输出产品的市场和价格信息 -->
@@ -68,29 +70,35 @@
   
   <resultMap type="cn.usst.market.po.GlobalPathNeedsVo" id="GlobalPathSharebycompanyidMap">
   	<result column="need" property="pms.need"/>
+  	<result column="sale" property="pms.sale"/>
   	<result column="name" property="c.name"/>
+  	<result column="proname" property="cp.name"/>
   </resultMap>
   
   <select id="selectGlobalPathSharebycompanyid" parameterType="cn.usst.market.po.PysicalEmploeePo" resultMap="GlobalPathSharebycompanyidMap">
-	select 
-		pms.need need,
-		company.name name
-	from
-		company,
-		product_market_share pms,
-		(
-			select
-				competition_id
-			from
-				product_market_share
-			where
-				company_id = #{companyid}
-				and quarter = #{quater}
-		) subpms
-	where
-		pms.competition_id = subpms.competition_id
-		and company.id = pms.company_id
-		and company.competition_id = subpms.competition_id
+		select 
+			pms.need need,
+			pms.sale sale,
+			company.name name,
+			cp.name proname
+		from
+			company,
+			product_market_share pms,
+			(
+				select
+					distinct competition_id
+				from
+					product_market_share
+				where
+					company_id = #{companyid}
+					and quarter = #{quater}
+			) subpms,
+			company_product cp
+		where
+			pms.competition_id = subpms.competition_id
+			and company.id = pms.company_id
+			and company.competition_id = subpms.competition_id
+			and pms.product_id = cp.id
   </select>
   
   <resultMap type="cn.usst.market.po.StoreInforVo" id="selectStoreInforMapper">

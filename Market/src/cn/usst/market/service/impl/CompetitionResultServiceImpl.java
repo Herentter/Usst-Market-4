@@ -161,14 +161,14 @@ public class CompetitionResultServiceImpl implements CompetitionResultService {
     
     //查找本次竞赛本季度产品各种效用
 	@Override
-    public List<ProductEfficiency> findProductEfficiency(int competitionId,int quarter,String type){
-    	return competitionResultMapper.findProductEfficiency(competitionId, quarter,type);
+    public List<ProductEfficiency> findProductEfficiency(int competitionId,int quarter,String type,int marketId){
+    	return competitionResultMapper.findProductEfficiency(competitionId, quarter,type,marketId);
     }
     
     //添加各种产品的市场份额
 	@Override
-    public void insertProductMarketShare(ProductMarketShare productMarketShare){
-    	competitionResultMapper.insertProductMarketShare(productMarketShare);
+    public void insertOrUpdateProductMarketShare(ProductMarketShare productMarketShare){
+    	competitionResultMapper.insertOrUpdateProductMarketShare(productMarketShare);
     }
     
     //查找每个产品的市场份额
@@ -182,14 +182,14 @@ public class CompetitionResultServiceImpl implements CompetitionResultService {
     }
 	
 	@Override
-    public int findProductMSNeedNumByCompetIdQuarterType(int competitionId,int quarter,String type){
-    	return competitionResultMapper.findProductMSNeedNumByCompetIdQuarterType(competitionId, quarter, type);
+    public List<ProductMarketShare> findProductMSByCompetIdQuarterType(int competitionId,int quarter,String type){
+    	return competitionResultMapper.findProductMSByCompetIdQuarterType(competitionId, quarter, type);
     }
 	
 	//修改每个产品的市场份额
 	@Override
-    public void updateProductMSByProductIdQuarter(int productId,int quarter,double marketshare){
-    	competitionResultMapper.updateProductMSByProductIdQuarter(productId, quarter, marketshare);
+    public void updateProductMSByProductIdQuarter(ProductMarketShare productMarketShare){
+    	competitionResultMapper.updateProductMSByProductIdQuarter(productMarketShare);
     }
 	
 	//插入公司市场份额
@@ -238,4 +238,17 @@ public class CompetitionResultServiceImpl implements CompetitionResultService {
 	public IncomeStatement findIncomeStatementResultByCompanyIdQuarter(int companyId,int quarter){
 		return competitionResultMapper.findIncomeStatementResultByCompanyIdQuarter(companyId, quarter);
 	}
+	
+	//找所有市场的信息，包含市场需求量
+	@Override
+    public List<MarketInfo> findAllMarketInfo(){
+    	return competitionResultMapper.findAllMarketInfo();
+    }
+	
+	
+	//找公司开放的市场
+	@Override
+    public CompanyMarket findCompanyMarketByCompanyIdQuarter(int companyId,int quarter,int isPhy){
+    	return competitionResultMapper.findCompanyMarket(companyId, quarter, isPhy);
+    }
 }

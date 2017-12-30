@@ -13,6 +13,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+<script type="text/javascript" src="js/jquery-2.2.4.js"></script>
     <style type="text/css">
         body{
             width: 99%;
@@ -101,8 +102,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	.left_content li{
 		margin-top:5px;
 	}
+	
+	.wrap{ width:1000px;overflow-x:auto}
     </style>
     
+    <script type="text/javascript">
+    	$(function(){
+    		//判断季度
+    		var $quarter=$("#quarter").val();
+    		if($quarter==2){
+    			$(".quarter3").hide();
+    		}
+    		
+    		//动态设置table长度，是否添加滚动条
+    		var th1=$("#tr1 th");
+    		var length1=th1.length*100;
+    		$("#table1").css("min-width",length1);
+    		if(length1>1000){
+    			$("#wrap1").attr("class", "wrap");
+    		}
+    		
+    		var th2=$("#tr2 th");
+    		var length2=th2.length*100;
+    		$("#table2").css("min-width",length2);
+    		if(length2>1000){
+    			$("#wrap2").attr("class", "wrap");
+    		}
+    		
+    	})
+    </script>
 </head>
 <body onLoad="init()">
     <div class="panel panel-info">
@@ -110,7 +138,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="panel-body">
         	<ul class="nav nav-tabs">
                 <li><a href="#notice1" data-toggle="tab"> 课程介绍</a></li>
-                <li class="active"><a href="#notice2" data-toggle="tab">决策界面</a></li>
+                <li><a href="#notice2" data-toggle="tab" class="quarter3">上季度决策</a></li> 
+                <li class="active"><a href="#notice3" data-toggle="tab">决策界面</a></li>
             </ul>
             
             <div class="tab-content">
@@ -148,19 +177,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    		</div>
                    	</div>
                 </div>
-                <div class="tab-pane fade in active" id="notice2">
+                <input type="hidden" name="quarter" id="quarter" value="${quarter }"/>
+                <div class="tab-pane fade in active" id="notice3">
                 <div>
 						<label class="shichang">全球市场</label> 
 						
 				</div>
-                	
+                	<div id="wrap1">
                 	<table id="table1" class="table table-bordered table-hover t_tfoot">
 		                <thead>
-		                    <tr>
-		                        <th width=20%>媒体</th>
-		                        <th width=20%>成本</th>
+		                    <tr id="tr1">
+		                        <th style="width:200px">媒体</th>
+		                        <th style="width:100px">成本</th>
 		                        <c:forEach items="${companyProducts }" var="product">
-		                        	<th >${product.name}</th>
+		                        	<th style="width:100px"><span name="ProductNames">${product.name}</span></th>
 		                        </c:forEach>
 		                    </tr>
 		                </thead>
@@ -179,7 +209,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			              			<td>${media.cost }</td>
 			              			<c:forEach items="${companyProducts }" var="product">
 		                        		<td>
-		                        			<input id="${media.id }n${product.id }" name="${product.id }" type="text" value="0" onchange="aa()"/>
+		                        			<input id="${media.id }n${product.id }" name="${product.id }" type="text" value="0" onchange="aa()" style="width:100%;"/>
 		                        		</td>
 		                        	</c:forEach>
 			              		</tr>
@@ -204,19 +234,85 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                </tr>
 		                </tfoot>
 		            </table>
+		            </div>
 		            <div id="btndiv">
                       	<button type="button" class="btn btn-default" onclick="sign()">提交</button><br>
                   	</div>
+                </div>
+                
+                <!--上季度决策界面  -->
+                <div class="tab-pane fade in" id="notice2">
+				<label class="shichang">全球市场</label> 
+				<div id="wrap2">
+               	<table id="table2" class="table table-bordered table-hover t_tfoot">
+	                <thead>
+	                    <tr id="tr2">
+	                        <th style="width:200px">媒体</th>
+	                        <th style="width:100px">成本</th>
+	                        <c:forEach items="${lastCompanyProducts }" var="product">
+	                        	<th><span name="lastProductNames">${product.name}</span></th>
+	                        </c:forEach>
+	                    </tr>
+	                </thead>
+	                <c:forEach items="${lastCompanyMedias }" var="aa">
+            			<input type="hidden" name="StringId1" id="${aa.mediaId }sc${aa.productId}" value="${aa.num }"/>
+        			</c:forEach>
+	                <tbody>
+		              	<c:forEach items="${mediaInfos }" var="media">
+			           		<tr>
+			           			<td>${media.detail }</td>
+			           			<td>${media.cost }</td>
+			           			<c:forEach items="${lastCompanyProducts }" var="product">
+		                    		<td>
+		                    			<span id="${media.id }nc${product.id }"></span>
+		                    		</td>
+		                    	</c:forEach>
+			           		</tr>
+		              	</c:forEach>
+	                </tbody>
+	            </table>
+	            </div>
                 </div>
             </div>
         </div>
         <div class="panel-footer"></div>
     </div>
 </body>
-<script type="text/javascript" src="js/jquery-2.2.4.js"></script>
+
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script>
     	function init(){
+    		//判断显示前11个字
+    		var $ProductNames= $("span[name='ProductNames']");
+    		for(var i=0;i<$ProductNames.length;i++){
+    			var text=$ProductNames[i].innerText;
+    			if(text.length>11){
+    				text=text.substring(0,11);
+    				$ProductNames[i].innerText=text;
+    			}
+    		}
+    		var $lastProductNames= $("span[name='lastProductNames']");
+    		for(var i=0;i<$lastProductNames.length;i++){
+    			var text=$lastProductNames[i].innerText;
+    			if(text.length>11){
+    				text=text.substring(0,11);
+    				$lastProductNames[i].innerText=text;
+    			}
+    		}
+    		//赋值上季度给span
+    		var hiddens1=$(":input[name=StringId1]");
+    		for(var i=0;i<hiddens1.length;i++){
+    			var num=hiddens1[i].value;
+    			var id=hiddens1[i].id;//id:**sc**
+	   			var aa = id.split("sc");
+	   			var spanId="";
+	   			spanId=aa[0]+"nc"+aa[1];
+   		     	var span=document.getElementById(spanId);
+   		      	if(span!=null){
+   		      		span.innerText=num;
+   		      	}
+    		}
+    		
     		//赋值给text
     		var hiddens=$(":input[name=StringId]");
     		for(var i=0;i<hiddens.length;i++){

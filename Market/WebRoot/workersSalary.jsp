@@ -149,7 +149,7 @@ float:left;
 
 				</div>
 				<div class="tab-pane fade" id="notice2">
-					<input type="text" id="quarter" value="${quarter }">
+					<input type="hidden" id="quarter" value="${quarter }">
 					<form class="form-horizontal" id="form" method="post"
 						name="addSalesSalaryForm" action="showWorkersSalary1.do?quarter=${quarter }">
 						<table class="table table-bordered">

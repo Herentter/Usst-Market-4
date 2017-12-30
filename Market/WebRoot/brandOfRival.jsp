@@ -24,6 +24,7 @@
         body {
             width: 99%;
             margin: 5px;
+            text-align: center;
         }
 
         .panel {
@@ -116,6 +117,9 @@
             margin: 0px;
         }
 
+        .resize th {
+            text-align: center;
+        }
 
     </style>
 </head>
@@ -147,49 +151,47 @@
                 </div>
             </div>
             <div class="tab-pane fade in active" id="notice2">
-                <form id="hiddenForm" action="" method="post">
-                    <c:forEach items="${brandOfRival}" var="bor">
-                        <div style="float: left;margin-left: 30px">
-                            <div class="notice2-left">
-                                <input name="no" value="${bor.key}" class="box1" type="checkbox"
-                                       onclick="box1(this)"
-                                       <c:if test="${bor.key == flag}">checked</c:if>> ${bor.key}
-                            </div>
-                            <ul style="list-style: none">
-                                <c:forEach items="${bor.value}" var="brandName">
-                                    <li>${brandName}</li>
-                                </c:forEach>
-                            </ul>
-                        </div>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr class="resize">
+                        <th>产品名称</th>
+                        <th>必备</th>
+                        <th>运营商</th>
+                        <th>蓝牙</th>
+                        <th>屏幕尺寸</th>
+                        <th>触控方式</th>
+                        <th>cpu速度</th>
+                        <th>机身容量</th>
+                        <th>拍照像素</th>
+                        <th>机身特性</th>
+                        <th>电池容量</th>
+                        <th>其他功能</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${brandDetail}" var="brandDetail">
+                        <tr>
+                            <td colspan="12" style="text-align: center">${brandDetail.key}</td>
+                        </tr>
+                        <c:forEach items="${brandDetail.value}" var="value">
+                            <tr>
+                                <td>${value.productName}</td>
+                                <td>${value.bibei}</td>
+                                <td>${value.yunying}</td>
+                                <td>${value.lanya}</td>
+                                <td>${value.size}</td>
+                                <td>${value.chukong}</td>
+                                <td>${value.cpu}</td>
+                                <td>${value.jishen}</td>
+                                <td>${value.xiangsu}</td>
+                                <td>${value.special}</td>
+                                <td>${value.dianchi}</td>
+                                <td><c:forEach items="${value.others}" var="other">${other}</c:forEach></td>
+                            </tr>
+                        </c:forEach>
                     </c:forEach>
-                </form>
-                <hr style="filter: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>
-                <div class="body">
-                    <!-- 默认情况下显示所有信息 -->
-                    <c:forEach items="${brandDetail}" var="bd">
-                        <div class="notice2-left">
-                                ${bd.key}
-                        </div>
-                        <ul>
-                            <c:forEach items="${bd.value}" var="detail">
-                                ${detail}
-                            </c:forEach>
-                        </ul>
-                    </c:forEach>
-                </div>
-                <div class="body">
-                    <!-- 显示某个公司的产品 -->
-                    <c:forEach items="${companyBrand}" var="cb">
-                        <div class="notice2-left">
-                                ${cb.key}
-                        </div>
-                        <ul>
-                            <c:forEach items="${cb.value}" var="detail">
-                                ${detail}
-                            </c:forEach>
-                        </ul>
-                    </c:forEach>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div id="main" style="width: 600px;height:400px;"></div>
@@ -199,44 +201,4 @@
 </body>
 <script type="text/javascript" src="js/jquery-2.2.4.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
-<script>
-    function box1(box) {
-        $($(box)).each(function () {
-            //顶层div（class为top）
-            var topDiv = $(this).parents(".checkbox").parents(".notice2-left").parents(".top");
-
-            //选中后显示当前产品信息，让默认显示的信息隐藏
-            $(".body").addClass("hidden");
-
-            //.notice2-left的个数
-            var divNum = $(topDiv).children().length;
-
-            //当前div下面无序列表中元素的个数
-            var box2Num = $(this).parents(".checkbox").parents(".notice2-left").find(".box2").length;
-
-            //控制局部全选和全不选
-            if ($(this).attr("name") == "no") {
-                $(this).attr("name", "yes");
-                for (var i = 0; i < box2Num; i++) {
-                    $(this).parents(".checkbox").parents(".notice2-left").find(".box2").eq(i).prop("checked", true);
-                }
-            } else {
-                $(this).attr("name", "no");
-                for (var i = 0; i < box2Num; i++) {
-                    $(this).parents(".checkbox").parents(".notice2-left").find(".box2").eq(i).prop("checked", false);
-                }
-            }
-
-            //当前选择的公司名
-            var companyName = $(this).val();
-            //将当前选中的公司名通过隐藏的form表单提交到后台(将name属性设置为companyName)
-            $("#hiddenForm").attr("action", "brandDetail.do?companyName=" + companyName);
-            $("#hiddenForm").submit();
-        });
-    }
-
-    function box2(box) {
-
-    }
-</script>
 </html>

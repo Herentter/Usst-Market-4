@@ -50,17 +50,26 @@ public interface PolicyDecisionService {
 	List<Integer> findProductIdFromProdPrice(IdQuarter idQuarter);
 	ProductPrice findProductSalePriceByIdQPid(int id, int quarter, int pid);
 	CompanyReport findComReportByIdQuarter(IdQuarter idQuarter);
-	List<CompanyProduct> findProductsByCompanyIdQuarter(IdQuarter idQuarter);
+	
+	List<CompanyProduct> findProductsByCompanyIdQuarter(int companyId,int quarter);
 	List<CompanyMedia> findMediabyCompanyIdQuarter(IdQuarter idQuarter);
 	MediaInfo findMediaInfoById(int id);
+	
 	//找市场的详细信息
 	MarketInfo findMarketInfoById(Integer id);
+	
 	//公司产能
 	CompanyCapacity findCompanyCapacityByIdQuarter(IdQuarter idQuarter);
 	OperationCapacity findOpeartionCapacityByCompanyIdQuarter(int companyId, int quarter);
+	
 	//公司雇佣销售人员
 	List<HirePeople> findHirePeopleByCompanyIdQuarter(int companyId, int quarter);
 	List<HirePeopleOnline> findHirePeopleOnlineByCompanyIdQuarter(int companyId, int quarter);
 	
+	//产品预测需求量
+	int findForecastDemandByProductIdQuarter(int productId, int quarter);
+	
+	//产品库存设置
+	int findProductInventoryByProductIdQuarter(int productId, int quarter);
 	
 }

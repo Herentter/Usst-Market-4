@@ -7,7 +7,53 @@ public class MarketShare {
     private Integer companyId;
     private Integer productId;
     private String productType;
+    private Integer sale;
     private Integer need;
+    private double eva;//品牌评价
+    private double marketShare;
+    private String companyName;
+    private String productName;
+
+
+    public double getEva() {
+        return eva;
+    }
+
+    public void setEva(double eva) {
+        this.eva = eva;
+    }
+
+    public Integer getSale() {
+        return sale;
+    }
+
+    public void setSale(Integer sale) {
+        this.sale = sale;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public double getMarketShare() {
+        return marketShare;
+    }
+
+    public void setMarketShare(double marketShare) {
+        this.marketShare = marketShare;
+    }
 
     public Integer getCompanyId() {
         return companyId;

@@ -6,7 +6,25 @@ public class GlobalPathNeedsVo {
 	
 	private ProductMarketShare pms;
 	
+	private CompanyProduct cp;
+	
 	private float rate;
+
+	public CompanyProduct getCp() {
+		return cp;
+	}
+
+	public void setCp(CompanyProduct cp) {
+		this.cp = cp;
+	}
+
+	public float getRate() {
+		return rate;
+	}
+
+	public void setRate(float rate) {
+		this.rate = rate;
+	}
 
 	public Company getC() {
 		return c;

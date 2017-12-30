@@ -203,6 +203,9 @@ public class PysicalPathServiceImpl implements PysicalPathService{
 		List<PysicalEmploeePo> PEP = getPopulationbyCompanyid(companyid,quater);
 		for(PysicalEmploeePo PEPm:PEP){
 			sal[PEPm.getLocation()-1] = SS.getSalary()*(PEPm.getSaller()+PEPm.getAftersale());
+			System.out.println("SS.getSalary() : "+SS.getSalary());
+			System.out.println("PEPm.getSaller() : "+PEPm.getSaller());
+			System.out.println("PEPm.getAftersale() : "+PEPm.getAftersale());
 		}
 		return sal;
 	}

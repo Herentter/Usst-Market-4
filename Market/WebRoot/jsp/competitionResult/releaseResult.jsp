@@ -11,7 +11,7 @@
 <base href="<%=basePath %>">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>结果汇总</title>
+<title>发布结果</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="css/strategy.css">
 
@@ -26,11 +26,14 @@
 		if(currentQuarter<=maxQuarter){
 			if(quarter<currentQuarter){
 				$("#resultButton").val("已经可以查看本季度竞赛结果！").attr("disabled", true);
+				$("#deleteResultButton").val("不能删除上季度结果！").attr("disabled",true);
 			}else{
 				$("#resultButton").val("发布当前季度竞赛结果！");
+				$("#deleteResultButton").val("取消上季度竞赛结果！");
 			}
 		}else{
 			$("#resultButton").val("已经是本次竞赛最后一个季度！").attr("disabled", true);
+			$("#deleteResultButton").val("取消上季度竞赛结果！");
 		}
 		
 	});
@@ -40,6 +43,12 @@
 		var quarter=$("#quarter").val();
 		window.parent.main.location.href="competitionResult/releaseResult.do?competitionId="+competitionId+"&currentQuarter="+quarter;
 	}
+	
+	function deleteReleaseResult(){
+		var competitionId=$("#competitionId").val();
+		var quarter=$("#quarter").val();
+		window.parent.main.location.href="competitionResult/deleteReleaseResult.do?competitionId="+competitionId+"&currentQuarter="+quarter;
+	}
 </script>
 
 </head>
@@ -47,7 +56,7 @@
 	<div id="nav44">
 		<div class="panel panel-info">
 			<div class="panel-heading">
-				<span>结果汇总</span>
+				<span>发布结果</span>
 			</div>
 
 			<div class="panel-body">
@@ -59,6 +68,7 @@
 					<label>点击发布竞赛结果后，可以查看本季度竞赛结果，并进入下一季度。</label><br/>
 					<label>${message }</label><br/>
 					<input type="button" id="resultButton" class="btn btn-default" value="" onclick="releaseResult()"/><br/>
+					<input type="button" id="deleteResultButton" class="btn btn-default" value="" onclick="deleteReleaseResult()"/><br/>
 					<!-- 注意：发布竞赛结果前，先判断各个公司是否已经提交，如果没有，则提示错误信息，否则提交。 -->
 				</div>
 			</div>

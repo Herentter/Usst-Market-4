@@ -16,7 +16,7 @@
 <style type="text/css">
 body {
 	width: 99%;
-	margin: 4px;
+	margin: 5px;
 	height: 1000px;
 }
 
@@ -244,7 +244,7 @@ td, th {
 							<tbody>
 							<c:forEach items="${companyProductResult2 }" var="entry">
 								<tr>
-									<td colspan="4">第${entry.key}季度产品</td>
+									<td colspan="2">第${entry.key}季度产品</td>
 								</tr>
 								<c:forEach items="${entry.value }" var="item">
 									

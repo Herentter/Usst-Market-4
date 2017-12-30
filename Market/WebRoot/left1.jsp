@@ -111,7 +111,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </li>
     
      <li>
-        <a href="#none">财务报表<i></i></a>
+        <a href="#none">财会预算<i></i></a>
         <ul>
             <li><a href="showCashFlow.do?quarter1=1" target="main">现金流表</a></li>
             <li><a href="showIncomeStatement.do?quarter=1" target="main">利润表</a></li>

@@ -44,7 +44,7 @@
                     <c:forEach items="${detailList}" var="detail">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" checked="checked"> ${detail}
+                                <input type="checkbox" checked="checked" disabled="disabled"> ${detail}
                             </label>
                         </div>
                     </c:forEach>

@@ -116,6 +116,14 @@
             margin: 0px;
         }
 
+        .img td {
+            text-align: center;
+        }
+        .table tr th{
+        	width:200px;
+        	text-align:center;
+        	vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -166,19 +174,32 @@
                     <tbody>
                     <c:forEach items="${adDetailInfo}" var="adDetail">
                         <tr>
-                            <td>${adDetail.value.productName}</td>
-                            <td>${adDetail.value.detail1}</td>
-                            <td>${adDetail.value.detail2}</td>
-                            <td>${adDetail.value.detail3}</td>
-                            <td>${adDetail.value.detail4}</td>
-                            <td>${adDetail.value.detail5}</td>
-                            <td>${adDetail.value.detail6}</td>
-                            <td>${adDetail.value.detail7}</td>
-                            <td>${adDetail.value.detail8}</td>
-                            <td>${adDetail.value.detail9}</td>
+                            <td colspan="10" style="text-align: center">${adDetail.key}</td>
                         </tr>
+                        <c:forEach items="${adDetail.value}" var="value">
+                            <tr class="img">
+                                <td>${value.productName}</td>
+                                <td><c:if test="${not empty value.detail1}"><img
+                                        src="images/trueIcon.png" alt=""></c:if></td>
+                                <td><c:if test="${not empty value.detail2}"><img
+                                        src="images/trueIcon.png" alt=""></c:if></td>
+                                <td><c:if test="${not empty value.detail3}"><img
+                                        src="images/trueIcon.png" alt=""></c:if></td>
+                                <td><c:if test="${not empty value.detail4}"><img
+                                        src="images/trueIcon.png" alt=""></c:if></td>
+                                <td><c:if test="${not empty value.detail5}"><img
+                                        src="images/trueIcon.png" alt=""></c:if></td>
+                                <td><c:if test="${not empty value.detail6}"><img
+                                        src="images/trueIcon.png" alt=""></c:if></td>
+                                <td><c:if test="${not empty value.detail7}"><img
+                                        src="images/trueIcon.png" alt=""></c:if></td>
+                                <td><c:if test="${not empty value.detail8}"><img
+                                        src="images/trueIcon.png" alt=""></c:if></td>
+                                <td><c:if test="${not empty value.detail9}"><img
+                                        src="images/trueIcon.png" alt=""></c:if></td>
+                            </tr>
+                        </c:forEach>
                     </c:forEach>
-
                     </tbody>
                 </table>
             </div>

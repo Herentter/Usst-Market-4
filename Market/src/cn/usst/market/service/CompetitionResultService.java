@@ -45,10 +45,10 @@ public interface CompetitionResultService {
 	void insertProductEfficiency(ProductEfficiency productEfficiency);
 
 	//找产品效用
-	List<ProductEfficiency> findProductEfficiency(int competitionId, int quarter,String type);
+	List<ProductEfficiency> findProductEfficiency(int competitionId, int quarter,String type,int marketId);
 
 	//添加市场份额
-	void insertProductMarketShare(ProductMarketShare productMarketShare);
+	void insertOrUpdateProductMarketShare(ProductMarketShare productMarketShare);
 
 	//找产品市场份额
 	List<ProductMarketShare> findProductMSByCompanyIdQuarterType(int companyId, int quarter,String type);
@@ -85,9 +85,9 @@ public interface CompetitionResultService {
 	
 	//找本次竞赛该季度所有产品的市场份额
 	List<ProductMarketShare> findProductMSByCompetitionIdQuarter(int competitionId, int quarter);
-	int findProductMSNeedNumByCompetIdQuarterType(int competitionId, int quarter, String type);
+	List<ProductMarketShare> findProductMSByCompetIdQuarterType(int competitionId, int quarter, String type);
 	//修改产品的市场份额
-	void updateProductMSByProductIdQuarter(int productId, int quarter, double marketshare);
+	void updateProductMSByProductIdQuarter(ProductMarketShare productMarketShare);
 
 	void insertCompanyInvestment(CompanyInvestment companyInvestment);
 
@@ -103,12 +103,10 @@ public interface CompetitionResultService {
 
 	IncomeStatement findIncomeStatementResultByCompanyIdQuarter(int companyId, int quarter);
 
+	//找所有市场的信息，要用到市场需求量
+	List<MarketInfo> findAllMarketInfo();
 
-
-
-
-
-
-
+	//找公司开放的市场
+	CompanyMarket findCompanyMarketByCompanyIdQuarter(int companyId, int quarter, int isPhy);
 
 }

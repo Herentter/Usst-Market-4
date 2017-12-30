@@ -118,6 +118,10 @@ body {
 	.tab-content{
 		margin-top:10px;
 	}
+/* 	.people-num{
+		width:80%;
+		
+	} */
 
 </style>
 <script type="text/javascript">
@@ -181,7 +185,7 @@ body {
                    	</div>
                 </div>
                 <div class="tab-pane fade in active" id="notice2">
-                	<form action="updateHirePeople.do?quarter=2" method="post">
+                	<form action="updateHirePeople.do?quarter=${quarter }" method="post">
 	                	<table class="table table-bordered">
 	                		<thead>
 	                			<tr>
@@ -197,9 +201,9 @@ body {
 		                		<tr>
 		                			<td>${item.city }</td>
 		                			
-		                			<td><input type="text" name="hirePeopleList[${status.index }].saleman" value="${item.hirePeople.saleman }"
+		                			<td><input class="form-control peopel_num" type="text" name="hirePeopleList[${status.index }].saleman" value="${item.hirePeople.saleman }"
 		                			onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></td>
-		                			<td><input type="text" name="hirePeopleList[${status.index }].afterSale" value="${item.hirePeople.afterSale }"
+		                			<td><input class="form-control peopel_num" type="text" name="hirePeopleList[${status.index }].afterSale" value="${item.hirePeople.afterSale }"
 		                			onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></td>
 		                		</tr>
 	                		</c:forEach>

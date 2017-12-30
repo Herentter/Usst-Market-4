@@ -33,7 +33,7 @@ public class SearchServiceImpl implements SearchService {
 		List<SallSituationVo> SSV = SSM.selectSaleSituationbyCompanyID(po);
 		List<SallSituationVo> SSV2 = new ArrayList<SallSituationVo>();
 		for(SallSituationVo v:SSV){
-			int income = v.getPP().getPrice()*v.getPMS().getSale();
+			int income = v.getPP().getPrice()*(v.getPMS().getHongkongSale()+v.getPMS().getMoscowSale()+v.getPMS().getNewdelhiSale()+v.getPMS().getSingaporeSale());
 			int lost = v.getPP().getPrice()*v.getPMS().getStockoun();
 			v.setSaleIncom(income);
 			v.setSaleLost(lost);
@@ -43,6 +43,8 @@ public class SearchServiceImpl implements SearchService {
 	}
 	
 	public List<SallSituationVo> selectSaleSituationbyCompanyID(int companyid,int quarter){
+		System.out.println("companyid ： "+companyid);
+		System.out.println("quarter ： "+quarter);
 		PysicalEmploeePo po = new PysicalEmploeePo();
 		po.setQuater(quarter);
 		po.setCompanyid(companyid);
@@ -91,11 +93,11 @@ public class SearchServiceImpl implements SearchService {
 		//整理数据
 		List<SaleIncomVo> ListSIV2 = new ArrayList<SaleIncomVo>();
 		for(SaleIncomVo vo:ListSIV){
-			int saleIncomSum = vo.getPP().getPrice()*vo.getPMS().getSale();
+			int saleIncomSum = vo.getPP().getPrice()*(vo.getPMS().getHongkongSale()+vo.getPMS().getMoscowSale()+vo.getPMS().getNewdelhiSale()+vo.getPMS().getSingaporeSale());
 			vo.setSaleIncomSum(saleIncomSum);
-			int saleCostSum = vo.getCP().getCost()*vo.getPMS().getSale();
+			int saleCostSum = vo.getCP().getCost()*(vo.getPMS().getHongkongSale()+vo.getPMS().getMoscowSale()+vo.getPMS().getNewdelhiSale()+vo.getPMS().getSingaporeSale());
 			vo.setSaleCostSum(saleCostSum);
-			int youjiSum = vo.getPP().getYouji()*vo.getPMS().getSale();
+			int youjiSum = vo.getPP().getYouji()*(vo.getPMS().getHongkongSale()+vo.getPMS().getMoscowSale()+vo.getPMS().getNewdelhiSale()+vo.getPMS().getSingaporeSale());
 			vo.setYoujiSum(youjiSum);
 			ListSIV2.add(vo);
 		}

@@ -338,11 +338,46 @@
 </select>
 
 	<select	id="selectProductDemand" resultType="Integer">
-		select demand from company_product_demand where product_id=#{0} and quarter=#{1}
+		select ifnull(sum(demand),0) as demand  from company_product_demand where product_id=#{0} and quarter=#{1}
 	</select>
 	
 	<select id="selectProductKuCun" resultType="Integer">
-		select inventory from company_product_inventory where product_id=#{0} and quarter=#{1}
+		select ifnull(sum(inventory),0) as inventory from company_product_inventory where product_id=#{0} and quarter=#{1}
 	</select>
 
+	<select id="showCashFlowResult" resultType="cn.usst.market.po.CashFlow">
+		select * from cash_flow_result where company_id=#{0} and quarter=#{1}
+	</select>
+	
+	<select id="showBalanceSheetResult" resultType="cn.usst.market.po.BalanceSheet">
+		select * from balance_sheet_result where company_id=#{0} and quarter=#{1}
+	</select>
+	
+	<select id="showIncomeStatementResult" resultType="cn.usst.market.po.IncomeStatement">
+		select * from income_statement_result where company_id=#{0} and quarter=#{1}
+	</select>
+	
+	<update id="updateIncomeStatementTax">
+		update income_statement set tax_cost=#{0} where company_id=#{1} and quarter=#{2} 
+	</update>
+	
+	<update id="updateIncomeStatementResultTax">
+		update income_statement_result set tax_cost=#{0} where company_id=#{1} and quarter=#{2} 
+	</update>
+	
+	<update id="updateBalanceSheetResult3">
+		update balance_sheet_result set capital_reserve=#{0} where company_id=#{1} and quarter=#{2} 
+	</update>
+	
+	<update id="updateBalanceSheet3">
+		update balance_sheet set capital_reserve=#{0} where company_id=#{1} and quarter=#{2} 
+	</update>
+	
+	<update id="updateCashFlowJiChu">
+		update cash_flow set yu_e=#{0} where company_id=#{1} and quarter=#{2} 
+	</update>
+	
+	<update id="updateCashFlowResultJiChu">
+		update cash_flow_result set yu_e=#{0} where company_id=#{1} and quarter=#{2} 
+	</update>
 </mapper>

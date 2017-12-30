@@ -142,22 +142,30 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
-                        <th>公司</th>
                         <th>品牌</th>
-                        <th>类型</th>
                         <th>需求量</th>
+                        <th>销售量/需求量</th>
                     </tr>
                     </thead>
                     <tbody>
+
+
                     <c:forEach items="${hashMap}" var="hashMap">
                         <tr>
-                            <c:forEach items="${hashMap.value}" var="list">
-
-                                <td>${list}</td>
-
-                            </c:forEach>
+                            <td colspan="3" style="text-align: center">${hashMap.key}</td>
                         </tr>
+
+                        <c:forEach items="${hashMap.value}" var="list">
+                            <tr>
+                                <td>${list.productName}</td>
+                                <td>${list.need}</td>
+                                <td>${list.eva}</td>
+                            </tr>
+
+                        </c:forEach>
                     </c:forEach>
+
+
                     </tbody>
                 </table>
                 <div id="main" style="width: 600px;height:400px;"></div>

@@ -16,7 +16,7 @@
 <style type="text/css">
 body {
 	width: 99%;
-	margin: 4px;
+	margin: 5px;
 }
 
 .panel {

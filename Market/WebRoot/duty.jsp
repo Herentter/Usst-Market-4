@@ -308,6 +308,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<input id="a${item.id}" type="hidden" name="my1Hidden" />
 											<td>${item.name }</td>
 											<td ><div style="margin-bottom:20px;"><img src="images/bgm1.jpg"></div></td>
+											<c:if test="${not empty companyDuty }">
 											<td>
 												 <c:forEach items="${companyDuty }" var="duty1">
 													<c:if test="${duty1.memberId==item.id }">
@@ -330,6 +331,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 													</c:if>
 												</c:forEach> 
 											</td>
+											</c:if>
+											<c:if test="${empty companyDuty }">
+											<td>
+												<select id="${item.id}" class="selectPicker form-control showtick"  >
+				                        			<c:forEach items="${dutyList}" var="duty">
+									            	<option value="${duty.id }">${duty.position}</option>
+									        		</c:forEach>
+				                        		</select>
+			                        		</td>
+			                        		<td>
+												<select id="${item.id}" class="selectPicker form-control showtick"  >
+				                        			<c:forEach items="${dutyList}" var="duty">
+									            	<option value="${duty.id }">${duty.position}</option>
+									        		</c:forEach>
+				                        		</select>
+			                        		</td>
+											</c:if>
 										</tr>
 								</c:forEach>
 							</form>	

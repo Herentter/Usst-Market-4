@@ -93,21 +93,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </style>
 <script type="text/javascript">
 	$(function(){
+		var result=$("#result").val();
 		var quarter=$("#quarterFlag").attr("value");
-		if(quarter==1){
-			$(".quarter2").hide();
-			$(".quarter3").hide();
-		}else if(quarter==2){
-			$(".quarter3").hide();
+		if(result==1){
+			if(quarter==1){
+				$(".quarter2").hide();
+				$(".quarter3").hide();
+			}else if(quarter==2){
+				$(".quarter3").hide();
+			}
+		}else{
+			if(quarter==1){
+				$("#quarter1").text("季度1(预估)");
+				$(".quarter2").hide();
+				$(".quarter3").hide();
+			}else if(quarter==2){
+				$("#quarter2").text("季度2(预估)");
+				$(".quarter3").hide();
+			}else if(quarter==3){
+				$("#quarter3").text("季度3(预估)");
+			}
 		}
 	})
 </script>
 </head>
     <body>
 	<div class="panel panel-info">
-	    <div class="panel-heading">
-	        <h3 class="panel-title">现金流表</h3>
-	    </div>
+	    <div class="panel-heading">现金流表</div>
 	    <div class="panel-body">
 	    	<ul class="nav nav-tabs">
                 <li><a href="#notice1" data-toggle="tab"> 课程介绍</a></li>
@@ -139,13 +151,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </div>
                 <div class="tab-pane fade  in active" id="notice2">
                 	<label id="quarterFlag" value="${quarter }"></label>
+                	<input type="hidden" id="result" value="${result }"/>
                 	<table class="table table-bordered table-hover table-striped">
 						<thead>
 						  <tr>
 						    <th>项目</th>
-						    <th>季度1</th>
-						   	<th class="quarter2">季度2</th>
-						   	<th class="quarter3">季度3</th>
+						    <th><span id="quarter1">季度1</span></th>
+						   	<th class="quarter2"><span id="quarter2">季度2</span></th>
+						   	<th class="quarter3"><span id="quarter3">季度3</span></th>
 						  </tr>
 						</thead>
 						<tbody>
@@ -169,33 +182,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  </tr>
 						  <tr class="secondnav">
 						    <td style="padding-left:60px;">收取利息授权的现金</td>
-						    <td>${cashFlowList[0].getJishuGet()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getJishuGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getJishuGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getJishuGet()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getJishuGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="secondnav">
 						    <td style="padding-left:60px;">收到其他与经营活动有关的现金</td>
-						    <td>${cashFlowList[0].getQitaGet()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getQitaGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getQitaGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						    <td class="quarter3">${cashFlowList[2].getQitaGet()}</td>
+						    <td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getQitaGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="secondsubnav">
 						    <td style="padding-left:35px;">经营活动现金流入小计</td>
-						    <td>${cashFlowList[0].getXianJinGet()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getXianJinGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getXianJinGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						    <td class="quarter3">${cashFlowList[2].getXianJinGet()}</td>
+						    <td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getXianJinGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">邮寄返款支出的现金</td>
-						    <td>${cashFlowList[0].getFankuanPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getFankuanPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getFankuanPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						  	<td class="quarter3">${cashFlowList[2].getFankuanPay()}</td>
+						  	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getFankuanPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">生产支出的现金</td>
-						    <td>${cashFlowList[0].getShengchanPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getShengchanPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getShengchanPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getShengchanPay()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getShengchanPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">支付的研发费用</td>
@@ -205,83 +218,83 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">支付的广告费用</td>
-						    <td>${cashFlowList[0].getGuanggaoPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getGuanggaoPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getGuanggaoPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						    <td class="quarter3">${cashFlowList[2].getGuanggaoPay()}</td>
+						    <td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getGuanggaoPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">支付的销售人员费用</td>
-						    <td>${cashFlowList[0].getSalerPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getSalerPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getSalerPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getSalerPay()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getSalerPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">支付的实体及网络销售中心费用</td>
 						    <td><fmt:formatNumber value="${cashFlowList[0].getSalescenterPay()+cashFlowList[0].getSalescenterWebPay()}" pattern="#,#00.0" ></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getSalescenterPay()+cashFlowList[1].getSalescenterWebPay()}" pattern="#,#00.0" ></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getSalescenterPay()+cashFlowList[2].getSalescenterWebPay()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getSalescenterPay()+cashFlowList[2].getSalescenterWebPay()}" pattern="#,#00.0" ></fmt:formatNumber></td>
 						  </tr>
 						
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">支付的市场调研费用</td>
-						    <td>${cashFlowList[0].getDiaoyanPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getDiaoyanPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getDiaoyanPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getDiaoyanPay()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getDiaoyanPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">支付的货运的现金</td>
-						    <td>${cashFlowList[0].getHuoyunPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getHuoyunPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getHuoyunPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getHuoyunPay()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getHuoyunPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">支付的库存费用</td>
-						    <td>${cashFlowList[0].getKucunPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getKucunPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 					   	 	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getKucunPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-					   	 	<td class="quarter3">${cashFlowList[2].getKucunPay()}</td>
+					   	 	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getKucunPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">支付的网络营销费用</td>
-						    <td>${cashFlowList[0].getNetmarketPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getNetmarketPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getNetmarketPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getNetmarketPay()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getNetmarketPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">支付的收入税</td>
-						    <td>${cashFlowList[0].getTaxPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getTaxPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getTaxPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getTaxPay()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getTaxPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">支付的利息费用</td>
-						    <td>${cashFlowList[0].getLixiPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getLixiPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getLixiPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getLixiPay()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getLixiPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">支付的技术授权费用</td>
-						    <td>${cashFlowList[0].getJishuPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getJishuPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getJishuPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getJishuPay()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getJishuPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">支付其他与经营活动有关的现金</td>
-						    <td>${cashFlowList[0].getQitaPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getQitaPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getQitaPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getQitaPay()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getQitaPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="secondsubnav">
 						    <td style="padding-left:35px;">经营活动产生的现金流出小计</td>
 						    <td><fmt:formatNumber value="${cashFlowList[0].getXianJinPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getXianJinPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						    <td class="quarter3">${cashFlowList[2].getXianJinPay()}</td>
+						    <td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getXianJinPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="secondsubnav">
 						    <td style="padding-left:35px;">经营活动产生的现金流量净额</td>
-						    <td>${cashFlowList[0].getXianJinGet()-cashFlowList[0].getXianJinPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getXianJinGet()-cashFlowList[0].getXianJinPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getXianJinGet()-cashFlowList[1].getXianJinPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getXianJinGet()-cashFlowList[2].getXianJinPay()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getXianJinGet()-cashFlowList[2].getXianJinPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  
 						  <tr class="firstnav">
@@ -294,19 +307,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						    <td style="padding-left:60px;">构建工厂固定产能支出的现金</td>
 						    <td><fmt:formatNumber value="${cashFlowList[0].getGongchangPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getGongchangPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-					   		<td class="quarter3">${cashFlowList[2].getGongchangPay()}</td>
+					   		<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getGongchangPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="secondsubnav">
 						    <td style="padding-left:35px;">投资活动现金流出小计</td>
 						    <td><fmt:formatNumber value="${cashFlowList[0].getGongchangPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getGongchangPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						    <td class="quarter3">${cashFlowList[2].getGongchangPay()}</td>
+						    <td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getGongchangPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="secondsubnav">
 						    <td style="padding-left:35px;">投资活动产生的现金流量净额</td>
 						    <td><fmt:formatNumber value="${cashFlowList[0].getGongchangPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getGongchangPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getGongchangPay()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getGongchangPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="firstnav">
 						    <td>三、筹资活动产生的现金流量</td>
@@ -316,57 +329,57 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">取得常规贷款收到的现金</td>
-						    <td>${cashFlowList[0].getDaikuanNormalGet()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getDaikuanNormalGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getDaikuanNormalGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getDaikuanNormalGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">取得紧急贷款收到的现金</td>
-						    <td>${cashFlowList[0].getDaikuanEmergyGet()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getDaikuanEmergyGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getDaikuanEmergyGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getDaikuanEmergyGet()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getDaikuanEmergyGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">提取三个月定期存款收到的现金</td>
-						    <td>${cashFlowList[0].getCunkuanRegularGet()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getCunkuanRegularGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getCunkuanRegularGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getCunkuanRegularGet()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getCunkuanRegularGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="secondsubnav">
 						    <td style="padding-left:35px;">筹资活动现金流入小计</td>
-						    <td>${cashFlowList[0].getChouZiGet()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getChouZiGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getChouZiGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						    <td class="quarter3">${cashFlowList[2].getChouZiGet()}</td>
+						    <td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getChouZiGet()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">偿还常规贷款支出的现金</td>
-						    <td>${cashFlowList[0].getDaikuanNormalPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getDaikuanNormalPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getDaikuanNormalPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getDaikuanNormalPay()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getDaikuanNormalPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">偿还紧急贷款支出的现金</td>
-						    <td>${cashFlowList[0].getDaikuanEmergyPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getDaikuanEmergyPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getDaikuanEmergyPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getDaikuanEmergyPay()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getDaikuanEmergyPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="thirdnav">
 						    <td style="padding-left:60px;">三个月定期存款支出的现金</td>
-						    <td>${cashFlowList[0].getCunkuanRegularPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getCunkuanRegularPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						   	<td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getCunkuanRegularPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						   	<td class="quarter3">${cashFlowList[2].getCunkuanRegularPay()}</td>
+						   	<td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getCunkuanRegularPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="secondsubnav">
 						    <td style="padding-left:35px;">投资活动现金流出小计</td>
 						    <td><fmt:formatNumber value="${cashFlowList[0].getChouZiPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getChouZiPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						    <td class="quarter3">${cashFlowList[2].getChouZiPay()}</td>
+						    <td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getChouZiPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="secondsubnav">
 						    <td style="padding-left:35px;">筹资活动产生的现金流量净额</td>
-						    <td>${cashFlowList[0].getChouZiGet()-cashFlowList[0].getChouZiPay()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getChouZiGet()-cashFlowList[0].getChouZiPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getChouZiGet()-cashFlowList[1].getChouZiPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						    <td class="quarter3">${cashFlowList[2].getChouZiGet()-cashFlowList[2].getChouZiPay()}</td>
+						    <td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getChouZiGet()-cashFlowList[2].getChouZiPay()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="firstnav">
 						    <td>四、现金及现金等级物净增加额</td>
@@ -376,9 +389,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  </tr>
 						  <tr class="secondnav">
 						    <td style="padding-left:30px;">+： 季初现金及现金等价物余额</td>
-						    <td>${cashFlowList[0].getYuE()}</td>
+						    <td><fmt:formatNumber value="${cashFlowList[0].getYuE()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${cashFlowList[1].getYuE()}" pattern="#,#00.0"></fmt:formatNumber></td>
-						    <td class="quarter3">${cashFlowList[2].getYuE()}</td>  
+						    <td class="quarter3"><fmt:formatNumber value="${cashFlowList[2].getYuE()}" pattern="#,#00.0"></fmt:formatNumber></td>  
 						    </tr>
 						  </tbody>
 						</table>

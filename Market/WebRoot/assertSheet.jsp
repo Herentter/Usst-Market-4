@@ -102,8 +102,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <body>
        <div class="panel panel-info">
-	    <div class="panel-heading">
-	        <h3 class="panel-title">资产负债表</h3>
+	    <div class="panel-heading">资产负债表
+	        <!-- <h3 class="panel-title">资产负债表</h3> -->
 	    </div>
 	    <div class="panel-body" >
 	    	<ul class="nav nav-tabs">
@@ -128,14 +128,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </div>
                 <div class="tab-pane fade  in active" id="notice2">
                 <label id="quarterFlag" value="${quarter }"></label>
+                <input type="hidden" id="result" value="${result }"/>
                 	<table class="table table-bordered table-hover table-striped">
 						<!--悬停表格布局-->
 						<thead>
 						  <tr>
 						    <th >项目</th>
-						    <th >季度1</th>
-						    <th class="quarter2">季度2</th>
-						    <th class="quarter3">季度3</th>
+						    <th ><span id="quarter1">季度1</span></th>
+						    <th class="quarter2"><span id="quarter2">季度2</span></th>
+						    <th class="quarter3"><span id="quarter3">季度3</span></th>
 						  </tr>
 						</thead>
 						<tbody>
@@ -256,6 +257,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						    <td class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getGuben()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						  </tr>
 						  <tr class="secondnav">
+						    <td style="padding-left:30px;">资本公积</td>
+						    <td><fmt:formatNumber value="${assertSheetList[0].getCapitalReserve()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getCapitalReserve()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						    <td class="quarter3"><fmt:formatNumber value="${assertSheetList[2].getCapitalReserve()}" pattern="#,#00.0"></fmt:formatNumber></td>
+						  </tr>
+						  <tr class="secondnav">
 						    <td style="padding-left:30px;">留存收益</td>
 						    <td><fmt:formatNumber value="${assertSheetList[0].getLiucun()}" pattern="#,#00.0"></fmt:formatNumber></td>
 						    <td class="quarter2"><fmt:formatNumber value="${assertSheetList[1].getLiucun()}" pattern="#,#00.0"></fmt:formatNumber></td>
@@ -282,12 +289,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </body>
 <script type="text/javascript">
 	$(function(){
+		var result=$("#result").val();
 		var quarter=$("#quarterFlag").attr("value");
-		if(quarter==1){
-			$(".quarter2").hide();
-			$(".quarter3").hide();
-		}else if(quarter==2){
-			$(".quarter3").hide();
+		if(result==1){
+			if(quarter==1){
+				$(".quarter2").hide();
+				$(".quarter3").hide();
+			}else if(quarter==2){
+				$(".quarter3").hide();
+			}
+		}else{
+			if(quarter==1){
+				$("#quarter1").text("季度1(预估)");
+				$(".quarter2").hide();
+				$(".quarter3").hide();
+			}else if(quarter==2){
+				$("#quarter2").text("季度2(预估)");
+				$(".quarter3").hide();
+			}else if(quarter==3){
+				$("#quarter3").text("季度3(预估)");
+			}
 		}
 	})
 </script>

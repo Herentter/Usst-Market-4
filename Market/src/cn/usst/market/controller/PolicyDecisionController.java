@@ -118,16 +118,16 @@ public class PolicyDecisionController {
 			keyDecision.setCompanyStrategy(companyStrategy);
 			
 			//找公司新品牌
-			List<CompanyProduct> companyProductList=teacherService.findProductsByCompanyIdQuarter(idQuarter);
+			List<CompanyProduct> companyProductList=policyDecisionService.findProductsByCompanyIdQuarter(companyList.get(i).getId(), currentQuarter);
 			keyDecision.setCompanyProductList(companyProductList);
 			
 			//销售品牌的数量,二季度之后
 			int productNumber=0;
 			for(int j=currentQuarter;j>=1;j--){
-				IdQuarter productNumIdQuarter=new IdQuarter();
-				productNumIdQuarter.setId(companyList.get(i).getId());
-				productNumIdQuarter.setQuarter(j);
-				List<CompanyProduct> productList=teacherService.findProductsByCompanyIdQuarter(productNumIdQuarter);
+				//IdQuarter productNumIdQuarter=new IdQuarter();
+				//productNumIdQuarter.setId(companyList.get(i).getId());
+				//productNumIdQuarter.setQuarter(j);
+				List<CompanyProduct> productList=policyDecisionService.findProductsByCompanyIdQuarter(companyList.get(i).getId(), j);
 				productNumber=productList.size()+productNumber;
 			}
 			keyDecision.setProductNumber(productNumber);
@@ -333,7 +333,7 @@ public class PolicyDecisionController {
 		}
 		
 		//查找公司生产的新产品
-		List<CompanyProduct> companyProductList=teacherService.findProductsByCompanyIdQuarter(idQuarter);
+		List<CompanyProduct> companyProductList=policyDecisionService.findProductsByCompanyIdQuarter(companyId, currentQuarter);
 		model.addAttribute("companyProductList", companyProductList);
 		//List<ProductInfo> bibeiList=new ArrayList<ProductInfo>();
 		//List<List<ProductInfo>> productsList=new ArrayList<>();
@@ -401,13 +401,12 @@ public class PolicyDecisionController {
 		
 		//找产品定价
 		HashMap<String,ProductPrice> productPriceList=new HashMap<String,ProductPrice>();
-		List<Integer> prodId=policyDecisionService.findProductIdFromProdPrice(idQuarter);
-		if(prodId!=null&&prodId.size()>0){
-			for(int n=0;n<prodId.size();n++){
-				CompanyProduct product=policyDecisionService.findProductById(prodId.get(n));
-				ProductPrice salePrice=policyDecisionService.findProductSalePriceByIdQPid(companyId, currentQuarter, prodId.get(n));
-				if(product!=null&&salePrice!=null){
-					productPriceList.put(product.getName(), salePrice);
+		List<CompanyProduct> productList=policyDecisionService.findProductsByCompanyIdQuarter(companyId,currentQuarter);
+		if(productList!=null&&productList.size()>0){
+			for(int n=0;n<productList.size();n++){
+				ProductPrice salePrice=policyDecisionService.findProductSalePriceByIdQPid(companyId, currentQuarter, productList.get(n).getId());
+				if(salePrice!=null){
+					productPriceList.put(productList.get(n).getName(), salePrice);
 				}
 			}
 		}
@@ -504,6 +503,28 @@ public class PolicyDecisionController {
 		OperationCapacity operationCapacity=policyDecisionService.findOpeartionCapacityByCompanyIdQuarter(companyId, currentQuarter);
 		model.addAttribute("operationCapacity", operationCapacity);
 
+		
+		//产品预测需求量
+		HashMap<String,Integer> forecastDemandList=new HashMap<String,Integer>();
+		if(productList!=null&&productList.size()>0){
+			for(int m=0;m<productList.size();m++){
+				int demand=0;
+				demand=policyDecisionService.findForecastDemandByProductIdQuarter(productList.get(m).getId(), currentQuarter);
+				forecastDemandList.put(productList.get(m).getName(), demand);
+			}
+		}
+		model.addAttribute("forecastDemandList", forecastDemandList);
+		
+		//产品库存控制
+		HashMap<String,Integer> inventoryList=new HashMap<String,Integer>();
+		if(productList!=null&&productList.size()>0){
+			for(int m=0;m<productList.size();m++){
+				int inventory=0;
+				inventory=policyDecisionService.findProductInventoryByProductIdQuarter(productList.get(m).getId(), currentQuarter);
+				inventoryList.put(productList.get(m).getName(), inventory);
+			}
+		}
+		model.addAttribute("inventoryList", inventoryList);
 		
 		//公司持股
 		List<CompanyStock> companyStockList=teacherService.findCompanyStockByIdQuarter(idQuarter);
@@ -691,7 +712,7 @@ public class PolicyDecisionController {
 		idQuarter.setId(companyId);
 		idQuarter.setQuarter(currentQuarter);
 		
-		List<CompanyProduct> companyProductList=teacherService.findProductsByCompanyIdQuarter(idQuarter);
+		List<CompanyProduct> companyProductList=policyDecisionService.findProductsByCompanyIdQuarter(companyId, currentQuarter);
 		model.addAttribute("companyProductList", companyProductList);
 		
 		List<List<ProductInfo>> productsList=new ArrayList<>();

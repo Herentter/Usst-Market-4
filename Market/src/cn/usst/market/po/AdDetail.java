@@ -5,6 +5,7 @@ package cn.usst.market.po;
  */
 public class AdDetail {
     private Integer companyId;
+    private String companyName;
     private Integer productId;
     private String productName;
     private String advertiseId;
@@ -17,6 +18,14 @@ public class AdDetail {
     private String detail7;
     private String detail8;
     private String detail9;
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 
     public Integer getCompanyId() {
         return companyId;

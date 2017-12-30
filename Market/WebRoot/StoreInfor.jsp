@@ -125,16 +125,16 @@ float:left;
 </head>
 <body onLoad="init()">
 	<div class="panel panel-info">
-		<div class="panel-heading">各产品销量统计</div>
+		<div class="panel-heading">各城市竞争对手</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#notice1" data-toggle="tab">
+				<li><a href="#notice1" data-toggle="tab">
 						课程介绍</a></li>
-				<li><a href="#notice2" data-toggle="tab">决策界面</a></li>
+				<li class="active"><a href="#notice2" data-toggle="tab">上季度数据统计</a></li>
 			</ul>
 
 			<div class="tab-content">
-				<div class="tab-pane fade in active" id="notice1">
+				<div class="tab-pane fade " id="notice1">
 					<div class="course_content">
 						<div class="text1">
 							(在这里输入实体店店员雇佣的介绍字段)</div>
@@ -148,7 +148,7 @@ float:left;
 					</div>
 
 				</div>
-				<div class="tab-pane fade" id="notice2">
+				<div class="tab-pane fade in active" id="notice2">
 					<form class="form-horizontal" id="form"
 						name="addSalesSalaryForm" action="" >
 						<table class="table table-bordered">

@@ -158,8 +158,8 @@ ul.nav span {
 					</ul></li>
 				<li><a href="#none">定价</a>
 					<ul>
-						<li><a href="priceOfRival.do" target="main">竞争对手的价格</a></li>
-						<li><a href="priceOfPro.do" target="main">生产成本</a></li>
+						<li><a href="priceOfRival.do?quarter=3" target="main">竞争对手的价格</a></li>
+						<li><a href="priceOfPro.do?quarter=3" target="main">生产成本</a></li>
 						<li><a href="priceAndSale.do?quarter=3" target="main">价格及销售优先级别</a></li>
 					</ul></li>
 				<li><a href="#none">广告</a>
@@ -167,7 +167,7 @@ ul.nav span {
 						<li><a href="adOfRival1.do" target="main">竞争对手的广告</a></li>
 						<li><a href="adDesign.do?quarter=3" target="main">设计广告</a></li>
 						<li><a href="showMediaInfo.do" target="main">媒体偏好</a></li>
-						<li><a href="adOfMain.do?quarter=3" target="main">主流媒体投放</a></li>
+						<li><a href="showOperateMedia.do?quarter=3" target="main">主流媒体投放</a></li>
 						<li><a href="adCheck.do?quarter=3" target="main">核查广告语</a></li>
 					</ul></li>
 				<li><a href="buyInvesReport.do?quarter=3" target="main">购买市场调研报告</a></li>
@@ -180,13 +180,11 @@ ul.nav span {
 				<li><a href="StoreInfor.do?quarter=3" target="main">各城市的竞争对手</a></li>
 				<li><a href="#" target="main">实体销售中心</a>
 					<ul>
-						<li><a href="employeeSaleman.jsp" target="main">竞争对手销售人员</a></li>
 						<li><a href="showMarketInfo.do?quarter=3" target="main">开设实体销售中心</a></li>
 						<li><a href="hireSalePeople.do?quarter=3" target="main">雇佣实体销售人员</a></li>
 					</ul></li>
 				<li><a href="#" target="main">网络销售中心</a>
 					<ul>
-						<li><a href="netSale.jsp" target="main">竞争对手的网络销售决策</a></li>
 						<li><a href="showMarketWebInfo.do?quarter=3" target="main">开设网络销售中心</a></li>
 					</ul></li>
 

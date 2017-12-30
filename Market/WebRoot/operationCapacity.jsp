@@ -16,7 +16,7 @@
 <style type="text/css">
 body {
 	width: 99%;
-	margin: 4px;
+	margin: 5px;
 	height: 1000px;
 }
 
@@ -139,13 +139,13 @@ td, th {
 		<div class="panel-heading">运行产能</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#notice1" data-toggle="tab">
+				<li><a href="#notice1" data-toggle="tab">
 						课程介绍</a></li>
-				<li><a href="#notice2" data-toggle="tab">决策界面</a></li>
+				<li class="active"><a href="#notice2" data-toggle="tab">决策界面</a></li>
 			</ul>
 
 			<div class="tab-content">
-				<div class="tab-pane fade in active" id="notice1">
+				<div class="tab-pane fade" id="notice1">
 					<div class="course_content">
 						<div class="text1">您才刚开始经营公司。 所以，需求量不可能非常高，而您也不需要运行全部的工厂产能。
 							您要决定需要使用多少产能。 这称之为工厂的运行产能。 运行产能决定了每天生产的产品数量。 您可以每天生产 8 小时，每周生产 5
@@ -165,8 +165,8 @@ td, th {
 							如需了解更多详情，请参见帮助文档的运行产能一节。</div>
 					</div>
 				</div>
-				<div class="tab-pane fade" id="notice2">
-					<input type="text" id="quarter" value="${quarter }">
+				<div class="tab-pane fade in active" id="notice2">
+					<input type="hidden" id="quarter" value="${quarter }">
 					<form class="form-horizontal" id="form" name="form" action=""
 						method="post">
 						<table class="table table-bordered">
@@ -179,14 +179,20 @@ td, th {
 							</thead>
 							<tbody>
 								<tr>
-									<td>Fixed capacity(previous quarter)</td>
-									<td>0</td>
-									<td>0</td>
+									<td>上季度固定产能</td>
+									<td>${lastCompanyCapacityList[0].capacityNow+lastCompanyCapacityList[0].capacityAdd}</td>
+									<td>${lastCompanyCapacityList[0].capacityNow*65+lastCompanyCapacityList[0].capacityAdd*65}</td>
 								</tr>
 								<tr>
-									<td>Operating capacity(previous quarter)</td>
-									<td>0</td>
-									<td>0</td>
+									<td>上季度运行产能</td>
+									<c:if test="${not empty lastOperationCapacityList }">
+										<td>${lastOperationCapacityList[0].operateCapacity}</td>
+										<td>${lastOperationCapacityList[0].operateCapacity*65}</td>
+									</c:if>
+									<c:if test="${empty lastOperationCapacityList }">
+										<td>0</td>
+										<td>0</td>
+									</c:if>
 								</tr>
 								<tr>
 									<td>固定产能</td>
@@ -206,7 +212,7 @@ td, th {
 									<td>${operationCapacityList[0].operateCapacity*65}</td>
 								</tr>
 								<tr>
-									<td>经工人生产率调整后的有效运行产能</td>
+									<td>预测有效运行产能</td>
 									<td><fmt:formatNumber type="number"
 											value="${operationCapacityList[0].operateCapacity*operationCapacityList[0].workerProductivity/100}"
 											pattern="0" maxFractionDigits="0" /></td>

@@ -26,6 +26,7 @@ import cn.usst.market.po.Competition;
 import cn.usst.market.po.DemandInfo;
 import cn.usst.market.po.IncomeStatement;
 import cn.usst.market.po.MarketInfo;
+import cn.usst.market.po.MarketInfoWeight;
 import cn.usst.market.po.MediaInfo;
 import cn.usst.market.po.Page;
 import cn.usst.market.po.PriceInfo;
@@ -118,6 +119,30 @@ public class CompetitionController {
 		int peopleNumber=record.getMember();
 		//季度数
 		int quarterNumber=record.getQuarter();
+		
+		//计算出 本次竞赛的总需求量
+		int constant=1500;
+		
+		int total_sale=peopleNumber*quarterNumber*constant;
+		
+		
+		List<MarketInfoWeight> weightList=competitionService.selectMarketInfoWeight();
+		
+		String name="";
+		int perfect=0;
+		int business=0;
+		int practical=0;
+		
+		for(MarketInfoWeight market:weightList){
+			 name=market.getCityName();
+			 perfect=(int) (total_sale*market.getPerfect());
+			 business=(int) (total_sale*market.getBusiness());
+			 practical=(int) (total_sale*market.getPractical());
+			 competitionService.insertMarketInfo(competitionId,name,perfect,business,practical);
+		}
+		
+		
+		
 		
 		//根据竞赛信息 创建团队
 		for(int i = 1;i<=team;i++){

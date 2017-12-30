@@ -7,6 +7,7 @@ public class ProductEfficiency {
 	int productId;
 	int quarter;
 	String productType;
+	int marketId;
 	int adWeight;
 	int designWeight;
 	int marketWeight;
@@ -68,11 +69,12 @@ public class ProductEfficiency {
 	public void setMarketWeight(int marketWeight) {
 		this.marketWeight = marketWeight;
 	}
-	public int getSalemanNum() {
-		return salemanNum;
+
+	public int getMarketId() {
+		return marketId;
 	}
-	public void setSalemanNum(int salemanNum) {
-		this.salemanNum = salemanNum;
+	public void setMarketId(int marketId) {
+		this.marketId = marketId;
 	}
 	public int getSalemanSalary() {
 		return salemanSalary;
@@ -85,6 +87,12 @@ public class ProductEfficiency {
 	}
 	public void setPrice(int price) {
 		this.price = price;
+	}
+	public int getSalemanNum() {
+		return salemanNum;
+	}
+	public void setSalemanNum(int salemanNum) {
+		this.salemanNum = salemanNum;
 	}
 	
 	

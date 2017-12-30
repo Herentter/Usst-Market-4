@@ -3,7 +3,7 @@ package cn.usst.market.po;
 public class FinancialRatioAvg {
 	private int id;
 	private double quickRatio;//速动比率
-	private double invertoryoverRatio;//库存周转率
+	private double inventoryoverRatio;//库存周转率
 	private double fixedassetoverRatio;//固定资产周转率
 	private double totalassetRatio;//总资产率
 	private double debtRatio;//负债比率
@@ -24,11 +24,12 @@ public class FinancialRatioAvg {
 	public void setQuickRatio(double quickRatio) {
 		this.quickRatio = quickRatio;
 	}
-	public double getInvertoryoverRatio() {
-		return invertoryoverRatio;
+	
+	public double getInventoryoverRatio() {
+		return inventoryoverRatio;
 	}
-	public void setInvertoryoverRatio(double invertoryoverRatio) {
-		this.invertoryoverRatio = invertoryoverRatio;
+	public void setInventoryoverRatio(double inventoryoverRatio) {
+		this.inventoryoverRatio = inventoryoverRatio;
 	}
 	public double getFixedassetoverRatio() {
 		return fixedassetoverRatio;

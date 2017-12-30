@@ -11,6 +11,7 @@ import cn.usst.market.mapper.DemandInfoMapper;
 import cn.usst.market.mapper.TeacherReferenceMapper;
 import cn.usst.market.po.Competition;
 import cn.usst.market.po.DemandInfo;
+import cn.usst.market.po.MarketInfoWeight;
 import cn.usst.market.po.TeacherQueryVo;
 import cn.usst.market.po.TeacherReference;
 import cn.usst.market.service.CompetitionService;
@@ -104,6 +105,18 @@ public class CompetitionServiceImpl implements CompetitionService {
 	@Override
 	public int getCurrentQuarterByCompanyId(int companyId) {
 		return competitionMapper.getCurrentQuarterByCompanyId(companyId);
+	}
+
+	@Override
+	public List<MarketInfoWeight> selectMarketInfoWeight() {
+		// TODO Auto-generated method stub
+		return competitionMapper.selectMarketInfoWeight();
+	}
+
+	@Override
+	public void insertMarketInfo(Integer competitionId, String name, int perfect, int business, int pratical) {
+		// TODO Auto-generated method stub
+		competitionMapper.insertMarketInfo(competitionId,name,perfect,business,pratical);
 	}
 
 

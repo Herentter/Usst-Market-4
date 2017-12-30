@@ -151,13 +151,7 @@
                         </c:forEach>
                     </tr>
                     <tr>
-                        <td>+广告设计</td>
-                        <c:forEach items="${brandList}" var="brand">
-                            <td>10000</td>
-                        </c:forEach>
-                    </tr>
-                    <tr>
-                        <td>+品牌广告</td>
+                        <td>+广告设计及投放</td>
                         <c:forEach items="${brandList}" var="brand">
                             <td>${brand.adofbrand}</td>
                         </c:forEach>
@@ -178,7 +172,7 @@
                         <td>占销售收入的比重%</td>
                         <c:forEach items="${brandList}" var="brand">
                             <td>
-                                <c:if test="${'0' != brand.salesproceeds}">${brand.profit*100/brand.salesproceeds}%</c:if>
+                                <c:if test="${'0' != brand.salesproceeds}">${brand.profitMargin}%</c:if>
                             </td>
                         </c:forEach>
                     </tr>
@@ -186,7 +180,7 @@
                         <td class="strong">单位利润</td>
                         <c:forEach items="${brandList}" var="brand">
                             <td>
-                                <c:if test="${'0' != brand.sale}">${brand.profit/brand.sale}</c:if>
+                                <c:if test="${'0' != brand.sale}">${brand.unitProfit}</c:if>
                             </td>
                         </c:forEach>
                     </tr>

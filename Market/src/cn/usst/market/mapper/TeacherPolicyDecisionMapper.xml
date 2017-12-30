@@ -62,10 +62,10 @@
 	</select>
 	
 	<!-- 找公司生产的产品 -->
-	<select id="findProductsByCompanyIdQuarter" parameterType="cn.usst.market.po.IdQuarter" resultType="cn.usst.market.po.CompanyProduct">
+	<select id="findProductsByCompanyIdQuarter" resultType="cn.usst.market.po.CompanyProduct">
 		select * from company_product
-		where company_id=#{id,jdbcType=INTEGER}
-		and quarter &lt;=#{quarter,jdbcType=INTEGER}
+		where company_id=#{0}
+		and quarter &lt;=#{1}
 	</select>
 	
 	<!-- 找最低价格产品 -->
@@ -243,6 +243,22 @@
 	<select id="findOpeartionCapacityByCompanyIdQuarter" resultType="cn.usst.market.po.OperationCapacity">
 		select * from operation_capacity
 		where company_id=#{0}
+		and quarter=#{1}
+	</select>
+	
+	<!-- 根据产品id和quarter找产品预测需求量 -->
+	<select id="findForecastDemandByProductIdQuarter" resultType="Integer">
+		select IFNULL(sum(demand),0) as demand
+		from company_product_demand
+		where product_id=#{0}
+		and quarter=#{1}
+	</select>
+	
+	<!-- 根据产品id和quarter找产品库存 -->
+	<select id="findProductInventoryByProductIdQuarter" resultType="Integer">
+		select IFNULL(sum(inventory),0) as demand
+		from company_product_inventory
+		where product_id=#{0}
 		and quarter=#{1}
 	</select>
 	

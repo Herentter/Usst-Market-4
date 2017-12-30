@@ -95,7 +95,25 @@
         }
     </style>
 </head>
-<body>
+<script>
+    function init() {
+        var table = document.getElementById("table1");
+        var rows = table.rows.length;//行数
+
+        //计算销货成本
+        for (var i = 1; i < rows; i++) {
+            var hidden = table.rows[i].getElementsByTagName("input");
+            var cost = hidden[0].value;
+            //赋值
+            document.getElementById(table.rows[i].id + "n100").innerText = Math.ceil(cost / Math.log(100 / 65));
+            document.getElementById(table.rows[i].id + "n250").innerText = Math.ceil(2 * cost / Math.log(250 / 65));
+            document.getElementById(table.rows[i].id + "n500").innerText = Math.ceil(2.25 * cost / Math.log(500 / 65));
+            document.getElementById(table.rows[i].id + "n1000").innerText = Math.ceil(2.4 * cost / Math.log(1000 / 65));
+            document.getElementById(table.rows[i].id + "n5000").innerText = Math.ceil(3 * cost / Math.log(5000 / 65));
+        }
+    }
+</script>
+<body onLoad="init()">
 <div class="panel panel-info">
     <div class="panel-heading">生产成本</div>
     <div class="panel-body">
@@ -127,28 +145,40 @@
                 </div>
             </div>
             <div class="tab-pane fade in active" id="notice2">
-                <table class="table table-bordered table-hover">
+                <label class="chanpin">销货成本(COGS)</label>
+
+                <table class="table table-bordered table-hover" id="table1">
                     <thead>
-                    <tr>
-                        <th>公司</th>
-                        <th>100件数</th>
-                        <th>250件数</th>
-                        <th>500件数</th>
-                        <th>1000件数</th>
-                        <th>5000件数</th>
+                    <tr class="success">
+                        <td>产品信息</td>
+                        <td>100件数</td>
+                        <td>250件数</td>
+                        <td>500件数</td>
+                        <td>1000件数</td>
+                        <td>5000件数</td>
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${cost}" var="cost">
-                        <tr>
-                            <td>${cost.companyName}</td>
-                            <td>${cost.hundred}</td>
-                            <td>${cost.twohundredfifty}</td>
-                            <td>${cost.fivehundred}</td>
-                            <td>${cost.thousand}</td>
-                            <td>${cost.fivethousand}</td>
-                        </tr>
-                    </c:forEach>
+                    <c:choose>
+                        <c:when test="${not empty companyProducts}">
+                            <c:forEach items="${companyProducts}" var="product">
+                                <tr id="${product.id }">
+                                    <input id="${product.id }cost" type="hidden" value="${ product.cost}"/>
+                                    <td>${product.name}</td>
+                                    <td><label id="${product.id}n100"></label></td>
+                                    <td><label id="${product.id}n250"></label></td>
+                                    <td><label id="${product.id}n500"></label></td>
+                                    <td><label id="${product.id}n1000"></label></td>
+                                    <td><label id="${product.id}n5000"></label></td>
+                                </tr>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <tr>
+                                <td colspan="6">抱歉,未找到产品信息！</td>
+                            </tr>
+                        </c:otherwise>
+                    </c:choose>
                     </tbody>
                 </table>
                 <div id="main" style="width: 600px;height:400px;"></div>

@@ -161,7 +161,6 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
-                        <th>公司</th>
                         <th>品牌</th>
                         <th>价格</th>
                         <th>邮寄返款</th>
@@ -170,10 +169,16 @@
                     <tbody>
                     <c:forEach items="${productPrice}" var="productPrice">
                         <tr>
-                            <c:forEach items="${productPrice.value}" var="pp">
-                                <td>${pp}</td>
-                            </c:forEach>
+                            <td colspan="3" style="text-align: center">${productPrice.key}</td>
                         </tr>
+                        <c:forEach items="${productPrice.value}" var="pp">
+                            <tr>
+                                <td>${pp.productName}</td>
+                                <td>${pp.price}</td>
+                                <td>${pp.youji}</td>
+                            </tr>
+                        </c:forEach>
+
                     </c:forEach>
 
                     </tbody>

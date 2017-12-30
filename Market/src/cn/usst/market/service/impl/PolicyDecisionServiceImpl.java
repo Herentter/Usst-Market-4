@@ -29,8 +29,8 @@ public class PolicyDecisionServiceImpl implements PolicyDecisionService {
 	private TeacherPolicyDecisionMapper teacherPolicyDecisionMapper;
 	//找公司设计的产品
 	@Override
-	public List<CompanyProduct> findProductsByCompanyIdQuarter(IdQuarter idQuarter){
-		return teacherPolicyDecisionMapper.findProductsByCompanyIdQuarter(idQuarter);
+	public List<CompanyProduct> findProductsByCompanyIdQuarter(int companyId,int quarter){
+		return teacherPolicyDecisionMapper.findProductsByCompanyIdQuarter(companyId,quarter);
 	}
 	
 	//找最低价、最高价、平均价
@@ -155,6 +155,18 @@ public class PolicyDecisionServiceImpl implements PolicyDecisionService {
 	@Override
 	public OperationCapacity findOpeartionCapacityByCompanyIdQuarter(int companyId,int quarter){
 		return teacherPolicyDecisionMapper.findOpeartionCapacityByCompanyIdQuarter(companyId, quarter);
+	}
+	
+	//产品预测需求量
+	@Override
+	public int findForecastDemandByProductIdQuarter(int productId,int quarter){
+		return teacherPolicyDecisionMapper.findForecastDemandByProductIdQuarter(productId, quarter);
+	}
+	
+	//产品库存量
+	@Override
+	public int findProductInventoryByProductIdQuarter(int productId,int quarter){
+		return teacherPolicyDecisionMapper.findProductInventoryByProductIdQuarter(productId, quarter);
 	}
 
 }

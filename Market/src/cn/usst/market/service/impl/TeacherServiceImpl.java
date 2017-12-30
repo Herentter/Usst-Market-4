@@ -211,11 +211,6 @@ public class TeacherServiceImpl implements TeacherService {
 	public ProductInfo findProductInfoById(Integer id){
 		return teacherPolicyDecisionMapper.findProductInfoById(id);
 	}
-	//找公司生产的产品
-	@Override
-	public List<CompanyProduct> findProductsByCompanyIdQuarter(IdQuarter idQuarter){
-		return teacherPolicyDecisionMapper.findProductsByCompanyIdQuarter(idQuarter);
-	}
 	//找开始实体市场
 	@Override
 	public CompanyMarket findCompanyPhyMarketByIdQuarter(IdQuarter idQuarter){

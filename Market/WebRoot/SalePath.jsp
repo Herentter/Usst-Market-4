@@ -125,16 +125,16 @@ float:left;
 </head>
 <body onLoad="init()">
 	<div class="panel panel-info">
-		<div class="panel-heading">各产品销量统计</div>
+		<div class="panel-heading">我公司各产品销量统计</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#notice1" data-toggle="tab">
+				<li><a href="#notice1" data-toggle="tab">
 						课程介绍</a></li>
-				<li><a href="#notice2" data-toggle="tab">决策界面</a></li>
+				<li  class="active"><a href="#notice2" data-toggle="tab">上季度数据统计</a></li>
 			</ul>
 
 			<div class="tab-content">
-				<div class="tab-pane fade in active" id="notice1">
+				<div class="tab-pane fade" id="notice1">
 					<div class="course_content">
 						<div class="text1">
 							(在这里输入实体店店员雇佣的介绍字段)</div>
@@ -148,7 +148,7 @@ float:left;
 					</div>
 
 				</div>
-				<div class="tab-pane fade" id="notice2">
+				<div class="tab-pane fade in active" id="notice2">
 					<form class="form-horizontal" id="form"
 						name="addSalesSalaryForm" action="" >
 						<table class="table table-bordered">
@@ -158,7 +158,6 @@ float:left;
 									<input type="hidden" value="${quater }" name="quater"/>
 									<input type="hidden" value="${add }" name="add"/>
 									<td>品牌</td>
-									<td>公司编号</td>
 									<td>产品需求量</td>
 									<td>产品销量</td>
 									<td>销售额</td>
@@ -171,7 +170,6 @@ float:left;
 								<c:forEach items="${listssv }" var="lists">
 									<tr>
 										<td>${lists.PMS.productType }</td>
-										<td>${lists.PP.companyId }</td>
 										<td>${lists.PMS.need }</td>
 										<td>${lists.PMS.sale }</td>
 										<td>${lists.saleIncom }</td>

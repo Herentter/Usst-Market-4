@@ -92,7 +92,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </div> -->
         <div>${errorInfo }</div>
         
-        <div><a href="checkCompetition.do?competitionId=18">审核竞赛</a></div>
+        <div><a href="checkCompetition.do?competitionId=3">审核竞赛</a></div>
         <div id="main" class="competiton_body">
             <div id="main_title">
                 <h3>竞赛列表</h3>

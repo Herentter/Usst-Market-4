@@ -16,7 +16,7 @@
 <style type="text/css">
 body {
 	width: 99%;
-	margin: 4px;
+	margin: 5px;
 	height: 1000px;
 }
 
@@ -118,18 +118,18 @@ td, th {
 		<div class="panel-heading">竞争力</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#notice1" data-toggle="tab">
+				<li><a href="#notice1" data-toggle="tab">
 						课程介绍</a></li>
-				<li><a href="#notice2" data-toggle="tab">决策界面</a></li>
+				<li class="active"><a href="#notice2" data-toggle="tab">决策界面</a></li>
 			</ul>
 			<div class="tab-content">
-				<div class="tab-pane fade in active" id="notice1">
+				<div class="tab-pane fade " id="notice1">
 					<div class="course_content">
 						<div class="text1">相应的决策界面显示了竞争对手的固定产能及运行产能。
 							当调整生产决策和商业策略的时候，请参看该信息。</div>
 					</div>
 				</div>
-				<div class="tab-pane fade" id="notice2">
+				<div class="tab-pane fade in active" id="notice2">
 					<form class="form-horizontal" id="form" method="post" action="">
 						<table class="table table-bordered">
 							<tr>
@@ -139,12 +139,14 @@ td, th {
 								<td>公司</td>
 								<td>固定产能</td>
 								<td>运行产能</td>
+								<td>有效运行产能</td>
 							</tr>
 							<c:forEach items="${CPVoList}" var="items">
 								<tr>
 									<td>${items.company.name}</td>
 									<td>${items.capacityNow+items.capacityAdd}</td>
 									<td>${items.operateCapacity}</td>
+									<td>${items.operateCapacity*items.workerEfficiency}</td>
 								</tr>
 							</c:forEach>
 						</table>

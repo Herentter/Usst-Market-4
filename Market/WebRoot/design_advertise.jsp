@@ -178,7 +178,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                </div>
 	                <div class="tab-pane fade in active " id="notice2">
                 	<label class="chanpin">设计广告</label>
-                	<input type="text" id="quarter" value="${quarter }"/>
+                	<input type="hidden" id="quarter" value="${quarter }"/>
                 	<table class="table table-bordered" id="table1">
 						<tbody>
 						<form id="form1" action="" method="post">

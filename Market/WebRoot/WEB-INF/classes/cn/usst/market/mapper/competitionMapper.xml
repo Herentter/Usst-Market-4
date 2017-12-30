@@ -106,6 +106,13 @@
 		and company.id=#{id}
   	</select>
   	
+  	<select id="selectMarketInfoWeight" resultType="cn.usst.market.po.MarketInfoWeight">
+  		select * from market_info_weight 
+  	</select>
+  	
+  	<insert id="insertMarketInfo">
+  		insert into market_info2 (competition_id,city,perfect,business,practical)values(#{0},#{1},#{2},#{3},#{4})
+  	</insert>
   
   
 </mapper>

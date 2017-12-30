@@ -192,5 +192,23 @@ public interface CashFlowMapper {
 	
 	int selectProductKuCun(int productId,int quarter);
 	
+	List<CashFlow> showCashFlowResult(int companyId,int quarter);
+	
+	List<BalanceSheet> showBalanceSheetResult(int companyId,int quarter);
+	
+	List<IncomeStatement> showIncomeStatementResult(int companyId,int quarter);
+	
+	void updateIncomeStatementTax(float tax,int company_id,int quarter);
+	
+	void updateIncomeStatementResultTax(float tax,int company_id,int quarter);
+	
+	void updateBalanceSheetResult3(float ziben,int company_id,int quarter);
+	
+	void updateBalanceSheet3(float ziben,int company_id,int quarter);
+	
+	void updateCashFlowJiChu(float jichuXianjin,int company_id,int quarter);
+	
+	void updateCashFlowResultJiChu(float jichuXianjin,int company_id,int quarter);
+	
 	
 }

@@ -8,7 +8,7 @@ public class CompetitivePowerVo {
 	 private Integer capacityAdd ;
 	
 	 private Integer  operateCapacity;
-	 	 	  
+	 private double workerEfficiency;
 	
 	
 	public Integer getCapacityNow() {
@@ -36,6 +36,12 @@ public class CompetitivePowerVo {
 	}
 	public void setOperateCapacity(Integer operateCapacity) {
 		this.operateCapacity = operateCapacity;
+	}
+	public double getWorkerEfficiency() {
+		return workerEfficiency;
+	}
+	public void setWorkerEfficiency(double workerEfficiency) {
+		this.workerEfficiency = workerEfficiency;
 	}
 	
 	

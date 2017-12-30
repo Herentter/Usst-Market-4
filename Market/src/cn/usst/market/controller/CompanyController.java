@@ -487,10 +487,7 @@ public class CompanyController {
 				markets.remove(market_id[i]);
 			};
 		}
-		System.out.println("相减后的数组为：");
-		for(int i=0;i<markets.size();i++){
-			System.out.println(markets.get(i));
-		}
+		
 
 		int quarter=Integer.parseInt(request.getParameter("quarter"));
 
@@ -514,7 +511,11 @@ public class CompanyController {
 		{   
 			market.setId(companyMarkets.get(0).getId());
 			market.setMarketId(market_ids);
-			companyService.updateCompanyMarket(market);
+			
+			for(int i=quarter;i<6;i++){
+				market.setQuarter(i);
+				companyService.updateCompanyMarket(market);
+			}
 			
 			HirePeople hirePeople=null;
 			HirePeople flag=null;
@@ -524,8 +525,11 @@ public class CompanyController {
 				hirePeople=new HirePeople();
 				hirePeople.setCompanyId(company_id);
 				hirePeople.setMarketId(marketDelet);
-				hirePeople.setQuarter(quarter);
-				companyService.deleteHirePeople(hirePeople);
+				for(int j=quarter;j<6;j++){
+					hirePeople.setQuarter(j);
+					companyService.deleteHirePeople(hirePeople);
+				}
+				
 			}
 			//再将前台 传递过来的 市场 id 插入对应到hire_people 表中
 		
@@ -533,20 +537,26 @@ public class CompanyController {
 				hirePeople=new HirePeople();
 				hirePeople.setMarketId(Integer.parseInt(market_id[i]));
 				hirePeople.setCompanyId(company_id);
-				hirePeople.setQuarter(quarter);
 				hirePeople.setAfterSale(0);
 				hirePeople.setSaleman(0);
-				
-				flag=companyService.checkHirePeople(hirePeople);
-				if(flag==null){
-					companyService.insertHirePeople(hirePeople);
+				for(int j=quarter;j<6;j++){
+					hirePeople.setQuarter(j);
+					flag=companyService.checkHirePeople(hirePeople);
+					if(flag==null){
+						companyService.insertHirePeople(hirePeople);
+					}
 				}
 			}				
 		}
 		else{
 			market.setMarketId(market_ids);
-					
-			companyService.insertCompanyMarket(market);
+			
+			//把第一季度 选择的市场 插入到 以后的各个季度
+			for(int i=1;i<6;i++){
+				market.setQuarter(i);
+				companyService.insertCompanyMarket(market);
+			}
+			
 			HirePeople hirePeople=null;
 			
 			for(int i=0;i<market_id.length;i++){
@@ -554,10 +564,12 @@ public class CompanyController {
 				hirePeople=new HirePeople();
 				hirePeople.setMarketId(Integer.parseInt(market_id[i]));
 				hirePeople.setCompanyId(company_id);
-				hirePeople.setQuarter(quarter);
 				hirePeople.setAfterSale(0);
 				hirePeople.setSaleman(0);
-				companyService.insertHirePeople(hirePeople);
+				for(int j=1;j<6;j++){
+					hirePeople.setQuarter(j);
+					companyService.insertHirePeople(hirePeople);
+				}
 			}	
 			
 		}
@@ -609,6 +621,12 @@ public class CompanyController {
 		{   
 			market.setId(companyMarkets.get(0).getId());
 			market.setMarketId(market_ids);
+			
+			for(int i=quarter;i<6;i++){
+				market.setQuarter(i);
+				companyService.updateCompanyMarket(market);
+			}
+			
 			companyService.updateCompanyMarket(market);
 			
 			HirePeopleOnline hirePeopleOnline=null;
@@ -618,39 +636,48 @@ public class CompanyController {
 				hirePeopleOnline=new HirePeopleOnline();
 				hirePeopleOnline.setCompanyId(company_id);
 				hirePeopleOnline.setMarketId(marketDelet);
-				hirePeopleOnline.setQuarter(quarter);
-				companyService.deleteHirePeopleOnline(hirePeopleOnline);
+				for(int j=quarter;j<6;j++){
+					hirePeopleOnline.setQuarter(j);
+					companyService.deleteHirePeopleOnline(hirePeopleOnline);
+				}
 			}
 			
 			for(int i=0;i<market_id.length;i++){
 				hirePeopleOnline=new HirePeopleOnline();
 				hirePeopleOnline.setMarketId(Integer.parseInt(market_id[i]));
 				hirePeopleOnline.setCompanyId(company_id);
-				hirePeopleOnline.setQuarter(quarter);
 				hirePeopleOnline.setAfterSale(0);
 				hirePeopleOnline.setSaleman(0);
-				
-				flag=companyService.checkHirePeopleOnline(hirePeopleOnline);
-				if(flag==null){
-					companyService.insertHirePeopleOnline(hirePeopleOnline);
+				for(int j=quarter;j<6;j++){
+					hirePeopleOnline.setQuarter(j);
+					
+					flag=companyService.checkHirePeopleOnline(hirePeopleOnline);
+					if(flag==null){
+						companyService.insertHirePeopleOnline(hirePeopleOnline);
+					}
 				}
 			}
 			
 		}
 		else{
 			market.setMarketId(market_ids);
-				
-			companyService.insertCompanyMarket(market);
+			
+			for(int i=1;i<6;i++){
+				market.setQuarter(i);
+				companyService.insertCompanyMarket(market);
+			}
 			
 			HirePeopleOnline hirePeopleOnline=null;
 			for(int i=0;i<market_id.length;i++){
 				hirePeopleOnline=new HirePeopleOnline();
 				hirePeopleOnline.setMarketId(Integer.parseInt(market_id[i]));
 				hirePeopleOnline.setCompanyId(company_id);
-				hirePeopleOnline.setQuarter(quarter);
 				hirePeopleOnline.setAfterSale(0);
 				hirePeopleOnline.setSaleman(0);
-				companyService.insertHirePeopleOnline(hirePeopleOnline);
+				for(int j=quarter;j<6;j++){
+					hirePeopleOnline.setQuarter(j);
+					companyService.insertHirePeopleOnline(hirePeopleOnline);
+				}
 			}			
 		}
 			ModelAndView modelAndView = showMarketWebInfo(request);
@@ -914,10 +941,7 @@ public class CompanyController {
 	@RequestMapping(value = "/showCapacityInfo.do")
 	public ModelAndView showCapacityInfo(HttpServletRequest request) {
 		int companyId = (int) request.getSession().getAttribute("companyId");
-		
-		//导航栏传过来的 季度值
 		int quarter=Integer.parseInt(request.getParameter("quarter"));
-		
 		int currentQuarter=(int) request.getSession().getAttribute("currentQuarter");
 		
 		CompanyCapacity proCompanyCapacity=null;
@@ -934,14 +958,11 @@ public class CompanyController {
 
 		modelAndView.addObject("proCompanyCapacity",proCompanyCapacity);
 		modelAndView.addObject("quarter",quarter);
+		modelAndView.addObject("currentQuarter",currentQuarter);
 		modelAndView.addObject("capacityInfoList", capacityInfoList);
 		modelAndView.addObject("companyCapacityList1", companyCapacityList1);
+		modelAndView.setViewName("constantProduce");
 		
-		if(currentQuarter>quarter){
-			modelAndView.setViewName("constantProduce0");
-		}else{
-			modelAndView.setViewName("constantProduce");
-		}
 		return modelAndView;
 		
 	}
@@ -949,20 +970,12 @@ public class CompanyController {
 	@MethodLog(description="修改固定产能")
 	@RequestMapping(value = "/showCapacityInfo1.do")
 	public ModelAndView showCapacityInfo1(HttpServletRequest request) {
-
-		String number = request.getParameter("number");
-		System.out.println(number);
-		
-		float invest=Float.parseFloat(request.getParameter("invest"));
-		System.out.println(invest);
-		
-		// 获取公司id
 		int companyId = (int) request.getSession().getAttribute("companyId");
-		
 		int quarter=Integer.parseInt(request.getParameter("quarter"));
 		
-			
+		String number = request.getParameter("number");
 		int numberInt = Integer.parseInt(number);
+		
 		int proNumber=0;
 		
 		if(quarter-1!=0){
@@ -970,15 +983,10 @@ public class CompanyController {
 			proNumber=companyCapacity.getCapacityNow()+companyCapacity.getCapacityAdd();
 		}
 		
+		int currentNumber=proNumber+numberInt;
 		
-		// 页面显示的静态数据
-		List<CapacityInfo> capacityInfoList = companyService.showCapacityInfo();
-		// 查询当前要插入表中的数据
-		CapacityInfo capacityInfo = companyService.selectCapacityInfo(numberInt);
-		System.out.println(capacityInfo.getNumber());
-		// 查询要显示的信息的总条数
+		//插入当前季度固定产能
 		int count = companyService.selectTotalCount(companyId, quarter);
-		System.out.println(count);
 		if (count == 0) {
 			// 插入数据
 			companyService.insertCompanyCapacity(0,numberInt, companyId,quarter);
@@ -986,6 +994,17 @@ public class CompanyController {
 		}
 		else{
 			companyService.updateCompanyCapacity(proNumber,numberInt,companyId,quarter);
+		}
+		
+		//插入下季度固定产能
+		int nextCount = companyService.selectTotalCount(companyId, quarter+1);
+		if (count == 0) {
+			// 插入数据
+			companyService.insertCompanyCapacity(currentNumber,0, companyId,quarter+1);
+
+		}
+		else{
+			companyService.updateCompanyCapacity(currentNumber,0,companyId,quarter+1);
 		}
 		
 		return showCapacityInfo(request);
@@ -1544,21 +1563,33 @@ public class CompanyController {
 			
 			modelAndView.addObject("mediaInfos", mediaInfos);
 			System.out.println("媒体初始："+mediaInfos.size());
-			//产品初始信息
+			//当季度产品信息
 			List<CompanyProduct> companyProducts=companyService.selectProductByCompanyIdAndQuarter(company_id, 1);
 			for(int i=2;i<=quarter;i++){
 				List<CompanyProduct> xx=companyService.selectProductByCompanyIdAndQuarter(company_id, i);
 				companyProducts.addAll(xx);
 			}
+			//上季度产品信息
+			List<CompanyProduct> lastCompanyProducts=companyService.selectProductByCompanyIdAndQuarter(company_id, 1);
+			for(int i=2;i<quarter;i++){
+				List<CompanyProduct> xx=companyService.selectProductByCompanyIdAndQuarter(company_id, i);
+				lastCompanyProducts.addAll(xx);
+			}
 			System.out.println("list："+companyProducts.size());
 			modelAndView.addObject("companyProducts", companyProducts);
+			modelAndView.addObject("lastCompanyProducts", lastCompanyProducts);
 			modelAndView.addObject("len", companyProducts.size());
 			modelAndView.addObject("quarter", quarter);
 			
-			//公司媒体投放信息
+			//公司当季度媒体投放信息
 			List<CompanyMedia> companyMedias=companyService.selectTotalCompanyMedia(company_id, quarter);
 			if(companyMedias!=null){
 				modelAndView.addObject("companyMedias", companyMedias);
+			}
+			//公司上 季度媒体投放信息
+			List<CompanyMedia> lastCompanyMedias=companyService.selectTotalCompanyMedia(company_id, quarter-1);
+			if(companyMedias!=null){
+				modelAndView.addObject("lastCompanyMedias", lastCompanyMedias);
 			}
 			modelAndView.setViewName("operateMedia");
 			return modelAndView;
@@ -1933,15 +1964,21 @@ public class CompanyController {
 		public ModelAndView showOperationCapacity(HttpServletRequest request) {
 			int companyIdInt = (int) request.getSession().getAttribute("companyId");
 			int quarter = Integer.parseInt(request.getParameter("quarter"));
-			
+			ModelAndView modelAndView = new ModelAndView();
+			//上季度
+			List<CompanyCapacity> lastCompanyCapacityList = companyService.showCapacityInfo1(companyIdInt, quarter-2);
+			List<OperationCapacity> lastOperationCapacityList = companyService.selectOperationCapacity(companyIdInt, quarter-1);
+			//当前季度
 			List<CompanyCapacity> companyCapacityList1 = companyService.showCapacityInfo1(companyIdInt, quarter-1);
 			List<OperationCapacity> operationCapacityList = companyService.selectOperationCapacity(companyIdInt, quarter);
 			List<WorkersSalary> workersSalaryList = companyService.selectCompanyWorkersSalary(companyIdInt, quarter);
-			ModelAndView modelAndView = new ModelAndView();
+			
 			
 			modelAndView.addObject("quarter", quarter);
-			modelAndView.addObject("operationCapacityList", operationCapacityList);
+			modelAndView.addObject("lastCompanyCapacityList", lastCompanyCapacityList);
+			modelAndView.addObject("lastOperationCapacityList", lastOperationCapacityList);
 			modelAndView.addObject("companyCapacityList1", companyCapacityList1);
+			modelAndView.addObject("operationCapacityList", operationCapacityList);
 			modelAndView.addObject("workersSalaryList", workersSalaryList);
 			modelAndView.setViewName("operationCapacity");
 			return modelAndView;
@@ -1989,11 +2026,16 @@ public class CompanyController {
 				OC = companyService.selectOperationCapacity(comp.getId(), quarter-1);
 				List<CompanyCapacity> CC = new ArrayList<>();
 				CC = companyService.showCapacityInfo1(comp.getId(), quarter-2);
+				
+				 List<CompanyInvestment> CI = new ArrayList<>();
+				CI =companyService.selectCompanyInvestment(comp.getId(), quarter-1);
+				
 				CompetitivePowerVo CPV = new CompetitivePowerVo();
 				CPV.setCompany(comp);
 				CPV.setCapacityNow(CC.get(0).getCapacityNow());
 				CPV.setCapacityAdd(CC.get(0).getCapacityAdd());
 				CPV.setOperateCapacity(OC.get(0).getOperateCapacity());
+				CPV.setWorkerEfficiency(CI.get(0).getWorkerEfficiency());
 				CPVoList.add(CPV);
 
 			}
@@ -2059,8 +2101,8 @@ public class CompanyController {
 				PMS = companyService.selectProductMarketShare(compro.getId(),quarter);
 				StockLevelVo SLV = new StockLevelVo();
 				SLV.setCompanyProducts(compro);
-				SLV.setNeed(PMS.get(0).getNeed());
-				SLV.setSale(PMS.get(0).getSale());
+				SLV.setNeed(PMS.get(0).getMoscowNeed()+PMS.get(0).getHongkongNeed()+PMS.get(0).getSingaporeNeed()+PMS.get(0).getNewdelhiNeed());
+				SLV.setSale(PMS.get(0).getHongkongSale()+PMS.get(0).getMoscowSale()+PMS.get(0).getSingaporeSale()+PMS.get(0).getNewdelhiSale());
 				SLV.setStockoun(PMS.get(0).getStockoun());
 				SLV.setStock(PMS.get(0).getStock());
 				
@@ -2095,7 +2137,7 @@ public class CompanyController {
 				StockLevelVo SLV = new StockLevelVo();
 				SLV.setCompanyProducts(compro);
 				SLV.setStock(PMS.get(0).getStock());
-				SLV.setSale(PMS.get(0).getSale());
+				SLV.setSale(PMS.get(0).getHongkongSale()+PMS.get(0).getMoscowSale()+PMS.get(0).getSingaporeSale()+PMS.get(0).getNewdelhiSale());
 				SLVoList.add(SLV);
 
 			}
@@ -2176,6 +2218,7 @@ public class CompanyController {
 			}
 			ModelAndView modelAndView =  new ModelAndView();
 			modelAndView.addObject("totalPeople",totalPeople);
+			modelAndView.addObject("quarter",quarter);
 			modelAndView.addObject("salesSalary",salesSalary);
 			modelAndView.addObject("hirePeopleListVo",hirePeopleListVo);
 			modelAndView.setViewName("hirePeople");	
@@ -2233,7 +2276,12 @@ public class CompanyController {
 			
 			SalesSalary salesSalary=companyService.findCompanySalesSalary(companyId, currentQuarter);
 			
-			System.out.println("员工工资："+salesSalary.getSalaryTotal());
+			if(salesSalary==null){
+				salesSalary=new SalesSalary();
+				salesSalary.setSalaryTotal(0);
+			}
+			
+		
 			
 			ModelAndView modelAndView =  new ModelAndView();
 			modelAndView.addObject("totalPeople",totalPeople);
@@ -2310,12 +2358,27 @@ public class CompanyController {
 			//库存费用
 			float kucun=cashFlow.getKucunPay();
 			companyService.updateIncomeKuCun((int)kucun, company_id, quarter);
+			//所得税费用(净利润*25%)
+			float netProfit=income+lixi-yingyeCost-youji_sum-yanfa-guanggao-saler-PhyCost-WebCost-
+					diaoyan-huoyun-kucun;
+			float tax=0;
+			if(netProfit>0){
+				tax=(float) (netProfit*0.25);
+			}
+			companyService.updateIncomeStatementTax(tax, company_id, quarter);
 			
-			List<IncomeStatement> list=companyService.showIncomeStatement(company_id, 1);
-			list.addAll(companyService.showIncomeStatement(company_id, 2));
-			list.addAll(companyService.showIncomeStatement(company_id, 3));
 			ModelAndView modelAndView =  new ModelAndView();
-			modelAndView.addObject("incomeStatementList", list);
+			if(quarter==1){
+				List<IncomeStatement> list=companyService.showIncomeStatement(company_id, 1);
+				modelAndView.addObject("incomeStatementList", list);
+			}else{
+				List<IncomeStatement> list=companyService.showIncomeStatementResult(company_id, 1);
+				for(int i=2;i<quarter;i++){
+					list.addAll(companyService.showIncomeStatementResult(company_id, i));
+				}
+				list.addAll(companyService.showIncomeStatement(company_id, quarter));
+				modelAndView.addObject("incomeStatementList", list);
+			}
 			modelAndView.addObject("quarter", quarter);
 			modelAndView.setViewName("incomeStatement");
 			return modelAndView;
@@ -2389,13 +2452,20 @@ public class CompanyController {
 			}
 			companyService.updateBalanceSheetHuoBi(huobi, company_id, quarter);
 			companyService.updateBalanceSheetLiuCun(liucun, company_id, quarter);
+			companyService.updateBalanceSheet3(0, company_id, quarter);
 			
-			
-			List<BalanceSheet> list=companyService.showBalanceSheet(company_id,1);
-			list.addAll(companyService.showBalanceSheet(company_id,2));
-			list.addAll(companyService.showBalanceSheet(company_id,3));
 			ModelAndView modelAndView=new ModelAndView();
-			modelAndView.addObject("assertSheetList", list);
+			if(quarter==1){
+				List<BalanceSheet> list=companyService.showBalanceSheet(company_id, 1);
+				modelAndView.addObject("assertSheetList", list);
+			}else{
+				List<BalanceSheet> list=companyService.showBalanceSheetResult(company_id, 1);
+				for(int i=2;i<quarter;i++){
+					list.addAll(companyService.showBalanceSheetResult(company_id, i));
+				}
+				list.addAll(companyService.showBalanceSheet(company_id, quarter));
+				modelAndView.addObject("assertSheetList", list);
+			}
 			modelAndView.addObject("quarter", quarter);
 			modelAndView.setViewName("assertSheet");
 			return modelAndView;
@@ -2539,7 +2609,8 @@ public class CompanyController {
 				}
 				companyService.updateCashFlowResult2(incomeSum, youjiSum, shengchanSum, huoyunSum, kucunSum, company_id, quarter);
 			}
-			
+			float jichuXianjin=companyService.selectHuoBiLast(company_id, quarter-1).getHuobi();
+			companyService.updateCashFlowResultJiChu(jichuXianjin, company_id, quarter);
 			
 			ModelAndView modelAndView =new ModelAndView();
 			List<CashFlow> cashFlowResult=companyService.selectCashFlowResult(company_id, 1);
@@ -2547,7 +2618,8 @@ public class CompanyController {
 			cashFlowResult.addAll(companyService.selectCashFlowResult(company_id, 3));
 			modelAndView.addObject("cashFlowList", cashFlowResult);
 			modelAndView.addObject("quarter", quarter);
-			modelAndView.setViewName("cashFlow11");
+			modelAndView.addObject("result", 1);
+			modelAndView.setViewName("cashFlow");
 			return modelAndView;
 		}
 		
@@ -2577,6 +2649,15 @@ public class CompanyController {
 			float huoyunSum=cashFlow.get(0).getHuoyunPay();
 			float kucunSum=cashFlow.get(0).getKucunPay();
 			companyService.updateIncomeResult2(incomeSum, yingyeSum, youjiSum, huoyunSum, kucunSum, company_id, quarter);
+			//所得税费用(净利润*25%)
+			float netProfit=incomeSum+lixi-yingyeSum-youjiSum-yanfa-guanggao-saler-salesCenter-salesCenterWeb-
+					diaoyan-huoyunSum-kucunSum;
+			float tax=0;
+			if(netProfit>0){
+				tax=(float) (netProfit*0.25);
+			}
+			companyService.updateIncomeStatementResultTax(tax, company_id, quarter);
+			
 			
 			ModelAndView modelAndView =new ModelAndView();
 			List<IncomeStatement> incomeResult=companyService.selectIncomeStatementResult(company_id, 1);
@@ -2584,6 +2665,7 @@ public class CompanyController {
 			incomeResult.addAll(companyService.selectIncomeStatementResult(company_id, 3));
 			modelAndView.addObject("incomeStatementList", incomeResult);
 			modelAndView.addObject("quarter", quarter);
+			modelAndView.addObject("result", 1);
 			modelAndView.setViewName("incomeStatement");	
 			return modelAndView;
 		}
@@ -2626,6 +2708,7 @@ public class CompanyController {
 			}
 			companyService.updateBalanceSheetResult(cunkuan, zichan, guben, company_id, quarter);
 			companyService.updateBalanceSheetResult2(huobi, liucun, cunhuo, company_id, quarter);
+			companyService.updateBalanceSheetResult3(0, company_id, quarter);
 			
 			ModelAndView modelAndView =new ModelAndView();
 			List<BalanceSheet> balanceSheetResult1=companyService.selectBalanceSheetResult(company_id, 1);
@@ -2633,6 +2716,7 @@ public class CompanyController {
 			balanceSheetResult1.addAll(companyService.selectBalanceSheetResult(company_id, 3));
 			modelAndView.addObject("assertSheetList", balanceSheetResult1);
 			modelAndView.addObject("quarter", quarter);
+			modelAndView.addObject("result", 1);
 			modelAndView.setViewName("assertSheet");	
 			return modelAndView;
 		}
@@ -2998,12 +3082,22 @@ public class CompanyController {
 			int capacity=companyService.selectCapacity(company_id, quarter);
 			int invest=companyService.selectInvestByCapacity(capacity);
 			companyService.updateCashFlowCapacity(invest, company_id, quarter);
+			//季初现金
+			float jichuXianjin=companyService.selectHuoBiLast(company_id, quarter-1).getHuobi();
+			companyService.updateCashFlowJiChu(jichuXianjin, company_id, quarter);
 			
 			ModelAndView modelAndView =  new ModelAndView();
-			List<CashFlow> list1=companyService.showCashFlow(company_id, 1);
-			list1.addAll(companyService.showCashFlow(company_id, 2));
-			list1.addAll(companyService.showCashFlow(company_id, 3));
-			modelAndView.addObject("cashFlowList", list1);
+			if(quarter==1){
+				List<CashFlow> list1=companyService.showCashFlow(company_id, 1);
+				modelAndView.addObject("cashFlowList", list1);
+			}else{
+				List<CashFlow> list1=companyService.showCashFlowResult(company_id, 1);
+				for(int i=2;i<quarter;i++){
+					list1.addAll(companyService.showCashFlowResult(company_id, i));
+				}
+				list1.addAll(companyService.showCashFlow(company_id, quarter));
+				modelAndView.addObject("cashFlowList", list1);
+			}
 		    modelAndView.addObject("quarter", quarter);
 			modelAndView.setViewName("cashFlow");
 			return modelAndView;

@@ -168,7 +168,8 @@ body {
                    	</div>
                 </div>
                 <div class="tab-pane fade" id="notice2">
-                	<input type="type" id="quarter" value="${quarter }"/>
+                	<input type="hidden" id="quarter" value="${quarter }"/>
+                	<input type="hidden" id="currentQuarter" value="${currentQuarter }"/>
                 	<form id="form" class="form-horizontal" action="" method="post">
 						<table class="table table-bordered">
 							<thead>
@@ -202,7 +203,7 @@ body {
 		
 		
 								<tr>
-									<td colspan="5"><button onclick="init()"
+									<td colspan="5"><button onclick="init()" id="btn1"
 											class="btn btn-info">提交</button></td>
 								</tr>
 							</tbody>
@@ -214,21 +215,27 @@ body {
 						<tr>
 		
 							<td>当前季度日固定产能</td>
-							<td>${proCompanyCapacity.capacityAdd }</td>
+							<td>${companyCapacityList1[0].capacityNow}</td>
 		
 						</tr>
 		
 						<tr>
 		
 							<td>计划增加的固定产能</td>
-							<td>${companyCapacityList1[0].capacityAdd }</td>
+							<c:if test="${ not empty companyCapacityList1}">
+								<td>${companyCapacityList1[0].capacityAdd }</td>
+							</c:if>
+							<c:if test="${ empty companyCapacityList1}">
+								<td>0</td>
+							</c:if>
+							
 		
 						</tr>
 		
 						<tr>
 		
 							<td>下季度日固定产能</td>
-							<td>${proCompanyCapacity.capacityAdd + companyCapacityList1[0].capacityAdd}</td>
+							<td>${companyCapacityList1[0].capacityNow+companyCapacityList1[0].capacityAdd }</td>
 		
 						</tr>
 					</table>
@@ -243,6 +250,16 @@ body {
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/echarts.min.js"></script>
 <script type="text/javascript">
+	//判断是否隐藏提交按钮
+	$(function(){
+		var currentQuarter=$("#currentQuarter").val();
+		var quarter=$("#quarter").val();
+		if(currentQuarter>quarter){
+			$("#btn1").hide();
+		}
+	});
+
+
 	function init() {
 		var val = $('input:radio[name="group"]:checked').val();
 		var r = $('input:radio[name="group"]:checked');

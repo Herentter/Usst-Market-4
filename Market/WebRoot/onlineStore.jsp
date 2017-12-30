@@ -147,7 +147,7 @@ function init(){
                    	</div>
                 </div>
                 <div class="tab-pane fade in active" id="notice2">
-                	<input type="text" value="${quarter }">
+                	<input type="hidden" value="${quarter }">
                 	<table class="table table-bordered">
 		                <thead>
 		                    <tr>

@@ -125,12 +125,12 @@ float:left;
 </head>
 <body onLoad="init()">
 	<div class="panel panel-info">
-		<div class="panel-heading">各渠道需求量</div>
+		<div class="panel-heading">需求预测与实际销售</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
 				<li ><a href="#notice1" data-toggle="tab">
 						课程介绍</a></li>
-				<li class="active"><a href="#notice2" data-toggle="tab">决策界面</a></li>
+				<li class="active"><a href="#notice2" data-toggle="tab">上季度数据统计</a></li>
 			</ul>
 
 			<div class="tab-content">
@@ -158,14 +158,18 @@ float:left;
 									<input type="hidden" value="${quater }" name="quater"/>
 									<input type="hidden" value="${add }" name="add"/>
 									<td>公司名称</td>
+									<td>产品名称</td>
 									<td>需求量</td>
+									<td>销量</td>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${ListGPNV }" var="lists">
 									<tr>
 										<td>${lists.c.name }</td>
+										<td>${lists.cp.name }</td>
 										<td>${lists.pms.need }</td>
+										<td>${lists.pms.sale }</td>
 									</tr>
 								</c:forEach>
 							</tbody>

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import cn.usst.market.po.Competition;
 import cn.usst.market.po.DemandInfo;
+import cn.usst.market.po.MarketInfoWeight;
 import cn.usst.market.po.TeacherQueryVo;
 import cn.usst.market.po.TeacherReference;
 
@@ -40,6 +41,11 @@ public interface CompetitionService {
     public Competition findCompetitionByCompanyId(Integer companyId);
 
 	int getCurrentQuarterByCompanyId(int companyId);
+
+	List<MarketInfoWeight> selectMarketInfoWeight();
+
+	void insertMarketInfo(Integer competitionId, String name, int perfect, int business, int pratical);
+
 
     
     

@@ -24,8 +24,18 @@ public class BalanceSheet {
     private Float daikuanNormal;
 
     private Float guben;
+    
+    private Float capitalReserve;
 
-    private Float liucun;
+    public Float getCapitalReserve() {
+		return capitalReserve;
+	}
+
+	public void setCapitalReserve(Float capitalReserve) {
+		this.capitalReserve = capitalReserve;
+	}
+
+	private Float liucun;
 
     public Integer getId() {
         return id;
@@ -148,7 +158,7 @@ public class BalanceSheet {
     }
     
     public Float getOwner(){
-    	return guben+liucun;
+    	return guben+liucun+capitalReserve;
     }
     
     public Float getOwnerAndFuZhai(){

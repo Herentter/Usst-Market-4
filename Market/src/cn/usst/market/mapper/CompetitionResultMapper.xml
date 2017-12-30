@@ -144,6 +144,9 @@
 		where company_id=#{0}
 		and quarter=#{1}
 	</select>
+	<!-- 找公司每个市场的人数 -->
+	
+	
 	<select id="findMarketInfoById" resultType="cn.usst.market.po.MarketInfo">
 		select * from market_info
 		where id=#{value}
@@ -181,7 +184,7 @@
 	<!-- 插入产品的各种效用 -->
 	<select id="insertProductEfficiency" parameterType="cn.usst.market.po.ProductEfficiency">
 		insert into product_efficiency
-		(competition_id,company_id,product_id,quarter,product_type,
+		(competition_id,company_id,product_id,quarter,product_type,market_id,
 			ad_weight,design_weight,market_weight,saleman_num,
 			saleman_salary,price
 		)
@@ -191,6 +194,7 @@
 			#{productId,jdbcType=INTEGER},
 			#{quarter,jdbcType=INTEGER},
 			#{productType,jdbcType=VARCHAR},
+			#{marketId,jdbcType=INTEGER},
 			#{adWeight,jdbcType=INTEGER},
 			#{designWeight,jdbcType=INTEGER},
 			#{marketWeight,jdbcType=INTEGER},
@@ -206,29 +210,103 @@
 		where competition_id=#{0}
 		and quarter=#{1}
 		and product_type=#{2}
+		and market_id=#{3}
 	</select>
 	
 	<!-- 插入产品市场份额 -->
-	<select id="insertProductMarketShare" parameterType="cn.usst.market.po.ProductMarketShare">
-		insert into product_market_share
-		(
-			competition_id,company_id,product_id,quarter,
-			product_type,market_share,need,sale,
-			stockoun,stock
-		)
-		values(
-			#{competitionId,jdbcType=INTEGER},
-			#{companyId,jdbcType=INTEGER},
-			#{productId,jdbcType=INTEGER},
-			#{quarter,jdbcType=INTEGER},
-			#{productType,jdbcType=VARCHAR},
-			#{marketShare,jdbcType=DOUBLE},
-			#{need,jdbcType=INTEGER},
-			#{sale,jdbcType=INTEGER},
-			#{stockoun,jdbcType=INTEGER},
-			#{stock,jdbcType=INTEGER}
-		)
-	</select>
+	<insert id="insertOrUpdateProductMarketShare" parameterType="cn.usst.market.po.ProductMarketShare">
+		<selectKey keyProperty="count" resultType="int" order="BEFORE">
+			select count(*) as count from product_market_share
+			where product_id = #{productId, jdbcType=INTEGER}
+	     	and quarter = #{quarter, jdbcType=INTEGER} 
+		</selectKey>
+		<if test="count > 0">
+			update product_market_share
+		     <trim prefix="set" suffixOverrides=",">  
+		        <if test='marketShare != null and marketShare != "" '>
+		          market_share = #{marketShare, jdbcType=DOUBLE},
+		        </if>
+		        <if test='singaporeNeed != null and singaporeNeed != "" '>
+		          singapore_need = #{singaporeNeed, jdbcType=INTEGER},
+		        </if>
+		        <if test='singaporeSale != null and singaporeSale != "" '>
+		          singapore_sale = #{singaporeSale, jdbcType=INTEGER},
+		        </if>
+		        
+		        <if test='hongkongNeed != null and hongkongNeed != "" '>
+		          hongkong_need = #{hongkongNeed, jdbcType=INTEGER},
+		        </if>
+		        <if test='hongkongSale != null and hongkongSale != "" '>
+		          hongkong_sale = #{hongkongSale, jdbcType=INTEGER},
+		        </if>
+		        
+		        <if test='moscowNeed != null and moscowNeed != "" '>
+		          moscow_need = #{moscowNeed, jdbcType=INTEGER},
+		        </if>
+		        <if test='moscowSale != null and moscowSale != "" '>
+		          moscow_sale = #{moscowSale, jdbcType=INTEGER},
+		        </if>
+		        
+		        <if test='newdelhiNeed != null and newdelhiNeed != "" '>
+		          newdelhi_need = #{newdelhiNeed, jdbcType=INTEGER},
+		        </if>
+		        <if test='newdelhiSale != null and newdelhiSale != "" '>
+		          newdelhi_sale = #{newdelhiSale, jdbcType=INTEGER},
+		        </if>
+		        
+		        <if test='onlineNeed != null and onlineNeed != "" '>
+		          online_need = #{onlineNeed, jdbcType=INTEGER},
+		        </if>
+		        <if test='onlineSale != null and onlineSale != "" '>
+		          online_sale = #{onlineSale, jdbcType=INTEGER},
+		        </if>
+		        
+		        <if test='stockoun != null and stockoun != "" '>
+		          stockoun = #{stockoun, jdbcType=INTEGER},
+		        </if>
+		        <if test='stock != null and stock != "" '>
+		          stock = #{stock, jdbcType=INTEGER},
+		        </if>
+		        
+		     </trim>  
+		     where product_id = #{productId, jdbcType=INTEGER}
+		     and quarter = #{quarter, jdbcType=INTEGER}
+		</if>
+		<if test="count == 0">
+			insert into product_market_share
+			(
+				competition_id,company_id,product_id,quarter,
+				product_type,market_share,
+				singapore_need,singapore_sale,
+				hongkong_need,hongkong_sale,
+				moscow_need,moscow_sale,
+				newdelhi_need,newdelhi_sale,
+				online_need,online_sale,
+				stockoun,stock
+			)
+			values(
+				#{competitionId,jdbcType=INTEGER},
+				#{companyId,jdbcType=INTEGER},
+				#{productId,jdbcType=INTEGER},
+				#{quarter,jdbcType=INTEGER},
+				#{productType,jdbcType=VARCHAR},
+				#{marketShare,jdbcType=DOUBLE},
+				#{singaporeNeed,jdbcType=INTEGER},
+				#{singaporeSale,jdbcType=INTEGER},
+				#{hongkongNeed,jdbcType=INTEGER},
+				#{hongkongSale,jdbcType=INTEGER},
+				#{moscowNeed,jdbcType=INTEGER},
+				#{moscowSale,jdbcType=INTEGER},
+				#{newdelhiNeed,jdbcType=INTEGER},
+				#{newdelhiSale,jdbcType=INTEGER},
+				#{onlineNeed,jdbcType=INTEGER},
+				#{onlineSale,jdbcType=INTEGER},
+				#{stockoun,jdbcType=INTEGER},
+				#{stock,jdbcType=INTEGER}
+			)
+		</if>		
+		
+	</insert>
 	
 	<!-- 插入公司市场份额 -->
 	<select id="insertCompanyMarketShare" parameterType="cn.usst.market.po.CompanyMarketShare">
@@ -268,9 +346,9 @@
 		and product_type=#{2}
 	</select>
 	
-	<!-- 找本次竞赛下面每个类型的需求总量 -->
-	<select id="findProductMSNeedNumByCompetIdQuarterType" resultType="Integer">
-		select IFNULL(sum(need),0) as need from product_market_share
+	<!-- 找本次竞赛下面每个类型的产品市场份额 -->
+	<select id="findProductMSByCompetIdQuarterType" resultType="cn.usst.market.po.ProductMarketShare">
+		select * from product_market_share
 		where competition_id=#{0}
 		and quarter=#{1}
 		and product_type=#{2}
@@ -284,12 +362,65 @@
 	</select>
 	
 	<!-- 根据产品id和季度，修改产品的市场份额 -->	
-	<select id="updateProductMSByProductIdQuarter">
+	<!-- <select id="updateProductMSByProductIdQuarter">
 		update product_market_share
 		set market_share=#{2}
 		where product_id=#{0}
 		and quarter=#{1}
-	</select>
+	</select> -->
+	<update id="updateProductMSByProductIdQuarter"  parameterType="cn.usst.market.po.ProductMarketShare" >
+	     update product_market_share
+	     <trim prefix="set" suffixOverrides=",">  
+	        <if test='marketShare != null and marketShare != "" '>
+	          market_share = #{marketShare, jdbcType=DOUBLE},
+	        </if>
+	        <if test='singaporeNeed != null and singaporeNeed != "" '>
+	          singapore_need = #{singaporeNeed, jdbcType=INTEGER},
+	        </if>
+	        <if test='singaporeSale != null and singaporeSale != "" '>
+	          singapore_sale = #{singaporeSale, jdbcType=INTEGER},
+	        </if>
+	        
+	        <if test='hongkongNeed != null and hongkongNeed != "" '>
+	          hongkong_need = #{hongkongNeed, jdbcType=INTEGER},
+	        </if>
+	        <if test='hongkongSale != null and hongkongSale != "" '>
+	          hongkong_sale = #{hongkongSale, jdbcType=INTEGER},
+	        </if>
+	        
+	        <if test='moscowNeed != null and moscowNeed != "" '>
+	          moscow_need = #{moscowNeed, jdbcType=INTEGER},
+	        </if>
+	        <if test='moscowSale != null and moscowSale != "" '>
+	          moscow_sale = #{moscowSale, jdbcType=INTEGER},
+	        </if>
+	        
+	        <if test='newdelhiNeed != null and newdelhiNeed != "" '>
+	          newdelhi_need = #{newdelhiNeed, jdbcType=INTEGER},
+	        </if>
+	        <if test='newdelhiSale != null and newdelhiSale != "" '>
+	          newdelhi_sale = #{newdelhiSale, jdbcType=INTEGER},
+	        </if>
+	        
+	        <if test='onlineNeed != null and onlineNeed != "" '>
+	          online_need = #{onlineNeed, jdbcType=INTEGER},
+	        </if>
+	        <if test='onlineSale != null and onlineSale != "" '>
+	          online_sale = #{onlineSale, jdbcType=INTEGER},
+	        </if>
+	        
+	        <if test='stockoun != null and stockoun != "" '>
+	          stockoun = #{stockoun, jdbcType=INTEGER},
+	        </if>
+	        <if test='stock != null and stock != "" '>
+	          stock = #{stock, jdbcType=INTEGER},
+	        </if>
+	        
+	     </trim>  
+	     where product_id = #{productId, jdbcType=INTEGER}
+	     and quarter = #{quarter, jdbcType=INTEGER} 
+	</update>
+	
 	
 	
 	<!-- 根据公司ID和季度找本公司的所有产品市场份额 -->
@@ -365,5 +496,18 @@
 		where company_id=#{0} 
 		and quarter=#{1}
 	</select>
-		
+	
+	<!-- 找市场总需求 -->
+	<select id="findAllMarketInfo" resultType="cn.usst.market.po.MarketInfo">
+		select * from market_info
+	</select>
+	
+	<!-- 根据公司id和季度找开放的市场,1实体市场，0网络市场 -->
+	<select id="findCompanyMarketByCompanyIdQuarter" resultType="cn.usst.market.po.CompanyMarket">
+		select * from company_market
+		where company_id=#{0}
+		and quarter=#{1}
+		and is_phy=#{2}
+	</select>
+	
 </mapper>

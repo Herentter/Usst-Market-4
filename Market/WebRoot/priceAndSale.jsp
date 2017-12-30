@@ -154,7 +154,7 @@
                     <c:forEach items="${priceList}" var="price">
                         <tr>
                             <td>${price.productName}</td>
-                            <td><input type="checkbox" checked="checked"></td>
+                            <td><input type="checkbox" checked="checked" disabled="disabled"></td>
                             <td>${price.price}</td>
                             <td>${price.youji}</td>
                         </tr>

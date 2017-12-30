@@ -15,9 +15,10 @@ public interface MarketingMapper {
      * selectByCompetitionId
      *
      * @param competitionId
+     * @param quarter
      * @return
      */
-    List<BrandOfRival> selectByCompetitionId(int competitionId);
+    List<BrandOfRival> selectByCompetitionId(int competitionId,int quarter);
 
     //根据组件编号查询
 
@@ -27,7 +28,7 @@ public interface MarketingMapper {
      * @param detailId
      * @return
      */
-    String selectProductDetail(int detailId);
+    ProductInfo selectProductDetail(int detailId);
 
     //获取根据公司ID和公司名称查找
 
@@ -75,9 +76,10 @@ public interface MarketingMapper {
      * selectMarketShareByCompetitionId
      *
      * @param competitionId
+     * @param quarter
      * @return
      */
-    List<MarketShare> selectMarketShareByCompetitionId(int competitionId);
+    List<MarketShare> selectMarketShareByCompetitionId(int competitionId,int quarter);
 
     /**
      * selectCompanyName
@@ -108,25 +110,28 @@ public interface MarketingMapper {
      * selectProductPrice
      *
      * @param competitionId
+     * @param quarter
      * @return
      */
-    List<ProductPrice> selectProductPrice(int competitionId);
+    List<ProductPrice> selectProductPrice(int competitionId,int quarter);
 
     /**
      * selectCostOfProduction
      *
      * @param companyId
+     * @param productName
      * @return
      */
-    List<CostOfProduction> selectCostOfProduction(int companyId);
+    int selectCostOfProduction(int companyId, String productName);
 
     /**
      * selectAdDetailByCompetitionId
      *
      * @param competitionId
+     * @param quarter
      * @return
      */
-    List<AdDetail> selectAdDetailByCompetitionId(int competitionId);
+    List<AdDetail> selectAdDetailByCompetitionId(int competitionId,int quarter);
 
     /**
      * selectMediaInfo
@@ -205,5 +210,9 @@ public interface MarketingMapper {
      */
     String selectPostOffice(int productId, int quarter);
 
-	int selectCompetitionIdByCompanyId(int companyId);
+    int selectCompetitionIdByCompanyId(int companyId);
+
+    List<CompanyProduct> selectProductByCompanyIdAndQuarter(int companyId, int i);
+
+    void deleteAdByIdAndName(int productId, String adName);
 }

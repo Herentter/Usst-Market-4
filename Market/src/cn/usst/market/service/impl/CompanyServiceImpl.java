@@ -62,7 +62,7 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	@Autowired
 	private CompetitionMapper CM;
-
+	
 	@Override
 	public void insert(Company record) {
 		companyMapper.insert(record);
@@ -769,65 +769,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 
 	
-	@Override
-	public List<AllSalesSalaryVo> findSalaryofAllCompanysbyCompanyID(int companyId, int quarter) {
-		Competition comp = new Competition();
-
-		comp = CM.findCompetitionByCompanyId(companyId);
-
-		List<Company> LC = new ArrayList<>();
-
-		LC = companyMapper.showCompanyByCompetitionId(comp.getId());
-
-		List<AllSalesSalaryVo> allVoList = new ArrayList<>();
-
-		for (Company cc : LC) {
-			List<SalesSalary> LSS = new ArrayList<>();
-			LSS = companyMapper.selectCompanySalesSalary(cc.getId(), quarter);
-			AllSalesSalaryVo ASSV = new AllSalesSalaryVo();
-			System.out.println("Length of LC = " + LC.size());
-			System.out.println("Length of LSS = " + LSS.size());
-			System.out.println("cc = " + cc);
-			System.out.println(cc.getName());
-
-			System.out.println("cc.getId() = " + cc.getId());
-			ASSV.setCompany(cc);
-			ASSV.setSalesSalary(LSS.get(0));
-			ASSV.setProductivity(1);
-			allVoList.add(ASSV);
-		}
-
-		return allVoList;
-	}
 	
-	// 查看业内工厂工人薪酬
-		@Autowired
-		private CompetitionMapper CW;
-
-		@Override
-		public List<AllWorkersSalaryVo> findWSalaryofAllCompanysbyCompanyID(int companyId, int quarter) {
-
-			Competition comp = CW.findCompetitionByCompanyId(companyId);
-			System.out.println("competition:" + comp);
-
-			List<Company> LC = new ArrayList<>();
-
-			LC = companyMapper.showCompanyByCompetitionId(comp.getId());
-
-			List<AllWorkersSalaryVo> allVoList = new ArrayList<>();
-
-			for (Company cc : LC) {
-				List<WorkersSalary> LSS = new ArrayList<>();
-				LSS = companyMapper.selectCompanyWorkersSalary(cc.getId(), quarter);
-				AllWorkersSalaryVo ASSV = new AllWorkersSalaryVo();
-				ASSV.setCompany(cc);
-				ASSV.setWorkersSalary(LSS.get(0));
-				ASSV.setProductivity(1);
-				allVoList.add(ASSV);
-			}
-
-			return allVoList;
-		}
 		
 		//库存控制
 		
@@ -1520,6 +1462,124 @@ public class CompanyServiceImpl implements CompanyService {
 			// TODO Auto-generated method stub
 			return cashFlowMapper.selectProductKuCun(productId, quarter);
 		}
+
+		@Override
+		public List<CashFlow> showCashFlowResult(int companyId, int quarter) {
+			// TODO Auto-generated method stub
+			return cashFlowMapper.showCashFlowResult(companyId, quarter);
+		}
+
+		@Override
+		public List<BalanceSheet> showBalanceSheetResult(int companyId, int quarter) {
+			// TODO Auto-generated method stub
+			return cashFlowMapper.showBalanceSheetResult(companyId, quarter);
+		}
+
+		@Override
+		public List<IncomeStatement> showIncomeStatementResult(int companyId, int quarter) {
+			// TODO Auto-generated method stub
+			return cashFlowMapper.showIncomeStatementResult(companyId, quarter);
+		}
+		// 查看业内工厂工人薪酬
+		@Autowired
+		private CompetitionMapper CW;
 		
+		@Override
+		public List<AllWorkersSalaryVo> findWSalaryofAllCompanysbyCompanyID(int companyId, int quarter) {
+
+			Competition comp = CW.findCompetitionByCompanyId(companyId);
+			System.out.println("competition:" + comp);
+
+			List<Company> LC = new ArrayList<>();
+
+			LC = companyMapper.showCompanyByCompetitionId(comp.getId());
+
+			List<AllWorkersSalaryVo> allVoList = new ArrayList<>();
+
+			for (Company cc : LC) {
+				List<WorkersSalary> LSS = new ArrayList<>();
+				LSS = companyMapper.selectCompanyWorkersSalary(cc.getId(), quarter);
+				AllWorkersSalaryVo ASSV = new AllWorkersSalaryVo();
+				List<CompanyInvestment> CI = new ArrayList<>();
+				CI =companyMapper.selectCompanyInvestment(cc.getId(), quarter);
+				ASSV.setCompany(cc);
+				ASSV.setWorkersSalary(LSS.get(0));
+				ASSV.setWorkerEfficiency(CI.get(0).getWorkerEfficiency());;
+				allVoList.add(ASSV);
+			}
+
+			return allVoList;
+		}
 		
+		@Override
+		public List<AllSalesSalaryVo> findSalaryofAllCompanysbyCompanyID(int companyId, int quarter) {
+			Competition comp = new Competition();
+
+			comp = CM.findCompetitionByCompanyId(companyId);
+
+			List<Company> LC = new ArrayList<>();
+
+			LC = companyMapper.showCompanyByCompetitionId(comp.getId());
+
+			List<AllSalesSalaryVo> allVoList = new ArrayList<>();
+
+			for (Company cc : LC) {
+				List<SalesSalary> LSS = new ArrayList<>();
+				LSS = companyMapper.selectCompanySalesSalary(cc.getId(), quarter);
+				 List<CompanyInvestment> CI = new ArrayList<>();
+				 CI =companyMapper.selectCompanyInvestment(cc.getId(), quarter);
+				
+				
+				AllSalesSalaryVo ASSV = new AllSalesSalaryVo();
+				System.out.println("Length of LC = " + LC.size());
+				System.out.println("Length of LSS = " + LSS.size());
+				System.out.println("cc = " + cc);
+				System.out.println(cc.getName());
+
+				System.out.println("cc.getId() = " + cc.getId());
+				ASSV.setCompany(cc);
+				ASSV.setSalesSalary(LSS.get(0));
+				ASSV.setSalesEfficiency(CI.get(0).getSalesEfficiency());;
+				
+				allVoList.add(ASSV);
+			}
+
+			return allVoList;
+		}
+
+		@Override
+		public void updateIncomeStatementTax(float tax, int company_id, int quarter) {
+			// TODO Auto-generated method stub
+			cashFlowMapper.updateIncomeStatementTax(tax, company_id, quarter);
+		}
+
+		@Override
+		public void updateIncomeStatementResultTax(float tax, int company_id, int quarter) {
+			// TODO Auto-generated method stub
+			cashFlowMapper.updateIncomeStatementResultTax(tax, company_id, quarter);
+		}
+
+		@Override
+		public void updateBalanceSheetResult3(float ziben, int company_id, int quarter) {
+			// TODO Auto-generated method stub
+			cashFlowMapper.updateBalanceSheetResult3(ziben, company_id, quarter);
+		}
+
+		@Override
+		public void updateBalanceSheet3(float ziben, int company_id, int quarter) {
+			// TODO Auto-generated method stub
+			cashFlowMapper.updateBalanceSheet3(ziben, company_id, quarter);
+		}
+
+		@Override
+		public void updateCashFlowJiChu(float jichuXianjin, int company_id, int quarter) {
+			// TODO Auto-generated method stub
+			cashFlowMapper.updateCashFlowJiChu(jichuXianjin, company_id, quarter);
+		}
+
+		@Override
+		public void updateCashFlowResultJiChu(float jichuXianjin, int company_id, int quarter) {
+			// TODO Auto-generated method stub
+			cashFlowMapper.updateCashFlowResultJiChu(jichuXianjin, company_id, quarter);
+		}
 }

@@ -17,6 +17,24 @@ public class Profit {
     private Integer grossmargin;//毛利
     private Integer costofbrand;//品牌费用
     private Integer profit;//利润
+    private String profitMargin;//利润率
+    private String unitProfit;//单位利润
+
+    public String getProfitMargin() {
+        return profitMargin;
+    }
+
+    public void setProfitMargin(String profitMargin) {
+        this.profitMargin = profitMargin;
+    }
+
+    public String getUnitProfit() {
+        return unitProfit;
+    }
+
+    public void setUnitProfit(String unitProfit) {
+        this.unitProfit = unitProfit;
+    }
 
     public Integer getProfit() {
         return profit;
