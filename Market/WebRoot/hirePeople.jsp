@@ -210,36 +210,21 @@ body {
 	                		
 	                	</table>
 	                	
-	                	<div class="row">
-	                		<div class="col-md-2">
-	                		总员工数
-	                		</div>
-	                		<div class="col-md-2" id="total_people">
-	                		${totalPeople}
-	                		</div>
-	                	</div>
-	                	
-	                	<div class="row">
-	                		<div class="col-md-2">
-	                		员工工资
-	                		</div>
-	                		<div class="col-md-2" id="salary">
-	                		${salesSalary.salaryTotal}
-	                		</div>
-	                	</div>
-	                	
-	                	<div class="row">
-	                		<div class="col-md-2">
-	                		该季度雇佣费用
-	                		</div>
-	                		<div class="col-md-2" id="total_salary">
-	                		
-	                		</div>
-	                	</div>
-	                	
-	                	
-	                	
-	                	
+	                	<table class="table table-bordered">
+		                	<tr>
+		                		<td>总员工数</td>
+		                		<td id="total_people">${totalPeople}</td>
+							</tr>
+		                	<tr>
+		                		<td>员工工资</td>
+		                		<td id="salary">${salesSalary.salaryTotal}</td>
+							</tr>
+		                	<tr>
+		                		<td>该季度雇佣费用</td>
+		                		<td id="total_salary">fff</td>
+							</tr>
+						</table>
+						
 	                	<input type="submit" value="提交">
                 	</form>
                 	

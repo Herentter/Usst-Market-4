@@ -137,14 +137,14 @@ float:left;
 				<div class="tab-pane fade" id="notice1">
 					<div class="course_content">
 						<div class="text1">
-							(在这里输入实体店店员雇佣的介绍字段)</div>
-						<div class="text1">本页面假设：<p><p>招聘成本100元/人<p>离职补偿150元/人</div>
+							这里显示了上季度的全市场需求量和实际销量</div>
+						<div class="text1">这些信息可以帮助你决定，是继续深耕现有市场，还是大举进入新的未开发市场</div>
 					</div>
 					<div class="left">
 						<div class="left_title">
 							<span><i class="fa fa-tasks"></i></span><label>你的任务</label>
 						</div>
-						<div class="left_content">雇佣适当数量的销售人员</div>
+						<div class="left_content">了解当前市场竞争形势</div>
 					</div>
 
 				</div>
@@ -168,8 +168,8 @@ float:left;
 									<tr>
 										<td>${lists.c.name }</td>
 										<td>${lists.cp.name }</td>
-										<td>${lists.pms.need }</td>
-										<td>${lists.pms.sale }</td>
+										<td>${lists.meedssum }</td>
+										<td>${lists.salesum }</td>
 									</tr>
 								</c:forEach>
 							</tbody>

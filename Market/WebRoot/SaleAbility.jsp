@@ -137,14 +137,14 @@ float:left;
 				<div class="tab-pane fade" id="notice1">
 					<div class="course_content">
 						<div class="text1">
-							(在这里输入实体店店员雇佣的介绍字段)</div>
-						<div class="text1">本页面假设：<p><p>招聘成本100元/人<p>离职补偿150元/人</div>
+							这个页面显示了上季度你的成本利润比重</div>
+						<div class="text1">你需要根据这些信息，判断你当前的成本结构和利润率是否合理</div>
 					</div>
 					<div class="left">
 						<div class="left_title">
 							<span><i class="fa fa-tasks"></i></span><label>你的任务</label>
 						</div>
-						<div class="left_content">雇佣适当数量的销售人员</div>
+						<div class="left_content">了解上季度的成本结构并思考下季度的价格战略</div>
 					</div>
 
 				</div>

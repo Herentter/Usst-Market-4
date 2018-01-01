@@ -16,6 +16,21 @@ public class SaleIncomVo {
 	private int SaleIncomSum;
 	private int YoujiSum;
 	private int SaleCostSum;
+	private int meedssum;
+	private int salesum;
+	
+	public int getMeedssum() {
+		return meedssum;
+	}
+	public void setMeedssum(int meedssum) {
+		this.meedssum = meedssum;
+	}
+	public int getSalesum() {
+		return salesum;
+	}
+	public void setSalesum(int salesum) {
+		this.salesum = salesum;
+	}
 	public ProductPrice getPP() {
 		return PP;
 	}

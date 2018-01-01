@@ -5,6 +5,8 @@ public class SallSituationVo {
 	private ProductPrice PP;
 	private int saleIncom;
 	private int saleLost;
+	private int meedssum;
+	private int salesum;
 	public ProductMarketShare getPMS() {
 		return PMS;
 	}
@@ -29,6 +31,17 @@ public class SallSituationVo {
 	public void setSaleLost(int saleLost) {
 		this.saleLost = saleLost;
 	}
-	
+	public int getMeedssum() {
+		return meedssum;
+	}
+	public void setMeedssum(int meedssum) {
+		this.meedssum = meedssum;
+	}
+	public int getSalesum() {
+		return salesum;
+	}
+	public void setSalesum(int salesum) {
+		this.salesum = salesum;
+	}
 	
 }

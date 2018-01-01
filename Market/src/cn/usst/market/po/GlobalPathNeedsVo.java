@@ -7,7 +7,26 @@ public class GlobalPathNeedsVo {
 	private ProductMarketShare pms;
 	
 	private CompanyProduct cp;
+	private int meedssum;
+	private int salesum;
 	
+	
+	public int getMeedssum() {
+		return meedssum;
+	}
+
+	public void setMeedssum(int meedssum) {
+		this.meedssum = meedssum;
+	}
+
+	public int getSalesum() {
+		return salesum;
+	}
+
+	public void setSalesum(int salesum) {
+		this.salesum = salesum;
+	}
+
 	private float rate;
 
 	public CompanyProduct getCp() {

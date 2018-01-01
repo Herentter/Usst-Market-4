@@ -137,14 +137,14 @@ float:left;
 				<div class="tab-pane fade" id="notice1">
 					<div class="course_content">
 						<div class="text1">
-							(在这里输入实体店店员雇佣的介绍字段)</div>
-						<div class="text1">本页面假设：<p><p>招聘成本100元/人<p>离职补偿150元/人</div>
+							在这里，我们将统计上季度的销量，产量，销售额等数据</div>
+						<div class="text1">这些信息将帮助你做出下个季度的经营决策，并优化你的投资方案。</div>
 					</div>
 					<div class="left">
 						<div class="left_title">
 							<span><i class="fa fa-tasks"></i></span><label>你的任务</label>
 						</div>
-						<div class="left_content">雇佣适当数量的销售人员</div>
+						<div class="left_content">了解上季度销售情况</div>
 					</div>
 
 				</div>
@@ -170,8 +170,8 @@ float:left;
 								<c:forEach items="${listssv }" var="lists">
 									<tr>
 										<td>${lists.PMS.productType }</td>
-										<td>${lists.PMS.need }</td>
-										<td>${lists.PMS.sale }</td>
+										<td>${lists.meedssum }</td>
+										<td>${lists.salesum }</td>
 										<td>${lists.saleIncom }</td>
 										<td>${lists.PMS.stockoun }</td>
 										<td>${lists.saleLost }</td>

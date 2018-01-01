@@ -37,6 +37,8 @@ public class SearchServiceImpl implements SearchService {
 			int lost = v.getPP().getPrice()*v.getPMS().getStockoun();
 			v.setSaleIncom(income);
 			v.setSaleLost(lost);
+			v.setMeedssum(v.getPMS().getMoscowNeed()+v.getPMS().getNewdelhiNeed()+v.getPMS().getSingaporeNeed()+v.getPMS().getHongkongNeed()+v.getPMS().getOnlineNeed());
+			v.setSalesum(v.getPMS().getMoscowSale()+v.getPMS().getNewdelhiSale()+v.getPMS().getSingaporeSale()+v.getPMS().getHongkongSale()+v.getPMS().getOnlineSale());
 			SSV2.add(v);
 		}
 		return SSV2;
@@ -77,7 +79,14 @@ public class SearchServiceImpl implements SearchService {
 	@Override
 	public List<SaleIncomVo> selectPathAbilitybyCompanyID(PysicalEmploeePo po) {
 		// TODO Auto-generated method stub
-		return SSM.selectPathAbilitybyCompanyID(po);
+		List<SaleIncomVo> SSV = SSM.selectPathAbilitybyCompanyID(po);
+		List<SaleIncomVo> SSV2 = new ArrayList<SaleIncomVo>();
+		for(SaleIncomVo v:SSV){
+			v.setMeedssum(v.getPMS().getMoscowNeed()+v.getPMS().getNewdelhiNeed()+v.getPMS().getSingaporeNeed()+v.getPMS().getHongkongNeed()+v.getPMS().getOnlineNeed());
+			v.setSalesum(v.getPMS().getMoscowSale()+v.getPMS().getNewdelhiSale()+v.getPMS().getSingaporeSale()+v.getPMS().getHongkongSale()+v.getPMS().getOnlineSale());
+			SSV2.add(v);
+		}
+		return SSV2;
 	}
 
 	@Override
@@ -93,11 +102,11 @@ public class SearchServiceImpl implements SearchService {
 		//整理数据
 		List<SaleIncomVo> ListSIV2 = new ArrayList<SaleIncomVo>();
 		for(SaleIncomVo vo:ListSIV){
-			int saleIncomSum = vo.getPP().getPrice()*(vo.getPMS().getHongkongSale()+vo.getPMS().getMoscowSale()+vo.getPMS().getNewdelhiSale()+vo.getPMS().getSingaporeSale());
+			int saleIncomSum = vo.getPP().getPrice()*(vo.getPMS().getHongkongSale()+vo.getPMS().getMoscowSale()+vo.getPMS().getNewdelhiSale()+vo.getPMS().getSingaporeSale()+vo.getPMS().getOnlineSale());
 			vo.setSaleIncomSum(saleIncomSum);
-			int saleCostSum = vo.getCP().getCost()*(vo.getPMS().getHongkongSale()+vo.getPMS().getMoscowSale()+vo.getPMS().getNewdelhiSale()+vo.getPMS().getSingaporeSale());
+			int saleCostSum = vo.getCP().getCost()*(vo.getPMS().getHongkongSale()+vo.getPMS().getMoscowSale()+vo.getPMS().getNewdelhiSale()+vo.getPMS().getSingaporeSale()+vo.getPMS().getOnlineSale());
 			vo.setSaleCostSum(saleCostSum);
-			int youjiSum = vo.getPP().getYouji()*(vo.getPMS().getHongkongSale()+vo.getPMS().getMoscowSale()+vo.getPMS().getNewdelhiSale()+vo.getPMS().getSingaporeSale());
+			int youjiSum = vo.getPP().getYouji()*(vo.getPMS().getHongkongSale()+vo.getPMS().getMoscowSale()+vo.getPMS().getNewdelhiSale()+vo.getPMS().getSingaporeSale()+vo.getPMS().getOnlineSale());
 			vo.setYoujiSum(youjiSum);
 			ListSIV2.add(vo);
 		}
@@ -112,7 +121,14 @@ public class SearchServiceImpl implements SearchService {
 		po.setQuater(quarter);
 		po.setCompanyid(companyid);
 		
-		return SSM.selectGlobalPathSharebycompanyid(po);
+		List<GlobalPathNeedsVo> SSV = SSM.selectGlobalPathSharebycompanyid(po);
+		List<GlobalPathNeedsVo> SSV2 = new ArrayList<GlobalPathNeedsVo>();
+		for(GlobalPathNeedsVo v:SSV){
+			v.setMeedssum(v.getPms().getMoscowNeed()+v.getPms().getNewdelhiNeed()+v.getPms().getSingaporeNeed()+v.getPms().getHongkongNeed()+v.getPms().getOnlineNeed());
+			v.setSalesum(v.getPms().getMoscowSale()+v.getPms().getNewdelhiSale()+v.getPms().getSingaporeSale()+v.getPms().getHongkongSale()+v.getPms().getOnlineSale());
+			SSV2.add(v);
+		}
+		return SSV2;
 	}
 
 	@Override
@@ -147,16 +163,29 @@ public class SearchServiceImpl implements SearchService {
 			for(int j = 0;j<4;j++){
 				System.out.println("i["+j+"] = "+i[j]);
 				if(i[j]==1)
-					mStr[j]="是";
-				else
-					mStr[j]="否";
+					mStr[j]="●";
+				/*else
+					mStr[j]="否";*/
 			}
-			if(s.getCM().getIsPhy()==1)
-				s.setIsphy("实体店");
-			else
-				s.setIsphy("网店");
 			s.setStoreList(i);
 			s.setmStr(mStr);
+			if(s.getCM().getIsPhy() != 1){
+				List<StoreInforVo> SIV2 = new ArrayList<StoreInforVo>();
+				for(StoreInforVo p:SIV){
+					if(p.getC().getName().equals(s.getC().getName())){
+						System.out.println("p.getC().getName()"+p.getC().getName());
+						System.out.println("p.getCM().getIsPhy()"+p.getCM().getIsPhy());
+						p.setIsphy("●");
+						s=p;
+						continue;
+					}
+					SIV2.add(p);
+				}
+				SIV.removeAll(SIV);
+				for(StoreInforVo p:SIV2){
+					SIV.add(p);
+				}
+			}
 			SIV.add(s);
 		}
 		System.out.println("-----For Ended-----");
