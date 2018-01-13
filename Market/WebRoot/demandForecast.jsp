@@ -139,8 +139,7 @@ td, th {
 		<div class="panel-heading">需求量预测</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
-				<li><a href="#notice1" data-toggle="tab">
-						课程介绍</a></li>
+				<li><a href="#notice1" data-toggle="tab"> 课程介绍</a></li>
 				<li class="active"><a href="#notice2" data-toggle="tab">决策界面</a></li>
 			</ul>
 			<div class="tab-content">
@@ -165,7 +164,7 @@ td, th {
 					<form class="form-horizontal" id="form" method="post" action="">
 						<table class="table table-bordered">
 							<thead>
-								<tr>
+								<tr class="success">
 									<th rowspan="2"></th>
 									<th colspan="3">上季度</th>
 									<th colspan="3">当前季度</th>
@@ -173,7 +172,7 @@ td, th {
 							</thead>
 							<tbody>
 								<tr>
-									<td></td>
+									<td>销售中心</td>
 									<td>销售人员数量</td>
 									<td>销售人员人均需求量</td>
 									<td>总需求量</td>
@@ -246,8 +245,8 @@ td, th {
 											onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
 											onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
 											class="form-control" class="form-control" type="text"
-											name="demand_num_two" value="${items.demandNumTwo}"> <input
-											type="hidden" name="ids" value="${items.id}"></td>
+											name="demand_num_two" value="${items.demandNumTwo}">
+											<input type="hidden" name="ids" value="${items.id}"></td>
 									</tr>
 									<c:set var="sum" value="${sum+items.demandNumTwo}"></c:set>
 								</c:forEach>

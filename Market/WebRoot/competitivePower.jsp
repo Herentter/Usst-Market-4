@@ -132,21 +132,23 @@ td, th {
 				<div class="tab-pane fade in active" id="notice2">
 					<form class="form-horizontal" id="form" method="post" action="">
 						<table class="table table-bordered">
-							<tr>
-								<td colspan="3">上季度固定及运行产能</td>
+							<tr class="success">
+								<td colspan="4">上季度固定及运行产能</td>
 							</tr>
 							<tr>
-								<td>公司</td>
-								<td>固定产能</td>
-								<td>运行产能</td>
-								<td>有效运行产能</td>
+								<td><B>公司</B></td>
+								<td><B>固定产能</B></td>
+								<td><B>运行产能</B></td>
+								<td><B>有效运行产能</B></td>
 							</tr>
 							<c:forEach items="${CPVoList}" var="items">
 								<tr>
 									<td>${items.company.name}</td>
 									<td>${items.capacityNow+items.capacityAdd}</td>
 									<td>${items.operateCapacity}</td>
-									<td>${items.operateCapacity*items.workerEfficiency}</td>
+									<td><fmt:formatNumber type="number"
+											value="${items.operateCapacity*items.workerEfficiency}"
+											pattern="0" maxFractionDigits="0" /></td>
 								</tr>
 							</c:forEach>
 						</table>

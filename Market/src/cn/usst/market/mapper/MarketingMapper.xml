@@ -60,7 +60,11 @@
     <select id="selectBrandProfitByCompanyId" parameterType="java.lang.Integer"
             resultType="cn.usst.market.po.Profit">
 		select company_id as companyId,product_id as
-		productId,sale
+		productId,singapore_sale as singaporeSale,
+		hongkong_sale as hongkongSale,moscow_sale as moscowSale,
+		newdelhi_sale as newdelhiSale,online_sale as onlineSale,
+		singapore_need as singaporeNeed,hongkong_need as hongkongNeed,
+		moscow_need as moscowNeed,newdelhi_need as newdelhiNeed,online_need as onlineNeed
 		from product_market_share where
 		company_id=#{0} and quarter=#{1}
 	</select>
@@ -68,8 +72,12 @@
     <select id="selectMarketShareByCompetitionId" parameterType="java.lang.Integer"
             resultType="cn.usst.market.po.MarketShare">
 		select company_id as companyId,product_id as
-		productId,product_type as
-		productType,need,market_share as marketShare,sale
+		productId,product_type as productType,
+		market_share as marketShare,singapore_sale as singaporeSale,
+		hongkong_sale as hongkongSale,moscow_sale as moscowSale,
+		newdelhi_sale as newdelhiSale,online_sale as onlineSale,
+		singapore_need as singaporeNeed,hongkong_need as hongkongNeed,
+		moscow_need as moscowNeed,newdelhi_need as newdelhiNeed,online_need as onlineNeed
 		from product_market_share
 		where competition_id=#{0} and quarter=#{1}
 	</select>

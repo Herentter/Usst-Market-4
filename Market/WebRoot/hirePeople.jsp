@@ -9,7 +9,7 @@
 			+ path + "/";
 %>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-<link rel="stylesheet" type="text/css" href="css/design.css">
+<!-- <link rel="stylesheet" type="text/css" href="css/design.css"> -->
 <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
 
 <style type="text/css">
@@ -61,7 +61,7 @@ body {
         	border:1px solid #0ff;
         	margin-top:10px;
         	padding:20px;
-        	min-height:220px;
+        	min-height:150px;
         	font-size:14px;
         	letter-spacing:1px;
         }
@@ -122,6 +122,17 @@ body {
 		width:80%;
 		
 	} */
+	
+	#table1{
+		width:800px;
+
+	}
+	.data input{
+		text-align:center;
+	}
+	#form1 button{
+		margin-left:750px;
+	}
 
 </style>
 <script type="text/javascript">
@@ -145,15 +156,8 @@ body {
 						<div class="text0">
 							在设计品牌之前重新回顾目标消费者的需求是种明智的做法。
 						</div>
-						
-						<div class="text0">
-							品牌设计是市场营销方面最为困难的一项任务。
-						</div>
 						<div class="text1">
 							客户购买的是受益，而工厂生产的是产品组件。 您的挑战在于，要通过选择组件来满足消费者在使用方面的需要。
-						</div>
-						<div class="text1">
-							组件选择完成之后，在相应的决策界面，您可以看到该品牌的材料总成本。 然而，您需要注意的是，生产成本不仅仅是各项组件成本的简单相加。 它还包含了人工成本和工厂的固定成本。 您会发现，单位生产成本将随着产量的增加而急剧下降。 您的销售价格可以定在生产成本的两倍左右，或者适当少于两倍。
 						</div>
                    	</div>
                    	<div class="left">
@@ -185,20 +189,18 @@ body {
                    	</div>
                 </div>
                 <div class="tab-pane fade in active" id="notice2">
-                	<form action="updateHirePeople.do?quarter=${quarter }" method="post">
-	                	<table class="table table-bordered">
+                	<form id="form1" action="updateHirePeople.do?quarter=${quarter }" method="post">
+	                	<table id="table1" class="table table-bordered">
 	                		<thead>
-	                			<tr>
-	                				
+	                			<tr class="success">
 	                				<td>城市</td>
 	                				<td>销售人员 </td>
 	                				<td>售后人员</td>
-	                				
 	                			</tr>
 	                		</thead>
 	                		<c:forEach items="${hirePeopleListVo }" var="item" varStatus="status">
 		                		<input type="hidden" name="hirePeopleList[${status.index }].id" value="${item.hirePeople.id }">
-		                		<tr>
+		                		<tr class="data">
 		                			<td>${item.city }</td>
 		                			
 		                			<td><input class="form-control peopel_num" type="text" name="hirePeopleList[${status.index }].saleman" value="${item.hirePeople.saleman }"
@@ -207,28 +209,21 @@ body {
 		                			onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></td>
 		                		</tr>
 	                		</c:forEach>
+	                		<tr>
+	                			<td><label>总雇佣费用</label></td>
+	                			<td colspan="2" id="total_salary"></td>
+	                		</tr>
 	                		
 	                	</table>
 	                	
-	                	<table class="table table-bordered">
-		                	<tr>
-		                		<td>总员工数</td>
-		                		<td id="total_people">${totalPeople}</td>
-							</tr>
-		                	<tr>
-		                		<td>员工工资</td>
-		                		<td id="salary">${salesSalary.salaryTotal}</td>
-							</tr>
-		                	<tr>
-		                		<td>该季度雇佣费用</td>
-		                		<td id="total_salary">fff</td>
-							</tr>
-						</table>
-						
-	                	<input type="submit" value="提交">
+                		<div class="col-md-2" style="display:none;" id="total_people">
+                		${totalPeople}
+                		</div>	
+                		<div class="col-md-2" style="display:none;" id="salary">
+                		${salesSalary.salaryTotal}
+                		</div>
+	                	<button type="button" class="btn btn-info" onclick="submit()">提交</button>
                 	</form>
-                	
-						
                 </div>
             </div>
           </div>
@@ -244,6 +239,11 @@ body {
 		var total_salary=total_people*salary;
 		$("#total_salary").text(total_salary);
 	})
+	
+	function submit(){
+		alert("提交成功！")
+		$("#form1").submit();
+	}
 	
 </script>
 <script type="text/javascript" src="js/classIntroduction.js"></script>

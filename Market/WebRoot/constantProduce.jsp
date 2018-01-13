@@ -173,7 +173,7 @@ body {
                 	<form id="form" class="form-horizontal" action="" method="post">
 						<table class="table table-bordered">
 							<thead>
-								<tr>
+								<tr class="success">
 									<th></th>
 									<th>件/天</th>
 									<th>件/季度</th>

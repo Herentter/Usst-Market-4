@@ -46,8 +46,9 @@ public class MarketingController {
                 } else {
                     price = 0;
                 }
-                // 再查询销量
-                int sale = profit.getSale();
+                // 再查询总销量
+                int sale = profit.getSingaporeSale() + profit.getHongkongSale() + profit.getMoscowSale() + profit.getNewdelhiSale() + profit.getOnlineSale();
+                profit.setTotalSale(sale);
                 //销售收入
                 int salesproceeds = price * sale;
                 profit.setSalesproceeds(salesproceeds);
@@ -95,16 +96,16 @@ public class MarketingController {
                 int pro = profit.getGrossmargin() - profit.getCostofbrand();
                 profit.setProfit(pro);
                 //利润占比
-                if (profit.getSalesproceeds() != 0) {
-                    String profitMargin = profit.getProfit() * 100 / profit.getSalesproceeds() + "";
+                if (sale != 0) {
+                    String profitMargin = profit.getProfit() * 100 / sale + "";
                     profit.setProfitMargin(profitMargin);
                 } else {
                     profit.setProfitMargin(0 + "");
                 }
 
                 //单位利润
-                if (profit.getSale() != 0) {
-                    String unitProfit = profit.getProfit() / profit.getSale() + "";
+                if (sale != 0) {
+                    String unitProfit = profit.getProfit() / sale + "";
                     profit.setUnitProfit(unitProfit);
                 } else {
                     profit.setUnitProfit(0 + "");
@@ -127,32 +128,35 @@ public class MarketingController {
         List<MarketShare> list1;
         //将公司信息存入hashMap中
         HashMap<String, List<MarketShare>> hashMap = new HashMap();
-        for (MarketShare marketShare : list) {
+        if (list.size() != 0) {
 
-            list1 = new ArrayList();
-            //公司名称
-            int companyId = marketShare.getCompanyId();
-            String companyName = marketingMapper.selectCompanyName(companyId);
-            marketShare.setCompanyName(companyName);
+            for (MarketShare marketShare : list) {
 
-            //品牌名称
-            int productId = marketShare.getProductId();
-            String productName = marketingMapper.selectProductName(productId);
-            marketShare.setProductName(productName);
+                list1 = new ArrayList();
+                //公司名称
+                int companyId = marketShare.getCompanyId();
+                String companyName = marketingMapper.selectCompanyName(companyId);
+                marketShare.setCompanyName(companyName);
 
-            //品牌评价
-            DecimalFormat df = new DecimalFormat("0.00");
-            int sale = marketShare.getSale();
-            int need = marketShare.getNeed();
-            String eva = df.format((double) sale / (double) need);
-            marketShare.setEva(Double.parseDouble(eva));
+                //品牌名称
+                int productId = marketShare.getProductId();
+                String productName = marketingMapper.selectProductName(productId);
+                marketShare.setProductName(productName);
 
-            //如果当前遍历的信息的键与添加到hashMap中的相同则添加到该键对应的值中
-            if (hashMap.size() != 0 && hashMap.containsKey(companyName)) {
-                hashMap.get(companyName).add(marketShare);
-            } else {
-                list1.add(marketShare);
-                hashMap.put(companyName, list1);
+                //品牌评价
+                DecimalFormat df = new DecimalFormat("0.00");
+                int sale = marketShare.getSingaporeSale() + marketShare.getHongkongSale() + marketShare.getMoscowSale() + marketShare.getNewdelhiNeed() + marketShare.getOnlineSale();
+                int need = marketShare.getSingaporeNeed() + marketShare.getHongkongNeed() + marketShare.getMoscowNeed() + marketShare.getNewdelhiNeed() + marketShare.getOnlineNeed();
+                String eva = df.format((double) sale / (double) need);
+                marketShare.setEva(Double.parseDouble(eva));
+
+                //如果当前遍历的信息的键与添加到hashMap中的相同则添加到该键对应的值中
+                if (hashMap.size() != 0 && hashMap.containsKey(companyName)) {
+                    hashMap.get(companyName).add(marketShare);
+                } else {
+                    list1.add(marketShare);
+                    hashMap.put(companyName, list1);
+                }
             }
         }
         modelAndView.addObject("hashMap", hashMap);
@@ -401,31 +405,6 @@ public class MarketingController {
         modelAndView.addObject("adInfo", adPojo);
         modelAndView.addObject("detailList", list);
         modelAndView.setViewName("queryAd");
-        return modelAndView;
-    }
-
-    @MethodLog(description = "主流媒体投放")
-    @RequestMapping(value = "/adOfMain.do")
-    public ModelAndView adOfMain(HttpServletRequest request) {
-
-        ModelAndView modelAndView = new ModelAndView();
-        int companyId = (int) request.getSession().getAttribute("companyId");
-        int quarter = Integer.parseInt(request.getParameter("quarter"));
-        List<MainMedia> list = marketingMapper.selectMainMedia(companyId);
-        for (MainMedia mainMedia : list) {
-            int productId = mainMedia.getProductId();
-            String productName = marketingMapper.selectProductName1(companyId, productId);
-            mainMedia.setProductName(productName);
-            String costStr = marketingMapper.selectPostOffice(productId, quarter - 1);
-            if (costStr == null) {
-                mainMedia.setCost(0);
-            } else {
-                int cost = Integer.parseInt(costStr);
-                mainMedia.setCost(cost);
-            }
-        }
-        modelAndView.addObject("mainMediaInfo", list);
-        modelAndView.setViewName("adOfMain");
         return modelAndView;
     }
 

@@ -160,7 +160,7 @@
             <div class="tab-pane fade in active" id="notice2">
                 <table class="table table-bordered table-hover">
                     <thead>
-                    <tr>
+                    <tr class="success">
                         <th>品牌</th>
                         <th>价格</th>
                         <th>邮寄返款</th>
@@ -169,7 +169,7 @@
                     <tbody>
                     <c:forEach items="${productPrice}" var="productPrice">
                         <tr>
-                            <td colspan="3" style="text-align: center">${productPrice.key}</td>
+                            <td colspan="3" style="text-align: left">${productPrice.key}</td>
                         </tr>
                         <c:forEach items="${productPrice.value}" var="pp">
                             <tr>

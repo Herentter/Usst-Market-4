@@ -28,7 +28,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="js/jquery-2.2.4.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/jquery.pagination.js"></script>
-
+<script type="text/javascript">
+ $(function(){
+	 $("#format").hide();
+ });
+ function openCloseFormat(){
+	 $("#format").toggle("normal");
+ }
+</script>
 </head>
 <body>
 	<div class="panel panel-info">
@@ -37,6 +44,56 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="container">
 		<div class="row" id="row2">
 			<div class="col-md-9">
+			<div>
+				<button class="btn btn-success" onclick = "openCloseFormat()">比率公式</button>
+			</div><br />
+			<div class="panel panel-default" id = "format">
+					<div class="panel-heading">
+						<label>比率公式</label>
+					</div>
+					<div class="pabel-body">
+						<table class="table table-bordered" id="liquidity">
+							<thead>
+								<tr>
+									<td>比率</td>
+									<td>公式</td>
+								</tr>
+							</thead>
+							<tr>
+								<td>速动比率</td>
+								<td>速动比率 =（现金 + 三个月定期存款）/ 常规银行贷款</td>
+							</tr>
+							<tr>
+								<td>库存周转率</td>
+								<td>库存周转率 = 销货成本 / 成品库存</td>
+							</tr>
+							<tr>
+								<td>固定资产周转率</td>
+								<td>固定资产周转率 = 销售收入 / 净固定资产</td>
+							</tr>
+							<tr>
+								<td>总资产周转率</td>
+								<td>总资产周转率 = 销售收入 / 总资产</td>
+							</tr>
+							<tr>
+								<td>负债比率</td>
+								<td>负债比率 = 贷款 / 总资产</td>
+							</tr>
+							<tr>
+								<td>毛利率</td>
+								<td>毛利率 = 销售毛利 / 销售收入</td>
+							</tr>
+							<tr>
+								<td>净利率</td>
+								<td>净利率 = 净收入 / 销售收入</td>
+							</tr>
+							<tr>
+								<td>资产回报率</td>
+								<td>资产回报率 = 净收入 / 总资产</td>
+							</tr>
+						</table>
+					</div>
+				</div>
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<label>流动性比率</label>
@@ -164,6 +221,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<td>${financialRatioVo.financialRatio.returnRatio }</td>
 							</tr>
 						</table>
+						
 					</div>
 				</div>
 			</div>

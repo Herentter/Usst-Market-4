@@ -36,6 +36,7 @@ import cn.usst.market.po.HirePeopleOnlineVo;
 import cn.usst.market.po.HirePeopleVo;
 import cn.usst.market.po.IncomeStatement;
 import cn.usst.market.po.MarketInfo;
+import cn.usst.market.po.OnlineStore;
 import cn.usst.market.po.OperationCapacity;
 import cn.usst.market.po.ProductInfo;
 import cn.usst.market.po.ProductMarketShare;
@@ -77,7 +78,7 @@ public interface CompanyService {
     
     List<Duty> showAllPosition();
     
-    List<MarketInfo> showMarketInfo();
+    List<MarketInfo> showMarketInfo(int competitionId);
     
     
     //Guan
@@ -334,7 +335,7 @@ public interface CompanyService {
 
 		public HirePeopleVo selectHirePeople(int companyId, int marketInt, int quarter);
 		
-		public HirePeopleOnlineVo selectHirePeopleOnline(int companyId, int marketInt, int quarter);
+		public HirePeopleOnline selectHirePeopleOnline(int companyId, int quarter);
 		
 
 		//更新销售人员
@@ -613,4 +614,25 @@ List<CompanyProduct> selectProductByCompanyIdAndQuarter(int company_id,int quart
 		
 		void updateCashFlowResultJiChu(float jichuXianjin,int company_id,int quarter);
 		
+		
+		List<OnlineStore> selectAndCountTotalNeed(List<MarketInfo> marketInfoList);
+		
+		CompanyMarket selectCompanyMarket(Integer companyId, Integer isPhy, Integer quarter);
+
+		
+		void calCashFlowResult(int company_id,int quarter);
+		
+		void calIncomeResult(int company_id,int quarter);
+		
+		void calBalanceSheetResult(int company_id,int quarter);
+		
+		void deleteCompanyMarket(CompanyMarket companyMarket1);
+
+		public void updateCompanyQuarterTime(Integer companyId, int quarter, String endTime);
+		
+		int selectCompanyMarket1(int companyId, int isPhy);
+		
+		void updateCompanyMarket1(CompanyMarket companyMarket);
+
+	    void updateCompanyMarket2(CompanyMarket companyMarket);
 }

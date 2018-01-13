@@ -28,9 +28,7 @@ body {
 }
 
 .table {
-	width: 500px;
-	height: 300px;
-	background: white;
+	width: 800px;
 }
 
 td, th {
@@ -153,7 +151,7 @@ float:left;
 						name="addSalesSalaryForm" action="" >
 						<table class="table table-bordered">
 							<thead>
-								<tr>
+								<tr class="success" style="font-weight:bold;color:#333;">
 									<input type="hidden" value="${len }" id="len"/>
 									<input type="hidden" value="${quater }" name="quater"/>
 									<input type="hidden" value="${add }" name="add"/>
@@ -166,15 +164,17 @@ float:left;
 									<td>利润占收入比重</td>
 								</tr>
 							</thead>
-							<tr>
-										<td>${vo.saleIncomSum }</td>
-										<td>${vo.youjiSum }</td>
-										<td>${vo.saleCostSum }</td>
-										<td>${fuzzyincom }</td>
-										<td>${salary_sum }</td>
-										<td>${income }</td>
-										<td>${rate }</td>
-							</tr>
+							<tbody>
+								<tr>
+									<td>${vo.saleIncomSum }</td>
+									<td>${vo.youjiSum }</td>
+									<td>${vo.saleCostSum }</td>
+									<td>${fuzzyincom }</td>
+									<td>${salary_sum }</td>
+									<td>${income }</td>
+									<td>${rate }</td>
+								</tr>
+							</tbody>
 						</table>
 					</form>
 				</div>

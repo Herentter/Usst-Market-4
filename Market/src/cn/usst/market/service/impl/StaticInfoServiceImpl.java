@@ -31,12 +31,6 @@ public class StaticInfoServiceImpl implements StaticInfoService {
 	}
 
 	@Override
-	public List<MarketInfo> showMarketInfo() {
-		// TODO Auto-generated method stub
-		return staticInfoMapper.showMarketInfo();
-	}
-
-	@Override
 	public List<MediaInfo> showMediaInfo() {
 		// TODO Auto-generated method stub
 		return staticInfoMapper.showMediaInfo();
@@ -46,6 +40,12 @@ public class StaticInfoServiceImpl implements StaticInfoService {
 	public List<AdvertiseInfo> showAdvertiseInfo() {
 		// TODO Auto-generated method stub
 		return staticInfoMapper.showAdvertiseInfo();
+	}
+
+	@Override
+	public List<MarketInfo> showMarketInfo(int competitionId) {
+		// TODO Auto-generated method stub
+		return staticInfoMapper.showMarketInfo(competitionId);
 	}
 	
 }

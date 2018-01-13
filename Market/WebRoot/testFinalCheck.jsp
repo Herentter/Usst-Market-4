@@ -152,5 +152,23 @@
         </div>
     </c:otherwise>
 </c:choose>
+<button type="button" class="btn btn-default" onclick="submit(${quarter})">提交</button>
+<script type="text/javascript" src="js/jquery-2.2.4.js"></script>
+<script type="text/javascript">
+
+function submit(quarter1){
+	alert("提交成功！");
+	$.ajax({
+		url:"submit.do",
+		data:{quarter:quarter1},
+		type:"post",
+		success:function(data,status){
+			/* alert(data) */
+		}
+	});
+	
+}
+
+</script>
 </body>
 </html>

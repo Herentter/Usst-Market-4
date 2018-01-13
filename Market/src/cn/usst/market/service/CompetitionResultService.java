@@ -15,6 +15,7 @@ import cn.usst.market.po.HirePeople;
 import cn.usst.market.po.IdQuarter;
 import cn.usst.market.po.IncomeStatement;
 import cn.usst.market.po.MarketInfo;
+import cn.usst.market.po.MarketInfo2;
 import cn.usst.market.po.MarketShareWeight;
 import cn.usst.market.po.MediaInfo;
 import cn.usst.market.po.HirePeopleOnline;
@@ -96,7 +97,7 @@ public interface CompetitionResultService {
 	//公司人数
 	List<HirePeople> findCompanyPhySalesNum(int companyId, int quarter);
 	List<HirePeopleOnline> findCompanyNetSalesNum(int companyId, int quarter);
-	MarketInfo findMarketInfoById(int id);
+	MarketInfo2 findMarketInfoById(int id);
 	
 	//公司平衡计分卡
 	BalanceScore findBalanceScoreByCompanyIdQuarter(int companyId, int quarter);
@@ -105,8 +106,14 @@ public interface CompetitionResultService {
 
 	//找所有市场的信息，要用到市场需求量
 	List<MarketInfo> findAllMarketInfo();
+	//需求量用下面这个
+	List<MarketInfo2> findMarketInfoByCompetitionId(int competitionId);
 
 	//找公司开放的市场
 	CompanyMarket findCompanyMarketByCompanyIdQuarter(int companyId, int quarter, int isPhy);
+
+	//找单个产品市场份额
+	ProductMarketShare findProductMSByProductIdQuarter(int productId, int quarter);
+	
 
 }

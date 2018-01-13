@@ -151,7 +151,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="tab-pane fade" id="notice2">
                     <table class="table table-bordered">
                         <thead>
-                            <tr>
+                            <tr class="success">
                                 <th>区域</th>
                                 <th>工资</th>
                                 <th>福利</th>
@@ -180,7 +180,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="tab-pane fade" id="notice3">
                     <table class="table table-bordered">
                         <thead>
-                            <tr>
+                            <tr class="success">
                                  <th>区域</th>
                                 <th>工资</th>
                                 <th>福利</th>

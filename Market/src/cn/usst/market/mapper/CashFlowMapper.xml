@@ -290,7 +290,7 @@
 </update>
 
 <select id="selectSaleResult" resultType="Integer">
-	select ifnull(sum(sale),0) as sale from product_market_share where product_id=#{0} and quarter=#{1}
+	select ifnull(sum(singapore_sale+hongkong_sale+moscow_sale+newdelhi_sale),0) as sale from product_market_share where product_id=#{0} and quarter=#{1}
 </select>
 
 <select id="selectKuCunResult" resultType="Integer">

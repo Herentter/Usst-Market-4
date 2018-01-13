@@ -154,7 +154,7 @@ float:left;
 						name="addSalesSalaryForm" action="" >
 						<table class="table table-bordered">
 							<thead>
-								<tr>
+								<tr class="success">
 									<input type="hidden" value="${len }" id="len"/>
 									<th colspan="2">薪酬组合计划</th>
 								</tr>

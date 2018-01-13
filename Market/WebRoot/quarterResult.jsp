@@ -16,7 +16,7 @@
 <style type="text/css">
 body {
 	width: 99%;
-	margin: 5px;
+	margin: 4px;
 	height: 1500px;
 }
 
@@ -34,7 +34,7 @@ body {
 	background: white;
 }
 #three{
-    width: 400px;
+    width: 430px;
 	height: 100px;
 }
 td, th {
@@ -91,7 +91,9 @@ td, th {
 	margin-left: 30px;
 	margin-top: 10px;
 }
-
+.kaozuo {
+	text-align: left;
+}
 .text1 {
 	text-indent: 30px;
 	margin-top: 10px;
@@ -145,7 +147,7 @@ td, th {
 				<div class="tab-pane fade  in active" id="notice2">
 					<form class="form-horizontal" id="form" method="post" action="">
 						<table class="table table-bordered">
-							<tr>
+							<tr class="success">
 								<td colspan="8"><B>库存水平--件数</B></td>
 							</tr>
 							<tr>
@@ -159,6 +161,7 @@ td, th {
 								<td><B>季末库存</B></td>
 							</tr>
 							<c:set var="sum1" value="0"></c:set>
+							<c:set var="sum7" value="0"></c:set>
 							<c:set var="sum2" value="0"></c:set>
 							<c:set var="sum3" value="0"></c:set>
 							<c:set var="sum4" value="0"></c:set>
@@ -167,24 +170,25 @@ td, th {
 							<c:forEach items="${SLVoList}" var="items">
 								<tr>
 									<td>${items.companyProducts.name}</td>
-									<td>0</td>
-									<td>${items.sale+items.stock}</td>
-									<td>${items.sale+items.stock}</td>
-									<td>${items.need}</td>
-									<td>${items.sale}</td>
+									<td>${items.afterStock}</td>
+									<td>${items.singaporeSale+items.hongkongSale+items.moscowSale+items.newdelhiSale+items.onlineSale+items.stock}</td>
+									<td>${items.singaporeSale+items.hongkongSale+items.moscowSale+items.newdelhiSale+items.onlineSale+items.stock}</td>
+									<td>${items.singaporeNeed+items.hongkongNeed+items.moscowNeed+items.newdelhiNeed+items.onlineNeed}</td>
+									<td>${items.singaporeSale+items.hongkongSale+items.moscowSale+items.newdelhiSale+items.onlineSale}</td>
 									<td>${items.stockoun}</td>
 									<td>${items.stock}</td>
 								</tr>
-								<c:set var="sum1" value="${sum1+items.sale+items.stock}"></c:set>
-								<c:set var="sum2" value="${sum2+items.sale+items.stock}"></c:set>
-								<c:set var="sum3" value="${sum3+items.need}"></c:set>
-								<c:set var="sum4" value="${sum4+items.sale}"></c:set>
+								<c:set var="sum1" value="${sum1+items.singaporeSale+items.hongkongSale+items.moscowSale+items.newdelhiSale+items.onlineSale+items.stock}"></c:set>
+								<c:set var="sum2" value="${sum2+items.singaporeSale+items.hongkongSale+items.moscowSale+items.newdelhiSale+items.onlineSale+items.stock}"></c:set>
+								<c:set var="sum3" value="${sum3+items.singaporeNeed+items.hongkongNeed+items.moscowNeed+items.newdelhiNeed+items.onlineNeed}"></c:set>
+								<c:set var="sum4" value="${sum4+items.singaporeSale+items.hongkongSale+items.moscowSale+items.newdelhiSale+items.onlineSale}"></c:set>
 								<c:set var="sum5" value="${sum5+items.stockoun}"></c:set>
 								<c:set var="sum6" value="${sum6+items.stock}"></c:set>
+								<c:set var="sum7" value="${sum7+items.afterStock}"></c:set>
 							</c:forEach>
 							<tr>
 								<td>合计</td>
-								<td>0</td>
+								<td>${sum7}</td>
 								<td>${sum1}</td>
 								<td>${sum2}</td>
 								<td>${sum3}</td>
@@ -194,7 +198,7 @@ td, th {
 							</tr>
 						</table>
 						<table class="table table-bordered">
-							<tr>
+							<tr class="success">
 								<td colspan="6"><B>单位生产成本</B></td>
 							</tr>
 							<tr>
@@ -209,7 +213,7 @@ td, th {
 							<c:forEach items="${SLVoList}" var="items">
 								<tr>
 									<td>${items.companyProducts.name}</td>
-									<td>${items.sale+items.stock}</td>
+									<td>${items.singaporeSale+items.hongkongSale+items.moscowSale+items.newdelhiSale+items.onlineSale+items.stock}</td>
 									<td>${items.companyProducts.cost}</td>
 									<td><fmt:formatNumber type="number" value="${2500/operationCapacityList[0].operateCapacity+5*operationCapacityList[0].operateCapacity}"
 										pattern="0" maxFractionDigits="0" /></td>
@@ -222,7 +226,7 @@ td, th {
 							</c:forEach>
 						</table>
 						<table class="table table-bordered">
-							<tr>
+							<tr class="success">
 								<td colspan="5"><B>库存水平-成本/件数</B></td>
 							</tr>
 							<tr>
@@ -246,31 +250,33 @@ td, th {
 							</c:forEach>
 						</table>
 						<table class="table table-bordered" id="three">
-							<tr>
+							<tr class="success">
 								<td colspan="2"><B>运行产能利用率</B></td>
 							</tr>
 							<tr>
 								<td colspan="2"><B>运行产能</B></td>
 							</tr>
 							<tr>
-								<td>计划运行产能</td>
+								<td class="kaozuo">计划运行产能</td>
 								<td>${operationCapacityList[0].operateCapacity*65}</td>
 							</tr>
 							<tr>
-								<td>工厂工人生产率</td>
-								<td>${companyInvestmentList[0].workerEfficiency*100}%</td>
+								<td class="kaozuo">工厂工人生产率</td>
+								<td><fmt:formatNumber type="number"
+											value="${companyInvestmentList[0].workerEfficiency*100}"
+											pattern="0" maxFractionDigits="0" />%</td>
 							</tr>
 							<tr>
-								<td>有效运行产能</td>
+								<td class="kaozuo">有效运行产能</td>
 								<td><fmt:formatNumber type="number" value="${operationCapacityList[0].operateCapacity*65*companyInvestmentList[0].workerEfficiency}"
 										pattern="0" maxFractionDigits="0" /></td>
 							</tr>
 							<tr>
-								<td>已利用的有效运行产能</td>
+								<td class="kaozuo">已利用的有效运行产能</td>
 								<td>${sum2}</td>
 							</tr>
 							<tr>
-								<td>有效运行产能利用率</td>
+								<td class="kaozuo">有效运行产能利用率</td>
 								<td><fmt:formatNumber type="number" value="${sum2/(operationCapacityList[0].operateCapacity*65*companyInvestmentList[0].workerEfficiency)*100}"
 										pattern="0" maxFractionDigits="0" />%</td>
 							</tr>
@@ -279,17 +285,17 @@ td, th {
 								
 							</tr>
 							<tr>
-								<td>闲置的运行产能</td>
+								<td class="kaozuo">闲置的运行产能</td>
 								<td><fmt:formatNumber type="number" value="${(operationCapacityList[0].operateCapacity*65*companyInvestmentList[0].workerEfficiency)-
 								sum2}" pattern="0" maxFractionDigits="0" /></td>
 							</tr>
 							<tr>
-								<td>过剩运行产能</td>
+								<td class="kaozuo">过剩运行产能</td>
 								<td><fmt:formatNumber type="number" value="${100-(sum2/(operationCapacityList[0].operateCapacity*65*companyInvestmentList[0].workerEfficiency)*100)}"
 										pattern="0" maxFractionDigits="0" />%</td>
 							</tr>
 							<tr>
-								<td>运行产能过剩所产生的固定成本及人工</td>
+								<td class="kaozuo">运行产能过剩所产生的固定成本及人工</td>
 								<td><fmt:formatNumber type="number" value="${((operationCapacityList[0].operateCapacity*65*companyInvestmentList[0].workerEfficiency)-
 								sum2)*((2500/operationCapacityList[0].operateCapacity+5*operationCapacityList[0].operateCapacity)+(2500/operationCapacityList[0].operateCapacity+100))}" pattern="0" maxFractionDigits="0" /></td>
 							</tr>

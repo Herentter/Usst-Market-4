@@ -154,7 +154,7 @@ float:left;
 						name="addSalesSalaryForm" action="showWorkersSalary1.do?quarter=${quarter }">
 						<table class="table table-bordered">
 							<thead>
-								<tr>
+								<tr class="success">
 									<input type="hidden" value="${len }" id="len"/>
 									<th colspan="2">工厂工人薪酬</th>
 								</tr>

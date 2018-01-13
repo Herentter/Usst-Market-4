@@ -147,8 +147,8 @@
 	<!-- 找公司每个市场的人数 -->
 	
 	
-	<select id="findMarketInfoById" resultType="cn.usst.market.po.MarketInfo">
-		select * from market_info
+	<select id="findMarketInfoById" resultType="cn.usst.market.po.MarketInfo2">
+		select * from market_info2
 		where id=#{value}
 	</select>
 		
@@ -374,7 +374,7 @@
 	        <if test='marketShare != null and marketShare != "" '>
 	          market_share = #{marketShare, jdbcType=DOUBLE},
 	        </if>
-	        <if test='singaporeNeed != null and singaporeNeed != "" '>
+	        <!-- <if test='singaporeNeed != null and singaporeNeed != "" '>
 	          singapore_need = #{singaporeNeed, jdbcType=INTEGER},
 	        </if>
 	        <if test='singaporeSale != null and singaporeSale != "" '>
@@ -414,7 +414,7 @@
 	        </if>
 	        <if test='stock != null and stock != "" '>
 	          stock = #{stock, jdbcType=INTEGER},
-	        </if>
+	        </if> -->
 	        
 	     </trim>  
 	     where product_id = #{productId, jdbcType=INTEGER}
@@ -498,8 +498,14 @@
 	</select>
 	
 	<!-- 找市场总需求 -->
-	<select id="findAllMarketInfo" resultType="cn.usst.market.po.MarketInfo">
-		select * from market_info
+	<select id="findAllMarketInfo" resultType="cn.usst.market.po.MarketInfo2">
+		select * from market_info2
+	</select>
+	
+	<!-- 找市场总需求market_info2 -->
+	<select id="findMarketInfoByCompetitionId" resultType="cn.usst.market.po.MarketInfo2">
+		select * from market_info2
+		where competition_id=#{0}
 	</select>
 	
 	<!-- 根据公司id和季度找开放的市场,1实体市场，0网络市场 -->
@@ -508,6 +514,13 @@
 		where company_id=#{0}
 		and quarter=#{1}
 		and is_phy=#{2}
+	</select>
+	
+	<!-- 根据产品id和季度从产品销售份额表中找产品记录 -->
+	<select id="findProductMSByProductIdQuarter" resultType="cn.usst.market.po.ProductMarketShare">
+		select * from product_market_share
+		where product_id=#{0}
+		and quarter=#{1}
 	</select>
 	
 </mapper>

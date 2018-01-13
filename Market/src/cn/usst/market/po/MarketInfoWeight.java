@@ -11,6 +11,16 @@ public class MarketInfoWeight {
 
     private Float practical;
 
+    private Integer rent;
+
+    private Integer open;
+
+    private Integer webRent;
+
+    private Integer webOpen;
+
+    private String img;
+
     public Integer getId() {
         return id;
     }
@@ -49,5 +59,45 @@ public class MarketInfoWeight {
 
     public void setPractical(Float practical) {
         this.practical = practical;
+    }
+
+    public Integer getRent() {
+        return rent;
+    }
+
+    public void setRent(Integer rent) {
+        this.rent = rent;
+    }
+
+    public Integer getOpen() {
+        return open;
+    }
+
+    public void setOpen(Integer open) {
+        this.open = open;
+    }
+
+    public Integer getWebRent() {
+        return webRent;
+    }
+
+    public void setWebRent(Integer webRent) {
+        this.webRent = webRent;
+    }
+
+    public Integer getWebOpen() {
+        return webOpen;
+    }
+
+    public void setWebOpen(Integer webOpen) {
+        this.webOpen = webOpen;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img == null ? null : img.trim();
     }
 }

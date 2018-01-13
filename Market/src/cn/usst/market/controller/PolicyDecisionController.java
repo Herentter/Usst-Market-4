@@ -737,7 +737,9 @@ public class PolicyDecisionController {
 	@RequestMapping(value="/policyDecision/entitySailCenter.do")
 	public ModelAndView entitySailCenter(HttpServletRequest request,Integer currentQuarter,Integer companyId){
 		//System.out.println("实体销售中心。。。");
-		List<MarketInfo> marketInfoList=companyService.showMarketInfo();//市场信息列表
+        int competitionId = (int) request.getSession().getAttribute("competitionId");
+
+		List<MarketInfo> marketInfoList=companyService.showMarketInfo(competitionId);//市场信息列表
 		HashMap<MarketInfo, Integer> hm=new LinkedHashMap<MarketInfo,Integer>();//用于判断公司市场
 		//System.out.println("市场个数："+marketInfoList.size());
 		for(int i=0;i<marketInfoList.size(); i++){
@@ -782,8 +784,9 @@ public class PolicyDecisionController {
 	//网络销售中心
 	@RequestMapping(value="/policyDecision/webSailCenter.do")
 	public ModelAndView webSailCenter(HttpServletRequest request,Integer currentQuarter,Integer companyId){
-		
-		List<MarketInfo> marketInfoList=companyService.showMarketInfo();
+        int competitionId = (int) request.getSession().getAttribute("competitionId");
+
+		List<MarketInfo> marketInfoList=companyService.showMarketInfo(competitionId);
 		
 		
 		HashMap<MarketInfo, Integer> hm=new LinkedHashMap<MarketInfo,Integer>();

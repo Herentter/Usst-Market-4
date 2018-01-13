@@ -9,7 +9,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,45 +54,54 @@ public class CompetitionController {
 	@Autowired
 	private CompetitionResultService competitionResultService;
 	
+	@Transactional(propagation=Propagation.REQUIRED)
 	@RequestMapping("/designCompetition.do")
 	public ModelAndView designCompetition(HttpServletRequest request,Competition record){
-		
-		String startTime=request.getParameter("start_time");
-		String endTime=request.getParameter("end_time");
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-		Date parse1;
-		Date parse2;
-		try {
-			parse1 = sdf.parse(startTime);
-			parse2 = sdf.parse(endTime);
-			record.setStartTime(parse1);
-			record.setEndTime(parse2);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		record.setCurrentQuarter(1);
-		record.setStatus("待审核");
-		record.setIsLock(0);
-		//检验竞赛名称是否合法
-		String competitionName=record.getName();
 		String errorInfo="";
 		
-		if(competitionName.length()<6){
-			errorInfo="竞赛名称长度过短";
-		}else if(competitionName.length()>20){
-			errorInfo="竞赛名称长度过长";
-		}else{
-			Competition flag=null;
-			flag=competitionService.checkCompetitionExist(competitionName);
-			if(flag!=null){
-				errorInfo="竞赛已存在";
-			}else{
-				//在竞赛表中插入 提交的竞赛信息
-				competitionService.insert(record);		
-				errorInfo="竞赛创建成功";
+		try{
+			String startTime=request.getParameter("start_time");
+			String endTime=request.getParameter("end_time");
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			Date parse1;
+			Date parse2;
+			try {
+				parse1 = sdf.parse(startTime);
+				parse2 = sdf.parse(endTime);
+				record.setStartTime(parse1);
+				record.setEndTime(parse2);
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
+			
+			record.setCurrentQuarter(1);
+			record.setStatus("待审核");
+			record.setIsLock(0);
+			//检验竞赛名称是否合法
+			String competitionName=record.getName();
+			
+			
+			if(competitionName.length()<6){
+				errorInfo="竞赛名称长度过短";
+			}else if(competitionName.length()>20){
+				errorInfo="竞赛名称长度过长";
+			}else{
+				Competition flag=null;
+				flag=competitionService.checkCompetitionExist(competitionName);
+				if(flag!=null){
+					errorInfo="竞赛已存在";
+				}else{
+					//在竞赛表中插入 提交的竞赛信息
+					competitionService.insert(record);		
+					errorInfo="竞赛创建成功";
+				}
+			}
+			
+		}catch (DataAccessException e){
+			System.out.println(e);
 		}
+		
+		
 		ModelAndView modelAndView =  new ModelAndView();
 		modelAndView.addObject("errorInfo", errorInfo);
 		modelAndView.setViewName("success");	
@@ -98,174 +110,202 @@ public class CompetitionController {
 	
 	
 	//审核竞赛
+	@Transactional(propagation=Propagation.REQUIRED)
 	@RequestMapping("/checkCompetition.do")
 	public ModelAndView checkCompetition(HttpServletRequest request,Integer competitionId){
-		System.out.println("######竞赛id:#####"+competitionId);
-		Competition record=competitionService.findCompetitionById(competitionId);
-		
-		//生成竞赛许可证号
-		StringRandom sr=new StringRandom();
-		String competitionLicense=sr.getStringRandom(12);
-		record.setLicense(competitionLicense);
-		
-		record.setStatus("已通过");
-		//更新竞赛许可证号 和  竞赛状态 
-		
-		competitionService.updateCompetitionInfo(record);
+		try{
+			System.out.println("######竞赛id:#####"+competitionId);
+			Competition record=competitionService.findCompetitionById(competitionId);
+			
+			//生成竞赛许可证号
+			StringRandom sr=new StringRandom();
+			String competitionLicense=sr.getStringRandom(12);
+			record.setLicense(competitionLicense);
+			
+			record.setStatus("已通过");
+			//更新竞赛许可证号 和  竞赛状态 
+			
+			competitionService.updateCompetitionInfo(record);
 
-		//获取团队数量
-		int team=record.getTeam();
-		//团队中的人数
-		int peopleNumber=record.getMember();
-		//季度数
-		int quarterNumber=record.getQuarter();
-		
-		//计算出 本次竞赛的总需求量
-		int constant=1500;
-		
-		int total_sale=peopleNumber*quarterNumber*constant;
-		
-		
-		List<MarketInfoWeight> weightList=competitionService.selectMarketInfoWeight();
-		
-		String name="";
-		int perfect=0;
-		int business=0;
-		int practical=0;
-		
-		for(MarketInfoWeight market:weightList){
-			 name=market.getCityName();
-			 perfect=(int) (total_sale*market.getPerfect());
-			 business=(int) (total_sale*market.getBusiness());
-			 practical=(int) (total_sale*market.getPractical());
-			 competitionService.insertMarketInfo(competitionId,name,perfect,business,practical);
-		}
-		
-		
-		
-		
-		//根据竞赛信息 创建团队
-		for(int i = 1;i<=team;i++){
-			Company com=new Company();
-			com.setName("公司"+i);
-			com.setSerialNumber(i);			
-			//生成团队许可证
-			StringRandom sr2=new StringRandom();	
-			String license=sr2.getStringRandom(12);
+			//获取团队数量
+			int team=record.getTeam();
+			//团队中的人数
+			int peopleNumber=record.getMember();
+			//季度数
+			int quarterNumber=record.getQuarter();
 			
-			com.setLicense(license);
-			com.setCompetitionId(competitionId);
-			com.setPeopleNumber(peopleNumber);
-			companyService.insert(com);
-			//获取刚刚创建公司的 id
-			int companyId=com.getId();
+			//计算出 本次竞赛的总需求量
+			int constant=1500;
+			//获取实体店与网络店的销售比率
+			double rate=record.getPhysicalRate();
+		
+			int total_sale=peopleNumber*quarterNumber*constant;
 			
-			CompanyStock cs=new CompanyStock();
-			cs.setCompanyId(companyId);
-			cs.setOwner("经营团队");
-			cs.setQuarter(1);
-			cs.setStockType("普通股");
-			cs.setStockNumber(10000);
-			cs.setStockPrice(200);
-			cs.setTotalPrice(2000000);			
-			companyService.insertCompanyStock(cs);
-				
-			//插入 到表 company_quarter_time
-			CompanyQuarterTime companyQuarterTime=new CompanyQuarterTime();
-			companyQuarterTime.setCompetitionId(competitionId);
-			companyQuarterTime.setCompanyId(companyId);
-			companyQuarterTime.setQuarter(1);
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-			String startTime=df.format(new Date());
-			companyQuarterTime.setStartTime(startTime);
-			companyQuarterTime.setIsSubmit(0);
-			competitionResultService.insertCompanyQuarterTime(companyQuarterTime);
-
 			
-			//获取公司id
+			List<MarketInfoWeight> weightList=competitionService.selectMarketInfoWeight();
 			
-			System.out.println("####公司ID####:"+companyId);
-			//根据竞赛信息 在 财务表中插入数据
-			for (int j = 1; j <= quarterNumber; j++) {
-				
-				CashFlow cf=new CashFlow();
-				cf.setCompanyId(companyId);
-				cf.setQuarter(j);
-				cf.setXiaoshouGet((float) 0);
-				cf.setLixiGet((float) 0);
-				cf.setJishuGet((float) 0);
-				cf.setQitaGet((float) 0);
-				cf.setFankuanPay((float) 0);
-				cf.setShengchanPay((float) 0);
-				cf.setYanfaPay((float) 0);
-				cf.setGuanggaoPay((float) 0);
-				cf.setSalerPay((float) 0);
-				cf.setSalescenterPay((float) 0);
-				cf.setSalescenterWebPay((float) 0);
-				cf.setDiaoyanPay((float) 0);
-				cf.setHuoyunPay((float) 0);
-				cf.setKucunPay((float) 0);
-				cf.setNetmarketPay((float) 0);
-				cf.setTaxPay((float) 0);
-				cf.setLixiPay((float) 0);
-				cf.setJishuPay((float) 0);
-				cf.setQitaPay((float) 0);
-				cf.setGongchangPay((float) 0);
-				cf.setDaikuanNormalGet((float) 0);
-				cf.setDaikuanEmergyGet((float) 0);
-				cf.setCunkuanRegularGet((float) 0);
-				cf.setDaikuanNormalPay((float) 0);
-				cf.setDaikuanEmergyPay((float) 0);
-				cf.setCunkuanRegularPay((float) 0);
-				cf.setYuE((float) 0);
-				
-				
-				BalanceSheet bs=new BalanceSheet();
-				bs.setCompanyId(companyId);
-				bs.setQuarter(j);
-				bs.setHuobi((float) 0);
-				bs.setCunkuan((float) 0);
-				bs.setLixiCollection((float) 0);
-				bs.setCunhuo((float) 0);
-				bs.setZichan((float) 0);
-				bs.setDaikuanEmergency((float) 0);
-				bs.setLixiPay((float) 0);
-				bs.setDaikuanNormal((float) 0);
-				bs.setGuben((float) 2000000);
-				bs.setLiucun((float) 0);
-				
-
-				IncomeStatement is=new IncomeStatement();
-				is.setCompanyId(companyId);
-				is.setQuarter(j);
-				is.setYingyeIncome((float) 0);
-				is.setLixiIncome((float) 0);
-				is.setYingyeCost((float) 0);
-				is.setFankuan((float)0);
-				is.setYanfa((float)0);
-				is.setGuanggao((float)0);
-				is.setSalerCost((float)0);
-				is.setSalescenterCost((float)0);
-				is.setSalescenterWebCost((float)0);
-				is.setBaogao((float)0);
-				is.setHuoyun((float)0);
-				is.setKucun((float)0);
-				is.setExcessCapacity((float)0);
-				is.setZhejiu((float)0);
-				is.setNetmarketCost((float)0);
-				is.setLixiCost((float)0);
-				is.setTechIncome((float)0);
-				is.setQitaIncome((float)0);
-				is.setTechCost((float)0);
-				is.setQitaCost((float)0);
-				is.setTaxCost((float)0);
-				
-				
-				companyService.insertCashFlowFirst(cf);
-				companyService.insertBalanceSheetFirst(bs);
-				companyService.insertIncomeStatementFirst(is);
+			String name="";
+			int perfect=0;
+			int business=0;
+			int practical=0;
+			
+			int web_perfect=0;
+			int web_business=0;
+			int web_practical=0;
+			
+			int rent=0;
+			int open=0;
+			int web_rent=0;
+			int web_open=0;
+			String img="";
+			
+			for(MarketInfoWeight market:weightList){
+				 name=market.getCityName();
+				 perfect=(int) (Math.floor(total_sale*rate*market.getPerfect()/10)*10);
+				 business=(int) (Math.floor(total_sale*rate*market.getBusiness()/10)*10);
+				 practical=(int) (Math.floor(total_sale*rate*market.getPractical()/10)*10);
+				 
+				 web_perfect=(int) (Math.floor(total_sale*(1-rate)*market.getPerfect()/10)*10);
+				 web_business=(int) (Math.floor(total_sale*(1-rate)*market.getBusiness()/10)*10);
+				 web_practical=(int) (Math.floor(total_sale*(1-rate)*market.getPractical()/10)*10);
+				 rent=market.getRent();
+				 open=market.getOpen();
+				 web_rent=market.getWebRent();
+				 web_open=market.getWebOpen();
+				 img=market.getImg();
+				 competitionService.insertMarketInfo(competitionId,name,perfect,business,practical,
+						 web_perfect,web_business,web_practical,rent,open,web_rent,web_open,img);
 			}
+			
+			
+			
+			
+			//根据竞赛信息 创建团队
+			for(int i = 1;i<=team;i++){
+				Company com=new Company();
+				com.setName("公司"+i);
+				com.setSerialNumber(i);			
+				//生成团队许可证
+				StringRandom sr2=new StringRandom();	
+				String license=sr2.getStringRandom(12);
+				
+				com.setLicense(license);
+				com.setCompetitionId(competitionId);
+				com.setPeopleNumber(peopleNumber);
+				companyService.insert(com);
+				//获取刚刚创建公司的 id
+				int companyId=com.getId();
+				
+				CompanyStock cs=new CompanyStock();
+				cs.setCompanyId(companyId);
+				cs.setOwner("经营团队");
+				cs.setQuarter(1);
+				cs.setStockType("普通股");
+				cs.setStockNumber(10000);
+				cs.setStockPrice(200);
+				cs.setTotalPrice(2000000);			
+				companyService.insertCompanyStock(cs);
+					
+				//插入 到表 company_quarter_time
+				CompanyQuarterTime companyQuarterTime=new CompanyQuarterTime();
+				companyQuarterTime.setCompetitionId(competitionId);
+				companyQuarterTime.setCompanyId(companyId);
+				companyQuarterTime.setQuarter(1);
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+				String startTime=df.format(new Date());
+				companyQuarterTime.setStartTime(startTime);
+				companyQuarterTime.setIsSubmit(0);
+				competitionResultService.insertCompanyQuarterTime(companyQuarterTime);
+
+				
+				//获取公司id
+				
+				System.out.println("####公司ID####:"+companyId);
+				//根据竞赛信息 在 财务表中插入数据
+				for (int j = 1; j <= quarterNumber; j++) {
+					
+					CashFlow cf=new CashFlow();
+					cf.setCompanyId(companyId);
+					cf.setQuarter(j);
+					cf.setXiaoshouGet((float) 0);
+					cf.setLixiGet((float) 0);
+					cf.setJishuGet((float) 0);
+					cf.setQitaGet((float) 0);
+					cf.setFankuanPay((float) 0);
+					cf.setShengchanPay((float) 0);
+					cf.setYanfaPay((float) 0);
+					cf.setGuanggaoPay((float) 0);
+					cf.setSalerPay((float) 0);
+					cf.setSalescenterPay((float) 0);
+					cf.setSalescenterWebPay((float) 0);
+					cf.setDiaoyanPay((float) 0);
+					cf.setHuoyunPay((float) 0);
+					cf.setKucunPay((float) 0);
+					cf.setNetmarketPay((float) 0);
+					cf.setTaxPay((float) 0);
+					cf.setLixiPay((float) 0);
+					cf.setJishuPay((float) 0);
+					cf.setQitaPay((float) 0);
+					cf.setGongchangPay((float) 0);
+					cf.setDaikuanNormalGet((float) 0);
+					cf.setDaikuanEmergyGet((float) 0);
+					cf.setCunkuanRegularGet((float) 0);
+					cf.setDaikuanNormalPay((float) 0);
+					cf.setDaikuanEmergyPay((float) 0);
+					cf.setCunkuanRegularPay((float) 0);
+					cf.setYuE((float) 0);
+					
+					
+					BalanceSheet bs=new BalanceSheet();
+					bs.setCompanyId(companyId);
+					bs.setQuarter(j);
+					bs.setHuobi((float) 0);
+					bs.setCunkuan((float) 0);
+					bs.setLixiCollection((float) 0);
+					bs.setCunhuo((float) 0);
+					bs.setZichan((float) 0);
+					bs.setDaikuanEmergency((float) 0);
+					bs.setLixiPay((float) 0);
+					bs.setDaikuanNormal((float) 0);
+					bs.setGuben((float) 2000000);
+					bs.setLiucun((float) 0);
+					
+
+					IncomeStatement is=new IncomeStatement();
+					is.setCompanyId(companyId);
+					is.setQuarter(j);
+					is.setYingyeIncome((float) 0);
+					is.setLixiIncome((float) 0);
+					is.setYingyeCost((float) 0);
+					is.setFankuan((float)0);
+					is.setYanfa((float)0);
+					is.setGuanggao((float)0);
+					is.setSalerCost((float)0);
+					is.setSalescenterCost((float)0);
+					is.setSalescenterWebCost((float)0);
+					is.setBaogao((float)0);
+					is.setHuoyun((float)0);
+					is.setKucun((float)0);
+					is.setExcessCapacity((float)0);
+					is.setZhejiu((float)0);
+					is.setNetmarketCost((float)0);
+					is.setLixiCost((float)0);
+					is.setTechIncome((float)0);
+					is.setQitaIncome((float)0);
+					is.setTechCost((float)0);
+					is.setQitaCost((float)0);
+					is.setTaxCost((float)0);
+					
+					
+					companyService.insertCashFlowFirst(cf);
+					companyService.insertBalanceSheetFirst(bs);
+					companyService.insertIncomeStatementFirst(is);
+				}
+			}
+		}catch(DataAccessException e){
+			System.out.println(e);
 		}
+		
 		ModelAndView modelAndView =  new ModelAndView();
 		modelAndView.setViewName("check");	
 		return modelAndView;
@@ -319,7 +359,8 @@ public class CompetitionController {
 
 	@RequestMapping(value="showMarketInfojson.do")
 		public @ResponseBody List<MarketInfo> showMarketInfojson(HttpServletRequest request){
-			List<MarketInfo> list=staticInfoService.showMarketInfo();
+			int competitionId=(int)request.getSession().getAttribute("competitionId");
+			List<MarketInfo> list=staticInfoService.showMarketInfo(competitionId);
 			return list;
 		}
 	
@@ -355,7 +396,9 @@ public class CompetitionController {
 	@MethodLog(description="查看市场规模")
 	@RequestMapping(value="/showMarketInfo2.do")
 	public ModelAndView showMarketInfo2(HttpServletRequest request) throws Exception{
-		List<MarketInfo> list=staticInfoService.showMarketInfo();
+		
+		int competitionId=(int)request.getSession().getAttribute("competitionId");
+		List<MarketInfo> list=staticInfoService.showMarketInfo(competitionId);
 		ModelAndView modelAndView =  new ModelAndView();
 	    modelAndView.addObject("MarketInfoList", list);
 		modelAndView.setViewName("marketScale");	

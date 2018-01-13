@@ -5,7 +5,41 @@ public class EveryProductMarketShareVo {
 	String companyName;
 	String type;
 	double marketShare;
-	int need;
+	int singaporeNeed;
+	int hongkongNeed;
+	int moscowNeed;
+	int newdelhiNeed;
+	int onlineNeed;
+	public int getSingaporeNeed() {
+		return singaporeNeed;
+	}
+	public void setSingaporeNeed(int singaporeNeed) {
+		this.singaporeNeed = singaporeNeed;
+	}
+	public int getHongkongNeed() {
+		return hongkongNeed;
+	}
+	public void setHongkongNeed(int hongkongNeed) {
+		this.hongkongNeed = hongkongNeed;
+	}
+	public int getMoscowNeed() {
+		return moscowNeed;
+	}
+	public void setMoscowNeed(int moscowNeed) {
+		this.moscowNeed = moscowNeed;
+	}
+	public int getNewdelhiNeed() {
+		return newdelhiNeed;
+	}
+	public void setNewdelhiNeed(int newdelhiNeed) {
+		this.newdelhiNeed = newdelhiNeed;
+	}
+	public int getOnlineNeed() {
+		return onlineNeed;
+	}
+	public void setOnlineNeed(int onlineNeed) {
+		this.onlineNeed = onlineNeed;
+	}
 	int price;
 	
 	
@@ -39,12 +73,7 @@ public class EveryProductMarketShareVo {
 	public void setMarketShare(double marketShare) {
 		this.marketShare = marketShare;
 	}
-	public int getNeed() {
-		return need;
-	}
-	public void setNeed(int need) {
-		this.need = need;
-	}
+	
 	
 	
 }

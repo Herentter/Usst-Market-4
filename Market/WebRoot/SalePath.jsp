@@ -26,16 +26,15 @@ body {
 .panel-body {
 	background-size: cover;
 }
-
 .table {
-	width: 500px;
-	height: 300px;
+	width: 800px;
 	background: white;
+	
 }
 
 td, th {
-	text-align: center;
-	 white-space:nowrap;
+	 text-align: center;
+	/*  white-space:nowrap; */
 	 
 }
 
@@ -125,7 +124,7 @@ float:left;
 </head>
 <body onLoad="init()">
 	<div class="panel panel-info">
-		<div class="panel-heading">我公司各产品销量统计</div>
+		<div class="panel-heading">各产品销量</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
 				<li><a href="#notice1" data-toggle="tab">
@@ -151,9 +150,9 @@ float:left;
 				<div class="tab-pane fade in active" id="notice2">
 					<form class="form-horizontal" id="form"
 						name="addSalesSalaryForm" action="" >
-						<table class="table table-bordered">
+						<table class="table table-bordered rounded-corner">
 							<thead>
-								<tr>
+								<tr class="success" style="font-weight:bold;color:#333;">
 									<input type="hidden" value="${len }" id="len"/>
 									<input type="hidden" value="${quater }" name="quater"/>
 									<input type="hidden" value="${add }" name="add"/>

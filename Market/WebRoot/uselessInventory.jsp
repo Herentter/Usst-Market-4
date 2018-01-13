@@ -138,7 +138,7 @@ td, th {
 				<div class="tab-pane fade in active" id="notice2">
 					<form class="form-horizontal" id="form" method="post" action="">
 						<table class="table table-bordered">
-							<tr>
+							<tr class="success">
 								<td colspan="5"><B>销售无用库存</B></td>
 							</tr>
 							<tr>

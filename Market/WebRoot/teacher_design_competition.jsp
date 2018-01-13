@@ -24,8 +24,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<fieldset>
 		<h2 class="fs-title">竞赛信息</h2>
 		<!-- <h3 class="fs-subtitle">This is step 1</h3> -->
-	    <label>竞赛名称：</label>
-		<input type="text" name="name" placeholder="竞赛名称" />
+		<div>
+			<div class="design3_left">
+				<label>竞赛名称：</label>
+			</div>
+			<div class="design3_right">
+				<input type="text" name="name" placeholder="竞赛名称" />
+			</div>
+		</div>
+	
+		<div>
+			<div class="design3_left">开始时间:</div>
+			<div class="design3_right"><input type="date" id="beginDate" name=start_time placeholder="" /></div>
+		</div>
+		<div>
+			<div class="design3_left">结束时间:</div>
+			<div class="design3_right"><input type="date" id="endDate" name="end_time" placeholder="" /></div>
+		</div>
+		
+		
 		<input type="button" name="next" class="next action-button" value="下一步" />
 	</fieldset>
 	<fieldset>
@@ -52,14 +69,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<option>7</option>
 			<option>8</option>
 		</select>
-		<label>竞赛季度数：</label>
-		<select name="quarter">
-			<option>--请输入--</option>
-			<option>6</option>
-			<option>10</option>
-			<option>12</option>
-			<option>18</option>
-		</select>
+		
 		<%  
             String id=request.getParameter("id");
         %>
@@ -68,18 +78,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<input type="button" name="next" class="next action-button" value="下一步" />
 	</fieldset>
 	<fieldset>
-		<h2 class="fs-title">季度</h2>
-
-		<div>
-			<div class="design3_left">开始时间:</div>
-			<div class="design3_right"><input type="date" id="beginDate" name=start_time placeholder="" /></div>
-		</div>
-		<div>
-			<div class="design3_left">结束时间:</div>
-			<div class="design3_right"><input type="date" id="endDate" name="end_time" placeholder="" /></div>
-		</div>
-		
-		
+		<h2 class="fs-title">竞赛信息</h2>
+		<label>竞赛季度数：</label>
+		<select name="quarter">
+			<option>--请输入--</option>
+			<option>6</option>
+			<option>10</option>
+			<option>12</option>
+			<option>18</option>
+		</select>
+		<label>实体店与网店销售比率：</label>
+		<select name="physicalRate">
+			<option value=0.6>--请输入--</option>
+			<option value=0.8>8:2</option>
+			<option value=0.7>7:3</option>
+			<option value=0.6>6:4</option>
+			<option value=0.5>5:5</option>
+			<option value=0.4>4:6</option>
+			<option value=0.3>3:7</option>
+			<option value=0.2>2:8</option>
+		</select>
 		<input type="button" name="previous" class="previous action-button" value="返回" />
 		<input type="submit" value="提交">
 

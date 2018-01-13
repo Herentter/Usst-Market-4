@@ -38,6 +38,10 @@ td, th {
 	text-align: center;
 }
 
+.kaozuo {
+	text-align: left;
+}
+
 #two {
 	width: 500px;
 	height: 5px;
@@ -139,8 +143,7 @@ td, th {
 		<div class="panel-heading">运行产能</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
-				<li><a href="#notice1" data-toggle="tab">
-						课程介绍</a></li>
+				<li><a href="#notice1" data-toggle="tab"> 课程介绍</a></li>
 				<li class="active"><a href="#notice2" data-toggle="tab">决策界面</a></li>
 			</ul>
 
@@ -171,7 +174,7 @@ td, th {
 						method="post">
 						<table class="table table-bordered">
 							<thead>
-								<tr>
+								<tr class="success">
 									<th colspan="">运行产能</th>
 									<th colspan="">件/天</th>
 									<th colspan="">件/季度</th>
@@ -179,12 +182,12 @@ td, th {
 							</thead>
 							<tbody>
 								<tr>
-									<td>上季度固定产能</td>
+									<td class="kaozuo">上季度固定产能</td>
 									<td>${lastCompanyCapacityList[0].capacityNow+lastCompanyCapacityList[0].capacityAdd}</td>
 									<td>${lastCompanyCapacityList[0].capacityNow*65+lastCompanyCapacityList[0].capacityAdd*65}</td>
 								</tr>
 								<tr>
-									<td>上季度运行产能</td>
+									<td class="kaozuo">上季度运行产能</td>
 									<c:if test="${not empty lastOperationCapacityList }">
 										<td>${lastOperationCapacityList[0].operateCapacity}</td>
 										<td>${lastOperationCapacityList[0].operateCapacity*65}</td>
@@ -195,14 +198,14 @@ td, th {
 									</c:if>
 								</tr>
 								<tr>
-									<td>固定产能</td>
+									<td class="kaozuo">固定产能</td>
 									<td>${companyCapacityList1[0].capacityNow+companyCapacityList1[0].capacityAdd}</td>
 									<input type="hidden" id="oneValue" name="oneValue"
 										value="${companyCapacityList1[0].capacityNow+companyCapacityList1[0].capacityAdd}" />
 									<td>${companyCapacityList1[0].capacityNow*65+companyCapacityList1[0].capacityAdd*65}</td>
 								</tr>
 								<tr>
-									<td>运行产能</td>
+									<td class="kaozuo">运行产能</td>
 									<td><input
 										onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
 										onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
@@ -212,7 +215,7 @@ td, th {
 									<td>${operationCapacityList[0].operateCapacity*65}</td>
 								</tr>
 								<tr>
-									<td>预测有效运行产能</td>
+									<td class="kaozuo">预测有效运行产能</td>
 									<td><fmt:formatNumber type="number"
 											value="${operationCapacityList[0].operateCapacity*operationCapacityList[0].workerProductivity/100}"
 											pattern="0" maxFractionDigits="0" /></td>
@@ -224,34 +227,34 @@ td, th {
 						</table>
 						<table class="table table-bordered" id="two">
 							<tr>
-								<th colspan="">预测工人生产率</th>
-								<th colspan=""><input
+								<td  class="kaozuo" colspan="">预测工人生产率</td>
+								<td colspan=""><input
 									onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
 									onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
 									class="form-control" type="text" name="workerProductivity"
 									maxlength="2"
-									value="${operationCapacityList[0].workerProductivity}">%</th>
+									value="${operationCapacityList[0].workerProductivity}">%</td>
 							</tr>
 						</table>
 						</table>
 						<table class="table table-bordered" id="three">
 							<tr>
-								<th>单位运行产能的新直接人工成本</th>
-								<th><span id="rG"></span></th>
+								<td class="kaozuo">单位运行产能的新直接人工成本</td>
+								<td><span id="rG"></span></td>
 								<input type="hidden" id="renGong" name="renGong"
 									value="${2500/operationCapacityList[0].operateCapacity+5*operationCapacityList[0].operateCapacity}" />
 							</tr>
 							<tr>
-								<th>单位运行产能的新固定成本</th>
-								<th><fmt:formatNumber type="number"
+								<td class="kaozuo">单位运行产能的新固定成本</td>
+								<td><fmt:formatNumber type="number"
 										value="${2500/operationCapacityList[0].operateCapacity+100}"
-										pattern="0" maxFractionDigits="0" /></th>
+										pattern="0" maxFractionDigits="0" /></td>
 							</tr>
 							<tr>
-								<th>运行产能调整成本</th>
-								<th><fmt:formatNumber type="number"
+								<td class="kaozuo">运行产能调整成本</td>
+								<td><fmt:formatNumber type="number"
 										value="${operationCapacityList[0].operateCapacity*workersSalaryList[0].salaryTotal/(companyCapacityList1[0].capacityNow+companyCapacityList1[0].capacityAdd)}"
-										pattern="0" maxFractionDigits="0" /></th>
+										pattern="0" maxFractionDigits="0" /></td>
 							</tr>
 
 						</table>
@@ -270,8 +273,9 @@ td, th {
 <script type="text/javascript">
 	function sign() {
 		alert("提交成功");
-		var quarter=$("#quarter").val();
-		document.getElementById("form").action = "showOperationCapacity1.do?quarter="+quarter;
+		var quarter = $("#quarter").val();
+		document.getElementById("form").action = "showOperationCapacity1.do?quarter="
+				+ quarter;
 		document.getElementById("form").submit();
 
 	}

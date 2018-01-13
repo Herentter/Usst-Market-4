@@ -7,13 +7,110 @@ public class MarketShare {
     private Integer companyId;
     private Integer productId;
     private String productType;
-    private Integer sale;
-    private Integer need;
+    private Integer singaporeSale;
+    private Integer singaporeNeed;
     private double eva;//品牌评价
     private double marketShare;
     private String companyName;
     private String productName;
+    private Integer hongkongSale;
+    private Integer hongkongNeed;
+    private Integer moscowSale;
+    private Integer moscowNeed;
+    private Integer newdelhiSale;
+    private Integer newdelhiNeed;
+    private Integer onlineSale;
+    private Integer onlineNeed;
+    private Integer stockoun;
+    private Integer stock;
 
+    public Integer getSingaporeNeed() {
+        return singaporeNeed;
+    }
+
+    public void setSingaporeNeed(Integer singaporeNeed) {
+        this.singaporeNeed = singaporeNeed;
+    }
+
+    public Integer getHongkongSale() {
+        return hongkongSale;
+    }
+
+    public void setHongkongSale(Integer hongkongSale) {
+        this.hongkongSale = hongkongSale;
+    }
+
+    public Integer getHongkongNeed() {
+        return hongkongNeed;
+    }
+
+    public void setHongkongNeed(Integer hongkongNeed) {
+        this.hongkongNeed = hongkongNeed;
+    }
+
+    public Integer getMoscowSale() {
+        return moscowSale;
+    }
+
+    public void setMoscowSale(Integer moscowSale) {
+        this.moscowSale = moscowSale;
+    }
+
+    public Integer getMoscowNeed() {
+        return moscowNeed;
+    }
+
+    public void setMoscowNeed(Integer moscowNeed) {
+        this.moscowNeed = moscowNeed;
+    }
+
+    public Integer getNewdelhiSale() {
+        return newdelhiSale;
+    }
+
+    public void setNewdelhiSale(Integer newdelhiSale) {
+        this.newdelhiSale = newdelhiSale;
+    }
+
+    public Integer getNewdelhiNeed() {
+        return newdelhiNeed;
+    }
+
+    public void setNewdelhiNeed(Integer newdelhiNeed) {
+        this.newdelhiNeed = newdelhiNeed;
+    }
+
+    public Integer getOnlineSale() {
+        return onlineSale;
+    }
+
+    public void setOnlineSale(Integer onlineSale) {
+        this.onlineSale = onlineSale;
+    }
+
+    public Integer getOnlineNeed() {
+        return onlineNeed;
+    }
+
+    public void setOnlineNeed(Integer onlineNeed) {
+        this.onlineNeed = onlineNeed;
+    }
+
+    public Integer getStockoun() {
+        return stockoun;
+    }
+
+    public void setStockoun(Integer stockoun) {
+        this.stockoun = stockoun;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
 
     public double getEva() {
         return eva;
@@ -23,12 +120,12 @@ public class MarketShare {
         this.eva = eva;
     }
 
-    public Integer getSale() {
-        return sale;
+    public Integer getSingaporeSale() {
+        return singaporeSale;
     }
 
-    public void setSale(Integer sale) {
-        this.sale = sale;
+    public void setSingaporeSale(Integer singaporeSale) {
+        this.singaporeSale = singaporeSale;
     }
 
     public String getCompanyName() {
@@ -79,11 +176,4 @@ public class MarketShare {
         this.productType = productType;
     }
 
-    public Integer getNeed() {
-        return need;
-    }
-
-    public void setNeed(Integer need) {
-        this.need = need;
-    }
 }

@@ -19,6 +19,7 @@ import cn.usst.market.po.HirePeople;
 import cn.usst.market.po.IdQuarter;
 import cn.usst.market.po.IncomeStatement;
 import cn.usst.market.po.MarketInfo;
+import cn.usst.market.po.MarketInfo2;
 import cn.usst.market.po.MarketShareWeight;
 import cn.usst.market.po.MediaInfo;
 import cn.usst.market.po.HirePeopleOnline;
@@ -131,7 +132,7 @@ public class CompetitionResultServiceImpl implements CompetitionResultService {
     	return competitionResultMapper.findCompanyNetSalesNum(companyId, quarter);
     }
     @Override
-    public MarketInfo findMarketInfoById(int id){
+    public MarketInfo2 findMarketInfoById(int id){
     	return competitionResultMapper.findMarketInfoById(id);
     }
 	//找公司工厂工人薪酬
@@ -245,10 +246,22 @@ public class CompetitionResultServiceImpl implements CompetitionResultService {
     	return competitionResultMapper.findAllMarketInfo();
     }
 	
+	//找市场需求量2
+	@Override
+    public List<MarketInfo2> findMarketInfoByCompetitionId(int competitionId){
+    	return competitionResultMapper.findMarketInfoByCompetitionId(competitionId);
+    }
+	
 	
 	//找公司开放的市场
 	@Override
     public CompanyMarket findCompanyMarketByCompanyIdQuarter(int companyId,int quarter,int isPhy){
     	return competitionResultMapper.findCompanyMarket(companyId, quarter, isPhy);
+    }
+	
+	//根据产品id和季度找产品市场份额
+	@Override
+    public ProductMarketShare findProductMSByProductIdQuarter(int productId,int quarter){
+    	return competitionResultMapper.findProductMSByProductIdQuarter(productId, quarter);
     }
 }

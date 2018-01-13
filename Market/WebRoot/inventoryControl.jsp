@@ -166,7 +166,7 @@ td, th {
 					<form class="form-horizontal" method="post" id="form" name="" action="updateInventoryControl.do?quarter=${quarter }">
 						<table class="table table-bordered">
 							<thead>
-								<tr>
+								<tr class="success">
 									<th>品牌</th>
 
 									<th>季末最大库存量</th>

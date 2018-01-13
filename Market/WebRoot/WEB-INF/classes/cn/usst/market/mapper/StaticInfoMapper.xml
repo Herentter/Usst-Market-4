@@ -6,8 +6,10 @@
      	select * from usage_info
      </select>
      
-     <select id="showMarketInfo" resultType="cn.usst.market.po.MarketInfo">
-	  	select * from market_info
+
+	 
+	 <select id="showMarketInfo" resultType="cn.usst.market.po.MarketInfo">
+	  	select * from market_info2 where competition_id=#{0}
 	 </select>
 	 
 	 <select id="showPriceInfo" resultType="cn.usst.market.po.PriceInfo">

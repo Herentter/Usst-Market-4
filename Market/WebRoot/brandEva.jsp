@@ -141,7 +141,7 @@
             <div class="tab-pane fade in active" id="notice2">
                 <table class="table table-bordered table-hover">
                     <thead>
-                    <tr>
+                    <tr class="success">
                         <th>品牌</th>
                         <th>需求量</th>
                         <th>销售量/需求量</th>
@@ -158,7 +158,7 @@
                         <c:forEach items="${hashMap.value}" var="list">
                             <tr>
                                 <td>${list.productName}</td>
-                                <td>${list.need}</td>
+                                <td><%-- ${list.need} --%></td>
                                 <td>${list.eva}</td>
                             </tr>
 

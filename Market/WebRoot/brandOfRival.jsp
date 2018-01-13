@@ -153,7 +153,7 @@
             <div class="tab-pane fade in active" id="notice2">
                 <table class="table table-bordered table-hover">
                     <thead>
-                    <tr class="resize">
+                    <tr class="resize success">
                         <th>产品名称</th>
                         <th>必备</th>
                         <th>运营商</th>
@@ -171,7 +171,7 @@
                     <tbody>
                     <c:forEach items="${brandDetail}" var="brandDetail">
                         <tr>
-                            <td colspan="12" style="text-align: center">${brandDetail.key}</td>
+                            <td colspan="12" style="text-align: left">${brandDetail.key}</td>
                         </tr>
                         <c:forEach items="${brandDetail.value}" var="value">
                             <tr>

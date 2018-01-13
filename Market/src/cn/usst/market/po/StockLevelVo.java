@@ -2,25 +2,82 @@ package cn.usst.market.po;
 
 public class StockLevelVo {
 	private CompanyProduct companyProducts;
-	private Integer need;
-	private Integer sale;
+	private Integer singaporeSale;
+	private Integer hongkongNeed;
+	private Integer hongkongSale;
+	private Integer moscowNeed;
+	private Integer moscowSale;
+	private Integer newdelhiNeed;
+	private Integer newdelhiSale;
+	private Integer onlineNeed;
+	private Integer onlineSale;
 	private Integer stockoun;
 	private Integer stock;
+	private Integer afterStock;
+	
+	private Integer singaporeNeed;
+	public Integer getSingaporeNeed() {
+		return singaporeNeed;
+	}
+	public void setSingaporeNeed(Integer singaporeNeed) {
+		this.singaporeNeed = singaporeNeed;
+	}
+	public Integer getSingaporeSale() {
+		return singaporeSale;
+	}
+	public void setSingaporeSale(Integer singaporeSale) {
+		this.singaporeSale = singaporeSale;
+	}
+	public Integer getHongkongNeed() {
+		return hongkongNeed;
+	}
+	public void setHongkongNeed(Integer hongkongNeed) {
+		this.hongkongNeed = hongkongNeed;
+	}
+	public Integer getHongkongSale() {
+		return hongkongSale;
+	}
+	public void setHongkongSale(Integer hongkongSale) {
+		this.hongkongSale = hongkongSale;
+	}
+	public Integer getMoscowNeed() {
+		return moscowNeed;
+	}
+	public void setMoscowNeed(Integer moscowNeed) {
+		this.moscowNeed = moscowNeed;
+	}
+	public Integer getMoscowSale() {
+		return moscowSale;
+	}
+	public void setMoscowSale(Integer moscowSale) {
+		this.moscowSale = moscowSale;
+	}
+	public Integer getNewdelhiNeed() {
+		return newdelhiNeed;
+	}
+	public void setNewdelhiNeed(Integer newdelhiNeed) {
+		this.newdelhiNeed = newdelhiNeed;
+	}
+	public Integer getNewdelhiSale() {
+		return newdelhiSale;
+	}
+	public void setNewdelhiSale(Integer newdelhiSale) {
+		this.newdelhiSale = newdelhiSale;
+	}
+	public Integer getOnlineNeed() {
+		return onlineNeed;
+	}
+	public void setOnlineNeed(Integer onlineNeed) {
+		this.onlineNeed = onlineNeed;
+	}
+	public Integer getOnlineSale() {
+		return onlineSale;
+	}
+	public void setOnlineSale(Integer onlineSale) {
+		this.onlineSale = onlineSale;
+	}
 	
 	
-	
-	public Integer getNeed() {
-		return need;
-	}
-	public void setNeed(Integer need) {
-		this.need = need;
-	}
-	public Integer getSale() {
-		return sale;
-	}
-	public void setSale(Integer sale) {
-		this.sale = sale;
-	}
 	public Integer getStockoun() {
 		return stockoun;
 	}
@@ -38,6 +95,12 @@ public class StockLevelVo {
 	}
 	public void setCompanyProducts(CompanyProduct companyProducts) {
 		this.companyProducts = companyProducts;
+	}
+	public Integer getAfterStock() {
+		return afterStock;
+	}
+	public void setAfterStock(Integer afterStock) {
+		this.afterStock = afterStock;
 	}
 	
 }

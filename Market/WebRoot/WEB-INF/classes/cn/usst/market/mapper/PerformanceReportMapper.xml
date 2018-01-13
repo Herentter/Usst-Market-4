@@ -39,11 +39,18 @@
 			<result column="quarter" property="quarter"/>
 			<result column="product_type" property="productType"/>
 			<result column="market_share" property="marketShare"/>
-			<result column="need" property="need"/>
-			<result column="sale" property="sale"/>
+			<result column="singapore_need" property="singaporeNeed"/>
+			<result column="singapore_sale" property="singaporeSale"/>
+			<result column="hongkong_need" property="hongkongNeed"/>
+			<result column="hongkong_sale" property="hongkongSale"/>
+			<result column="moscow_need" property="moscowNeed"/>
+			<result column="moscow_sale" property="moscowSale"/>
+			<result column="newdelhi_need" property="newdelhiNeed"/>
+			<result column="newdelhi_sale" property="newdelhiSale"/>
+			<result column="online_need" property="onlineNeed"/>
+			<result column="online_sale" property="onlineSale"/>
 			<result column="stockoun" property="stockoun"/>
 			<result column="stock" property="stock"/>
-			<result column="is_phy" property="isPhy"/>
 		</association>
 		
 		<association property="company" javaType="Company">

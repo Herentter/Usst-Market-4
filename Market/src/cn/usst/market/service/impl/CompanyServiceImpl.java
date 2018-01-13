@@ -1,6 +1,7 @@
 package cn.usst.market.service.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ import cn.usst.market.po.HirePeopleOnlineVo;
 import cn.usst.market.po.HirePeopleVo;
 import cn.usst.market.po.IncomeStatement;
 import cn.usst.market.po.MarketInfo;
+import cn.usst.market.po.OnlineStore;
 import cn.usst.market.po.OperationCapacity;
 import cn.usst.market.po.ProductInfo;
 import cn.usst.market.po.ProductMarketShare;
@@ -153,9 +155,9 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public List<MarketInfo> showMarketInfo() {
+	public List<MarketInfo> showMarketInfo(int competitionId) {
 		
-		return companyMapper.showMarketInfo();
+		return companyMapper.showMarketInfo(competitionId);
 	}
 
 	@Override
@@ -1315,9 +1317,8 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 
 		@Override
-		public HirePeopleOnlineVo selectHirePeopleOnline(int companyId, int marketInt, int quarter) {
-			// TODO Auto-generated method stub
-			return companyMapper.selectHirePeopleOnline(companyId, marketInt, quarter);
+		public HirePeopleOnline selectHirePeopleOnline(int companyId, int quarter) {
+			return companyMapper.selectHirePeopleOnline(companyId, quarter);
 		}
 
 		@Override
@@ -1328,19 +1329,17 @@ public class CompanyServiceImpl implements CompanyService {
 		
 		@Override
 		public List<ProductMarketShare> selectProductMarketShare(Integer id,Integer quarter) {
-			// TODO Auto-generated method stub
+			
 			return companyMapper.selectProductMarketShare(id,quarter);
 		}
 
 		@Override
 		public List<CompanyInvestment> selectCompanyInvestment(int companyId, int quarter) {
-			// TODO Auto-generated method stub
 			return companyMapper.selectCompanyInvestment(companyId, quarter);
 		}
 
 		@Override
 		public CompanyLoan selectCompanyLoan(int company_id, int quarter) {
-			// TODO Auto-generated method stub
 			return companyMapper.selectCompanyLoan(company_id, quarter);
 		}
 
@@ -1582,4 +1581,194 @@ public class CompanyServiceImpl implements CompanyService {
 			// TODO Auto-generated method stub
 			cashFlowMapper.updateCashFlowResultJiChu(jichuXianjin, company_id, quarter);
 		}
+		
+		@Override
+	    public List<OnlineStore> selectAndCountTotalNeed(List<MarketInfo> marketInfoList) {
+	        List<OnlineStore> list = new LinkedList<>();
+	        OnlineStore onlineStore = new OnlineStore();
+	        int perfect = 0, business = 0, practice = 0, open = 0, rent = 0;
+	        if (marketInfoList.size() != 0) {
+	            for (int i = 0; i < marketInfoList.size(); i++) {
+	                perfect += marketInfoList.get(i).getWebPerfect();
+	                business += marketInfoList.get(i).getWebBusiness();
+	                practice += marketInfoList.get(i).getWebPractical();
+	                open += marketInfoList.get(i).getWebOpen();
+	                rent += marketInfoList.get(i).getWebRent();
+	            }
+	            onlineStore.setPractice(practice);
+	            onlineStore.setPerfect(perfect);
+	            onlineStore.setBusiness(business);
+	            onlineStore.setOpen(open);
+	            onlineStore.setRent(rent);
+	            list.add(onlineStore);
+	            return list;
+	        } else {
+	            return null;
+	        }
+
+	    }
+		
+		@Override
+	    public CompanyMarket selectCompanyMarket(Integer companyId, Integer isPhy, Integer quarter) {
+	        return companyMapper.selectCompanyMarket(companyId, isPhy, quarter);
+	    }
+		@Override
+		public void calCashFlowResult(int company_id, int quarter) {
+			// TODO Auto-generated method stub
+			List<CashFlow> selectCashFlowResult = selectCashFlowResult(company_id, quarter);
+			if(selectCashFlowResult.size()==0){
+				insertCashFlowResult(company_id, quarter);
+			}
+			//更新固定费用到结果表
+			CashFlow cashFlow=selectCashFlow(company_id, quarter);
+			float lixi=cashFlow.getLixiGet();
+			float yanfa=cashFlow.getYanfaPay();
+			float guanggao=cashFlow.getGuanggaoPay();
+			float saler=cashFlow.getSalerPay();
+			float salesCenter=cashFlow.getSalescenterPay();
+			float salesCenterWeb=cashFlow.getSalescenterWebPay();
+			float diaoyan=cashFlow.getDiaoyanPay();
+			float gongchang=cashFlow.getGongchangPay();
+			float tiqu=cashFlow.getCunkuanRegularGet();
+			float cunkuan=cashFlow.getCunkuanRegularPay();
+			updateCashFlowResult(lixi, yanfa, guanggao, saler, salesCenter, salesCenterWeb, diaoyan, gongchang, tiqu, cunkuan, company_id, quarter);
+			if(quarter!=1){
+				List<CompanyProduct> companyProducts=selectProductByCompanyIdAndQuarter(company_id, 1);
+				for(int i=2;i<=quarter;i++){
+					companyProducts.addAll(selectProductByCompanyIdAndQuarter(company_id, i));
+				}
+				//计算收入,邮寄，生产，货运，库存
+				float incomeSum=0;
+				float youjiSum=0;
+				float shengchanSum=0;
+				float kucunSum=0;
+				float huoyunSum=0;
+				for(int i=0;i<companyProducts.size();i++){
+					int productId=companyProducts.get(i).getId();
+					int productCost=selectProductCost(productId);
+					int productPrice=0;
+					int youji=0;
+					ProductPrice price=showPrice(productId, quarter);
+					if(price!=null){
+						youji=price.getYouji();
+						productPrice=price.getPrice();
+					}
+					int saleNum=selectSaleResult(productId, quarter);
+					int kucunNum=selectKuCunResult(productId, quarter);
+					int shengchanCost=companyProducts.get(i).getShengChanCost((saleNum+kucunNum), productCost);//生产成本
+					
+					shengchanSum+=shengchanCost*(saleNum+kucunNum);//总生产
+					kucunSum+=shengchanCost*kucunNum/10;//库存费用
+					incomeSum+=productPrice*saleNum;//总收入
+					youjiSum+=youji*saleNum;//总邮寄费用
+					huoyunSum+=saleNum*100;//货运
+				}
+				updateCashFlowResult2(incomeSum, youjiSum, shengchanSum, huoyunSum, kucunSum, company_id, quarter);
+			}
+			if(quarter!=1){
+				float jichuXianjin=selectHuoBiLast(company_id, quarter-1).getHuobi();
+				updateCashFlowResultJiChu(jichuXianjin, company_id, quarter);
+			}
+		}
+
+		@Override
+		public void calIncomeResult(int company_id, int quarter) {
+			// TODO Auto-generated method stub
+			calCashFlowResult(company_id,quarter);
+			List<IncomeStatement> selectIncomeStatementResult = selectIncomeStatementResult(company_id, quarter);
+			if(selectIncomeStatementResult.size()==0){
+				insertIncomeResult(company_id, quarter);
+			}
+			List<CashFlow> cashFlow = selectCashFlowResult(company_id, quarter);
+			float lixi=cashFlow.get(0).getLixiGet();
+			float yanfa=cashFlow.get(0).getYanfaPay();
+			float guanggao=cashFlow.get(0).getGuanggaoPay();
+			float diaoyan=cashFlow.get(0).getDiaoyanPay();
+			float saler=cashFlow.get(0).getSalerPay();
+			float salesCenter=cashFlow.get(0).getSalescenterPay();
+			float salesCenterWeb=cashFlow.get(0).getSalescenterWebPay();
+			updateIncomeResult(lixi, yanfa, guanggao, saler, salesCenter, salesCenterWeb, diaoyan, company_id, quarter);
+			
+			float incomeSum=cashFlow.get(0).getXiaoshouGet();
+			float yingyeSum=cashFlow.get(0).getShengchanPay();
+			float youjiSum=cashFlow.get(0).getFankuanPay();
+			float huoyunSum=cashFlow.get(0).getHuoyunPay();
+			float kucunSum=cashFlow.get(0).getKucunPay();
+			updateIncomeResult2(incomeSum, yingyeSum, youjiSum, huoyunSum, kucunSum, company_id, quarter);
+			//所得税费用(净利润*25%)
+			float netProfit=incomeSum+lixi-yingyeSum-youjiSum-yanfa-guanggao-saler-salesCenter-salesCenterWeb-
+					diaoyan-huoyunSum-kucunSum;
+			float tax=0;
+			if(netProfit>0){
+				tax=(float) (netProfit*0.25);
+			}
+			updateIncomeStatementResultTax(tax, company_id, quarter);
+		}
+
+		@Override
+		public void calBalanceSheetResult(int company_id, int quarter) {
+			calCashFlowResult(company_id,quarter);
+			List<BalanceSheet> balanceResult=selectBalanceSheetResult(company_id, quarter);
+			if(balanceResult.size()==0){
+				insertBalanceResult(company_id, quarter);
+			}
+			BalanceSheet balanceSheet=selectBalanceSheet(company_id, quarter);
+			float cunkuan=balanceSheet.getCunkuan();
+			float zichan=balanceSheet.getZichan();
+			float guben=balanceSheet.getGuben();
+			//货币，留存，存货
+			int cunru=selectCunru(company_id, quarter);
+			int tiqu=selectTiQu(company_id, quarter);
+			int cunkuanLast=selectCunKuanLast(company_id, quarter);
+			List<CashFlow> cashFlow = selectCashFlowResult(company_id, quarter);
+			int cunhuo=(int)(cashFlow.get(0).getKucunPay()*10);
+			float xianjinGet=cashFlow.get(0).getXianJinGet();
+			float xianjinPay=cashFlow.get(0).getXianJinPay();
+			float lirun=xianjinGet-xianjinPay;
+			float gongchang=cashFlow.get(0).getGongchangPay();
+			float huobi=0;
+			float liucun=0; 
+			if(quarter==1){
+				huobi=2000000+lirun-gongchang-cunru+tiqu-cunhuo;
+				liucun=lirun;
+			}else{
+				BalanceSheet balanceSheet2=selectHuoBiLast(company_id, quarter-1);
+				float huobiLast=balanceSheet2.getHuobi();
+				huobi=huobiLast+1000000+lirun-gongchang-cunru+tiqu-cunhuo-(float)(cunkuanLast*1.5/100);
+				float liucunLast=balanceSheet2.getLiucun();
+				liucun=liucunLast+lirun;
+			}
+			updateBalanceSheetResult(cunkuan, zichan, guben, company_id, quarter);
+			updateBalanceSheetResult2(huobi, liucun, cunhuo, company_id, quarter);
+			updateBalanceSheetResult3(0, company_id, quarter);
+			
+		}
+		
+		@Override
+	    public void deleteCompanyMarket(CompanyMarket companyMarket1) {
+	        companyMapper.deleteCompanyMarket(companyMarket1);
+	    }
+
+		@Override
+		public void updateCompanyQuarterTime(Integer companyId, int quarter, String endTime) {
+			// TODO Auto-generated method stub
+			companyMapper.updateCompanyQuarterTime(companyId, quarter, endTime);
+		}
+
+		@Override
+		public int selectCompanyMarket1(int companyId, int isPhy) {
+			return companyMapper.selectCompanyMarket1(companyId,isPhy);
+		}
+		
+		@Override
+	    public void updateCompanyMarket1(CompanyMarket companyMarket) {
+	         companyMapper.updateCompanyMarket1(companyMarket);
+	    }
+
+	    @Override
+	    public void updateCompanyMarket2(CompanyMarket companyMarket) {
+	        companyMapper.updateCompanyMarket2(companyMarket);
+	    }
+		
+
 }

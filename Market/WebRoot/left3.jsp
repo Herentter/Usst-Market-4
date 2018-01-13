@@ -152,8 +152,8 @@ ul.nav span {
 				<li><a href="#none">品牌管理</a>
 					<ul>
 						<li><a href="brandProfit.do?quarter=3" target="main">品牌盈利能力</a></li>
-						<li><a href="brandEva.do" target="main">品牌评价</a></li>
-						<li><a href="brandOfRival.do" target="main">竞争对手的品牌</a></li>
+						<li><a href="brandEva.do?quarter=3" target="main">品牌评价</a></li>
+						<li><a href="brandOfRival.do?quarter=3" target="main">竞争对手的品牌</a></li>
 						<li><a href="CompanyProduct.do?quarter=3" target="main">设计品牌</a></li>
 					</ul></li>
 				<li><a href="#none">定价</a>

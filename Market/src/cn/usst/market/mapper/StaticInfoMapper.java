@@ -14,7 +14,7 @@ public interface StaticInfoMapper {
 	
 	public List<PriceInfo> showPriceInfo();
 
-	public List<MarketInfo> showMarketInfo();
+	public List<MarketInfo> showMarketInfo(int competitionId);
 	
 	public List<MediaInfo> showMediaInfo();
 	

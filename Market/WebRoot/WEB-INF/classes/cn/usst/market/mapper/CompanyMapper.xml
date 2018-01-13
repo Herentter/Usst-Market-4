@@ -71,7 +71,7 @@
   </select>
   
   <select id="showMarketInfo" resultType="cn.usst.market.po.MarketInfo">
-  	select * from market_info
+  	select * from market_info2 where competition_id = #{0}
   </select>
   
   
@@ -384,11 +384,11 @@
   </update>
 
   <select id="selectSalesCenterOpen" resultType="java.lang.Integer">
-  	select open from market_info where id=#{market_id}
+  	select open from market_info2 where id=#{market_id}
   </select>
   
    <select id="selectSalesCenterWebOpen" resultType="java.lang.Integer">
-  	select web_open from market_info where id=#{market_id}
+  	select web_open from market_info2 where id=#{market_id}
   </select>
   
    <update id="updateCashFlowMarket">
@@ -783,18 +783,15 @@
   
   <!-- 显示销售人员页面 -->
   <select id="selectHirePeople" resultMap="HirePeopleResultMap">
-  	select market_info.city, hire_people.*
-	from market_info,hire_people
-	where market_info.id=hire_people.market_id
+  	select market_info2.city, hire_people.*
+	from market_info2,hire_people
+	where market_info2.id=hire_people.market_id
 	and company_id=#{0} and market_id=#{1} and quarter=#{2}
   </select>
   
   <!-- 显示网络销售人员 -->
-  <select id="selectHirePeopleOnline" resultMap="HirePeopleOnlineResultMap">
-  	select market_info.city, hire_people_online.*
-	from market_info,hire_people_online
-	where market_info.id=hire_people_online.market_id
-	and company_id=#{0} and market_id=#{1} and quarter=#{2}
+  <select id="selectHirePeopleOnline" resultType="cn.usst.market.po.HirePeopleOnline">
+  	select *from hire_people_online where company_id=#{0} and quarter=#{1}
   </select>
 
 	<resultMap type="cn.usst.market.po.HirePeopleVo" id="HirePeopleResultMap">
@@ -829,7 +826,8 @@
   </update>
   
   <update id="updateHirePeopleOnlineById" parameterType="cn.usst.market.po.HirePeopleOnline">
-  	update hire_people_online set saleman=#{saleman},after_sale=#{afterSale} where id=#{id}
+  	update hire_people_online set saleman=#{saleman},after_sale=#{afterSale},market_id=#{marketId}
+  	 where company_id=#{companyId} and quarter=#{quarter}
   </update>
   
   
@@ -930,5 +928,28 @@
  	<delete id="deleteCompanyAdvertise">
  		delete from company_advertise where product_id=#{0}
  	</delete>
+ 	
+ 	<select id="selectCompanyMarket" parameterType="java.lang.Integer" resultType="cn.usst.market.po.CompanyMarket">
+		select * from company_market where company_id=#{0} and is_phy=#{1} and quarter=#{2}
+	</select>
+ 	
+ 	<delete id="deleteCompanyMarket" parameterType="cn.usst.market.po.CompanyMarket">
+        delete from company_market where company_id=#{companyId} and quarter=#{quarter}
+    </delete>
+
+ 	<update id="updateCompanyQuarterTime">
+ 		update company_quarter_time set end_time=#{2},is_submit=1 where company_id=#{0} and quarter=#{1}
+ 	</update>
  
+ 	<select id="selectCompanyMarket1" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from company_market where company_id=#{0} and is_phy=#{1}
+    </select>
+    
+    <update id="updateCompanyMarket1" parameterType="cn.usst.market.po.CompanyMarket">
+        update company_market set market_id=null where is_phy=0 and quarter=#{quarter} and company_id=#{companyId}
+    </update>
+
+    <update id="updateCompanyMarket2" parameterType="cn.usst.market.po.CompanyMarket">
+        update company_market set market_id=#{marketId} where is_phy=0 and quarter=#{quarter} and company_id=#{companyId}
+    </update>
 </mapper>

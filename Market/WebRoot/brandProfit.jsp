@@ -180,7 +180,7 @@
                         <td class="strong">单位利润</td>
                         <c:forEach items="${brandList}" var="brand">
                             <td>
-                                <c:if test="${'0' != brand.sale}">${brand.unitProfit}</c:if>
+                                <c:if test="${'0' != brand.totalSale}">${brand.unitProfit}</c:if>
                             </td>
                         </c:forEach>
                     </tr>

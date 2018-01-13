@@ -146,19 +146,19 @@ td, th {
 				<div class="tab-pane fade" id="notice2">
 					<form class="form-horizontal" id="form" method="post" action="">
 						<table class="table table-bordered">
-							<tr>
+							<tr class="success">
 								<td colspan="9">竞争对手提供的工厂工人薪酬组合</td>
 							</tr>
 							<tr>
-								<td>公司</td>
-								<td>生产率</td>
-								<td>工资</td>
-								<td>福利</td>
-								<td>休假</td>
-								<td>公积金</td>
-								<td>企业年金</td>
-								<td>退休金</td>
-								<td>年度成本</td>
+								<td><B>公司</B></td>
+								<td><B>生产率</B></td>
+								<td><B>工资</B></td>
+								<td><B>福利</B></td>
+								<td><B>休假</B></td>
+								<td><B>公积金</B></td>
+								<td><B>企业年金</B></td>
+								<td><B>退休金</B></td>
+								<td><B>年度成本</B></td>
 							</tr>
 							<c:forEach items="${allVoList}" var="items">
 								<tr>

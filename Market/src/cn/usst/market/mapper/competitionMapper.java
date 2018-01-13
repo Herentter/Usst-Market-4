@@ -42,7 +42,7 @@ public interface CompetitionMapper {
 
 	List<MarketInfoWeight> selectMarketInfoWeight();
 
-	void insertMarketInfo(Integer competitionId, String name, int perfect, int business, int pratical);
+	void insertMarketInfo(Integer competitionId, String name, int perfect, int business, int pratical, int web_perfect, int web_business, int web_practical, int rent, int open, int web_rent, int web_open, String img);
     
     
 

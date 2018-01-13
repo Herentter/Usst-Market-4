@@ -11,7 +11,7 @@
 <base href="<%=basePath %>">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>公司需求量</title>
+<title>公司销售量</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="css/strategy.css">
 
@@ -20,41 +20,35 @@
 	<div id="nav44">
 		<div class="panel panel-info">
 			<div class="panel-heading">
-				<span>各个公司细分市场需求量</span>
+				<span>各个公司销售量</span>
 				<input type="button" value="返回" onclick="javascript:history.back();">
 			</div>
 
 			<div class="panel-body">
-				<label>各个公司市场需求量</label>
+				<label>各个公司销售量</label>
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th>产品名称</th>
 							<th>公司名称</th>
-							<th>类型</th>
-							<th>新加坡</th>
-							<th>香港</th>
-							<th>墨西哥</th>
-							<th>新西兰</th>
-							<th>网络市场</th>
+							<th>实用型</th>
+							<th>极致型</th>
+							<th>商务型</th>
+							<th>合计</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${everyProductMSList }" var="item">
+						<c:forEach items="${companyMSList }" var="item">
 							<tr>
-								<td>${item.productName }</td>
-								<td>${item.companyName }</td>
-								<td>${item.type }</td>
-								<td>${item.singaporeNeed }</td>
-								<td>${item.hongkongNeed }</td>
-								<td>${item.moscowNeed }</td>
-								<td>${item.newdelhiNeed }</td>
-								<%-- <td>${item.marketShare }</td> --%>
-								<td>${item.onlineNeed }</td>
+								<td>${item.key }</td>
+								<td>${item.value.practicalSale }</td>
+								<td>${item.value.perfectSale }</td>
+								<td>${item.value.businessSale }</td>
+								<td>${item.value.practicalSale+item.value.perfectSale+item.value.businessSale }</td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
+				
 				
 			</div>
 

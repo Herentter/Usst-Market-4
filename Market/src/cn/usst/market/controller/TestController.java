@@ -1,17 +1,28 @@
 package cn.usst.market.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
-import cn.usst.market.mapper.FinalCheckMapper;
-import cn.usst.market.po.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import cn.usst.market.mapper.FinalCheckMapper;
+import cn.usst.market.po.CapacityPojo;
+import cn.usst.market.po.Company;
+import cn.usst.market.po.DepositPojo;
+import cn.usst.market.po.FinalCheck;
+import cn.usst.market.po.MarketPojo;
+import cn.usst.market.po.PositionPojo;
+import cn.usst.market.po.ProductPojo;
+import cn.usst.market.po.RulePojo;
+import cn.usst.market.po.StockPojo;
+import cn.usst.market.po.StrategyPojo;
 
 @Controller
 public class TestController {
@@ -41,7 +52,7 @@ public class TestController {
      * @return
      */
     @RequestMapping("/finalCheck.do")
-    public String test2(Model model, HttpServletRequest request) {
+    public ModelAndView test2(Model model, HttpServletRequest request) {
         //存储检查信息的实体类
         FinalCheck finalCheck = new FinalCheck();
         //定义一个标志变量,表示决策是否存在异常
@@ -142,7 +153,13 @@ public class TestController {
             request.getSession().setAttribute("pass", false);
         }
         System.out.println("------------------检查结束----------------------");
-        return "testFinalCheck";
+        
+        
+        
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.addObject("quarter",quarter);
+        modelAndView.setViewName("testFinalCheck");
+        return modelAndView;
     }
 
     @RequestMapping("/finalSubmit.do")

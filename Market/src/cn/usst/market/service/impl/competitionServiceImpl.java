@@ -114,10 +114,14 @@ public class CompetitionServiceImpl implements CompetitionService {
 	}
 
 	@Override
-	public void insertMarketInfo(Integer competitionId, String name, int perfect, int business, int pratical) {
-		// TODO Auto-generated method stub
-		competitionMapper.insertMarketInfo(competitionId,name,perfect,business,pratical);
+	public void insertMarketInfo(Integer competitionId, String name, int perfect, int business, int practical,
+			int web_perfect, int web_business, int web_practical, int rent, int open, int web_rent, int web_open,
+			String img) {
+		competitionMapper.insertMarketInfo(competitionId,name,perfect,business,practical,
+				 web_perfect,web_business,web_practical,rent,open,web_rent,web_open,img);
+		
 	}
+
 
 
 	

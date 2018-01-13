@@ -77,7 +77,7 @@ public interface CompanyMapper {
     
     List<Duty> showAllPosition();
     
-    List<MarketInfo> showMarketInfo();
+    List<MarketInfo> showMarketInfo(int competitionId);
     
     //Guan
     
@@ -370,7 +370,7 @@ public interface CompanyMapper {
 
 	public HirePeopleVo selectHirePeople(int companyId, int marketInt, int quarter);
 	
-	public HirePeopleOnlineVo selectHirePeopleOnline(int companyId, int marketInt, int quarter);
+	public HirePeopleOnline selectHirePeopleOnline(int companyId, int quarter);
 
 	//更新销售人员
 	public void updateHirePeopleById(HirePeople hirePeople);
@@ -441,7 +441,19 @@ public interface CompanyMapper {
 	public void deleteCompanyMedia(int productId);
 	
 	public void deleteCompanyAdvertise(int productId);
-    
+	
+	CompanyMarket selectCompanyMarket(Integer companyId, Integer isPhy, Integer quarter);
+
+	void deleteCompanyMarket(CompanyMarket companyMarket1);
+	
+	
+	public void updateCompanyQuarterTime(Integer companyId, int quarter, String endTime);
+	
+	int selectCompanyMarket1(int companyId, int isPhy);
+	
+	void updateCompanyMarket1(CompanyMarket companyMarket);
+
+    void updateCompanyMarket2(CompanyMarket companyMarket);
 	
 
 

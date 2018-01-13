@@ -73,6 +73,8 @@ td, th {
 	min-height: 120px;
 }
 
+
+
 #button {
 	float: right;
 	margin:;
@@ -110,41 +112,53 @@ td, th {
 
 .tab-content {
 	margin-top: 10px;
-	
 }
-.form-control{
-	text-align:center;
-}
-#notice2{
-	padding-top:10px;
-}
-#table1{
-	width:80%;
-	margin-top:5px;
-}
-#table2{
-	width:40%;
-	float:left;
-}
-#table2 td lable{
-	border:1px dotted white;
-}
-#table3{
-	width:20%;
-	float:left;
-}
-#table3 tr{
-	text-align:center;
-}
-#table3 td input{
 
+.form-control {
+	text-align: center;
+}
+
+#notice2 {
+	padding-top: 10px;
+}
+
+#table1 {
+	width: 80%;
+	margin-top: 5px;
+}
+
+#table2 {
+	width: 40%;
+	float: left;
+}
+
+#table2 td lable {
+	border: 1px dotted white;
+}
+
+#table3 {
+	width: 20%;
+	float: left;
+}
+
+#table3 tr {
+	text-align: center;
+}
+
+#table3 td input {
 	
 }
-#table2 tr,#table3 tr{
-	height:52px;
+.kaozuo {
+	text-align: left;
 }
-.split{
-	clear:both;
+#table2 tr{
+	height: 12px;
+}
+#table3 tr {
+height: 37px;
+}
+.split {
+	clear: both;
 }
 </style>
 
@@ -154,8 +168,7 @@ td, th {
 		<div class="panel-heading">需求量预测</div>
 		<div class="panel-body">
 			<ul class="nav nav-tabs">
-				<li><a href="#notice1" data-toggle="tab">
-						课程介绍</a></li>
+				<li><a href="#notice1" data-toggle="tab"> 课程介绍</a></li>
 				<li class="active"><a href="#notice2" data-toggle="tab">决策界面</a></li>
 			</ul>
 			<div class="tab-content">
@@ -177,11 +190,12 @@ td, th {
 					</div>
 				</div>
 				<div class="tab-pane fade in active" id="notice2">
-					<form class="form-horizontal" id="form" method="post" action="updateDemandForecast.do?quarter=${quarter }">
-						<h5>销售人员及需求量</h5>
+					<form class="form-horizontal" id="form" method="post"
+						action="updateDemandForecast.do?quarter=${quarter }">
+						<h5>销售人员及销售量</h5>
 						<table class="table table-bordered" id="table1">
 							<thead>
-								<tr>
+								<tr class="success">
 									<th></th>
 									<th colspan="3">上季度</th>
 									<th colspan="3">当前季度</th>
@@ -189,13 +203,13 @@ td, th {
 							</thead>
 							<tbody>
 								<tr>
-									<td></td>
+									<td>销售中心</td>
 									<td>销售人员数量(人)</td>
-									<td>销售人员人均需求量（件）</td>
-									<td>总需求量（件）</td>
+									<td>销售人员预计销售量（件）</td>
+									<td>总销售量（件）</td>
 									<td>销售人员数量(人)</td>
-									<td>销售人员人均需求量（件）</td>
-									<td>总需求量（件）</td>
+									<td>销售人员预计销售量（件）</td>
+									<td>总销售量（件）</td>
 
 								</tr>
 								<tr>
@@ -204,8 +218,11 @@ td, th {
 									<td>${demandForecastPro.demandAveragePhy }</td>
 									<td>${phySalemanNumberPro*demandForecastPro.demandAveragePhy }</td>
 									<td>${phySalemanNumber}</td>
-									<td><input class="form-control" type="text" name="demand_average_phy" value="${demandForecast.demandAveragePhy }"
-									onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></td>
+									<td><input class="form-control" type="text"
+										name="demand_average_phy"
+										value="${demandForecast.demandAveragePhy }"
+										onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+										onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></td>
 									<td>${phySalemanNumber*demandForecast.demandAveragePhy}</td>
 								</tr>
 								<tr>
@@ -214,8 +231,11 @@ td, th {
 									<td>${demandForecastPro.demandAveragePhy }</td>
 									<td>${webSalemanNumberPro*demandForecastPro.demandAveragePhy}</td>
 									<td>${webSalemanNumber}</td>
-									<td><input class="form-control" type="text" name="demand_average_web" value="${demandForecast.demandAverageWeb}"
-									onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></td>
+									<td><input class="form-control" type="text"
+										name="demand_average_web"
+										value="${demandForecast.demandAverageWeb}"
+										onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+										onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></td>
 									<td>${webSalemanNumber*demandForecast.demandAverageWeb}</td>
 								</tr>
 								<tr>
@@ -234,64 +254,66 @@ td, th {
 						<h5>产品信息</h5>
 						<table id="table2" class="table table-bordered">
 							<thead>
-								<tr>
-									
+								<tr class="success">
+
 									<th>产品</th>
 									<th>上季度需求量</th>
-									
+
 								</tr>
 							</thead>
 							<tbody>
-							<c:forEach items="${companyProductResult2 }" var="entry">
-								<tr>
-									<td colspan="2">第${entry.key}季度产品</td>
-								</tr>
-								<c:forEach items="${entry.value }" var="item">
-									
+								<c:forEach items="${companyProductResult2 }" var="entry">
 									<tr>
-										<td><lable class="form-control">${item.name}</lable></td>
-										<td><lable class="form-control">${item.demand }</lable></td>
+										<td class="kaozuo" colspan="2">第${entry.key}季度产品</td>
 									</tr>
+									<c:forEach items="${entry.value }" var="item">
+
+										<tr>
+											<td><lable class="form-control">${item.name}</lable></td>
+											<td><lable class="form-control">${item.demand }</lable></td>
+										</tr>
+									</c:forEach>
 								</c:forEach>
-							</c:forEach>
-							<tr>
-								<td>合计</td>
-								<td>${demandNumberPro }</td>
-							</tr>
-							
+								<tr>
+									<td>合计</td>
+									<td>${demandNumberPro }</td>
+								</tr>
+
 							</tbody>
 						</table>
-						
-						
+
+
 						<table id="table3" class="table table-bordered">
 							<thead>
-								<tr>
+								<tr class="success">
 									<th>本季度需求量</th>
 								</tr>
 							</thead>
 							<tbody>
-							<c:forEach items="${companyProductResult }" var="entry">
-								<tr>
-									<td colspan="4"></td>
-								</tr>
-								<c:forEach items="${entry.value }" var="item">
-									<input type="hidden" name="productId" value="${item.id}">
+								<c:forEach items="${companyProductResult }" var="entry">
 									<tr>
-										<td><input type="text" name="${item.id }demand" class="form-control" value="${item.demand }"></td>
+										<td colspan="4"></td>
 									</tr>
+									<c:forEach items="${entry.value }" var="item">
+										<input type="hidden" name="productId" value="${item.id}">
+										<tr>
+											<td><input type="text" name="${item.id }demand"
+												class="form-control" value="${item.demand } "onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+									onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></td>
+										</tr>
+									</c:forEach>
 								</c:forEach>
-							</c:forEach>
-							<tr>
-							
-								<td>${demandNumber }</td>
-							</tr>
+								<tr>
+
+									<td>${demandNumber }</td>
+								</tr>
 							</tbody>
 						</table>
 						<div class="split"></div>
 						<br>
 						<table class="table table-bordered">
 							<thead>
-								<tr>
+								<tr class="success">
 									<th></th>
 									<th>件/季度</th>
 									<th>件/天</th>
@@ -301,11 +323,13 @@ td, th {
 								<tr>
 									<td>满足预测需求量所需的工厂有效产能</td>
 									<td>${demandNumber }</td>
-									<td>${demandNumber/30 }</td>
+									<td><fmt:formatNumber type="number"
+											value="${demandNumber/30 }"
+											pattern="0" maxFractionDigits="0" /></td>
 								</tr>
 							</tbody>
 						</table>
-						
+
 						<button class="btn btn-info" id="button" onclick="sign()">提交</button>
 					</form>
 				</div>

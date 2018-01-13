@@ -15,6 +15,7 @@ import cn.usst.market.po.HirePeople;
 import cn.usst.market.po.IdQuarter;
 import cn.usst.market.po.IncomeStatement;
 import cn.usst.market.po.MarketInfo;
+import cn.usst.market.po.MarketInfo2;
 import cn.usst.market.po.MarketShareWeight;
 import cn.usst.market.po.MediaInfo;
 import cn.usst.market.po.HirePeopleOnline;
@@ -71,7 +72,7 @@ public interface CompetitionResultMapper {
     //找每个公司的公司人数
     public List<HirePeople> findCompanyPhySalesNum(int companyId,int quarter);
     public List<HirePeopleOnline> findCompanyNetSalesNum(int companyId,int quarter);
-    public MarketInfo findMarketInfoById(int id);
+    public MarketInfo2 findMarketInfoById(int id);
     
     //找公司销售工人薪酬
     public SalesSalary findSalesSalaryByCompanyIdQuar(int companyId,int quarter);
@@ -131,6 +132,12 @@ public interface CompetitionResultMapper {
     //找市场需求量
     public List<MarketInfo> findAllMarketInfo();
     
+    //找市场需求量
+    public List<MarketInfo2> findMarketInfoByCompetitionId(int competitionId);
+    
     //找公司开放的市场
     public CompanyMarket findCompanyMarketByCompanyIdQuarter(int companyId,int quarter,int isPhy);
+    
+    //根据产品id和季度找产品市场份额
+    public ProductMarketShare findProductMSByProductIdQuarter(int productId,int quarter);
 }

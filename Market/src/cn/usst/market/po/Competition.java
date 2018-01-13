@@ -24,18 +24,12 @@ public class Competition {
     private Date endTime;
 
     private String status;
-    
-    private int isLock;
 
-    public int getIsLock() {
-		return isLock;
-	}
+    private Integer isLock;
 
-	public void setIsLock(int isLock) {
-		this.isLock = isLock;
-	}
+    private Float physicalRate;
 
-	public Integer getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -121,5 +115,21 @@ public class Competition {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
+    }
+
+    public Integer getIsLock() {
+        return isLock;
+    }
+
+    public void setIsLock(Integer isLock) {
+        this.isLock = isLock;
+    }
+
+    public Float getPhysicalRate() {
+        return physicalRate;
+    }
+
+    public void setPhysicalRate(Float physicalRate) {
+        this.physicalRate = physicalRate;
     }
 }

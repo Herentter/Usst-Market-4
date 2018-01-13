@@ -201,7 +201,7 @@
 	
 	<!-- 根据ID找具体市场信息 -->
 	<select id="findMarketInfoById" parameterType="Integer" resultType="cn.usst.market.po.MarketInfo">
-		select * from market_info
+		select * from market_info2
 		where id=#{value}
 	</select>
 	
